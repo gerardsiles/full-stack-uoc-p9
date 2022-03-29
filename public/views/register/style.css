@@ -1,0 +1,115 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background-color: #39197d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: transparent;
+    overflow: hidden;
+    width: 400px;
+    max-width: 100%;
+}
+
+.header {
+    background-color: transparent;
+    border-bottom: 1px solid;
+    padding: 20px 40px;
+}
+
+.header h2 {
+    margin: 0;
+    font-weight: bold;
+    color: white;
+    text-align-last: center;
+}
+
+.form {
+    padding: 30px 40px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.form-control label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.form-control input {
+    border: 2px solid;
+    border-radius: 4px;
+    display: block;
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+
+    background: #224957;
+    border-radius: 7px;
+}
+
+.form-control.btn-success i.bi-check-circle {
+    visibility: visible;
+    color: green;
+}
+
+.form-control.btn-danger i.bi-exclamation-circle {
+    visibility: visible;
+    color: red;
+}
+
+.input {
+    width: 300px;
+    height: 45px;
+    left: 490px;
+    top: 278px;
+
+    background: #224957;
+    border-radius: 10px;
+}
+
+.form-control i {
+    visibility: hidden;
+    position: absolute;
+    top: 45px;
+    right: 20px;
+}
+
+.form-control small {
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 10;
+}
+
+.form-control.btn-danger small {
+    visibility: visible;
+    color: black;
+}
+
+.form-control.btn-success small {
+    visibility: visible;
+    color: black;
+}
+
+.form button {
+    background-color: #224957;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+}
+
+.bruno{
+    background-color: #ffffff;
+}
