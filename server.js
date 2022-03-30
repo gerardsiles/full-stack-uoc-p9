@@ -17,11 +17,13 @@ const server = http.createServer((req, res) => {
     }
     else if(req.url === '/register') {
         //cargar registro
-        fs.readFile(path.join(__dirname, 'public/views', 'register.html'), (err, content) => {
+        fs.readFile(path.join(__dirname, 'public/views', '/register.html'), (err, content) => {
             if (err) throw err;
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.end(content);
         });
+
+
 
         if (req.method === 'POST') {
             // registrar usuario
@@ -35,8 +37,7 @@ const server = http.createServer((req, res) => {
     else if(req.url === '/roomgame') {
         res.end('<h1>Salas de Juego</h1>');
 
-    }
-    else {
+    } else {
         res.writeHead(404, {'Content-type': 'aplication/json'});
         res.end(JSON.stringify({message: 'Ruta no encontrada'}));
     }
@@ -105,6 +106,45 @@ const server = http.createServer((req, res) => {
     //         res.end(content, "utf8");
     //     }
     // });
+
+    // // comprobar si se envia el formulario de registro
+    // http.get('/register', (res) => {
+    //     const { statusCode } = res;
+    //     const contentType = res.headers['content-type'];
+    //
+    //     let error;
+    //     // Any 2xx status code signals a successful response but
+    //     // here we're only checking for 200.
+    //     if (statusCode !== 200) {
+    //         error = new Error('Request Failed.\n' +
+    //             `Status Code: ${statusCode}`);
+    //     } else if (!/^application\/json/.test(contentType)) {
+    //         error = new Error('Invalid content-type.\n' +
+    //             `Expected application/json but received ${contentType}`);
+    //     }
+    //     if (error) {
+    //         console.error(error.message);
+    //         // Consume response data to free up memory
+    //         res.resume();
+    //         return;
+    //     }
+    //
+    //     res.setEncoding('utf8');
+    //     let rawData = '';
+    //     res.on('data', (chunk) => { rawData += chunk; });
+    //     res.on('end', () => {
+    //         try {
+    //             const parsedData = JSON.parse(rawData);
+    //             console.log(parsedData);
+    //         } catch (e) {
+    //             console.error(e.message);
+    //         }
+    //     });
+    // }).on('error', (e) => {
+    //     console.error(`Got error: ${e.message}`);
+    // });
+
+    // try with https://stackoverflow.com/questions/33320673/how-to-send-http-request-to-submit-form-in-node-js-to-another-website
 
 
 });

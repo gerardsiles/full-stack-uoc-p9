@@ -5,9 +5,9 @@ const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 
 form.addEventListener("submit", e => {
-    e.preventDefault();
+    // e.preventDefault();
+    // checkInputs();
 
-    checkInputs();
 });
 
 // comprobar los inputs del registro de usuario
@@ -22,12 +22,6 @@ function checkInputs() {
         // mostrar error
         // agregar clase danger
         setErrorFor(username, "El campo de usuario no puede estar vacio");
-
-        // todo
-        // comprobar si el nombre existe
-    } else {
-        // agregar clase succes
-        setSuccessFor(username, "Este usuario esta disponible");
     }
 
     if (emailValue === "") {
