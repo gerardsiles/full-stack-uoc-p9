@@ -6,7 +6,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: 80vh;
     margin: 0;
 }
 
@@ -69,7 +69,7 @@ body {
 
 .input {
     width: 300px;
-    height: 45px;
+    height: 100px;
     left: 490px;
     top: 278px;
 
@@ -88,7 +88,7 @@ body {
     visibility: hidden;
     position: absolute;
     bottom: 0;
-    left: 10;
+    left: 10px;
 }
 
 .form-control.btn-danger small {
@@ -102,14 +102,11 @@ body {
 }
 
 .form button {
-    background-color: #224957;
+    height: 5vh;
+    background-color: #20DF7F;
     border-radius: 5px;
     display: block;
     width: 100%;
     color: white;
     font-weight: bold;
-}
-
-.bruno{
-    background-color: #ffffff;
 }

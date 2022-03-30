@@ -5,9 +5,8 @@ const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 
 form.addEventListener("submit", e => {
-    // e.preventDefault();
-    // checkInputs();
-
+    e.preventDefault();
+    checkInputs();
 });
 
 // comprobar los inputs del registro de usuario
