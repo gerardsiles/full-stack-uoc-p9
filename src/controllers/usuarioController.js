@@ -16,12 +16,17 @@ async function getUsuarios(req, res) {
 
 // cargar vista
 
-async function createUsuario(req, res) {
+async function createUsuario(req, res,data) {
     try {
         // TODO
         // llamar al modelo para crear un usuario
-    } catch (error) {
+        await Usuario.createUser(data);
 
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        // res.write(JSON.stringify(data));
+        res.end();
+    } catch (error) {
+        console.log(error);
     }
 }
 // Definir que funciones exporta el controlador

@@ -8,12 +8,12 @@ function findAll() {
     })
 }
 
-function createUser() {
+function createUser(data) {
     return new Promise((resolve, reject) => {
         //TODO
         // recibir informacion para crear al usuario
         // agregarlo a la array en data
-        resolve(usuarios);
+        resolve(usuarios.push(data));
     })
 }
 
