@@ -3,13 +3,39 @@ const path = require('path');
 const {createReadStream} = require('fs');
 const {createServer} = require('http');
 
-// metodo para comprobar con postman que funciona
-const usuario = require('./src/controllers/usuarioController');
+// importar las clases
+const usuario = require('./src/models/Usuario');
+const sala = require('./src/models/Sala');
+const partida = require('./src/models/Partida');
+
+// importar controladores y modelos
 const register = require('./src/controllers/registerController');
-const {createUser} = require("./src/models/usuarioModel");
+const user = require("./src/models/usuarioModel");
 const {createUsuario, getUsuarios} = require("./src/controllers/usuarioController");
 
+
+// array para guardar usuarios
 let usuarioArray = new Array();
+const usuario1 = new usuario("jugador1", "jugador1@uoc.edu", "password1");
+usuarioArray.push(usuario1);
+const usuario2 = new usuario("jugador2", "jugador2@uoc.edu", "password2");
+usuarioArray.push(usuario2);
+
+// Crear salas de juego
+const sala1 = new sala("Valhalla");
+const sala2 = new sala("Elfheilm");
+const sala3 = new sala("Midgard");
+const sala4 = new sala("Asgard");
+
+// Crear partidas
+const partida1 = new partida(sala1, usuario1, usuario2);
+const partida2 = new partida(sala2, usuario1, usuario2);
+const partida3 = new partida(sala3, usuario1, usuario2);
+const partida4 = new partida(sala4, usuario1, usuario2);
+
+
+
+
 // definir el puerto en el environment, o el local
 const PORT = process.env.PORT || 5000;
 
@@ -39,17 +65,14 @@ const requestListener = (req, res) => {
         if (req.method ==='POST') {
             //TODO
             req.on('data', chunk => {
-                let prueba = process.stdout.write(chunk);
-                usuarioArray.push(prueba);
-
-                // cargar login page
-
+                //agregar el usuario a la array
+                usuarioArray.push(chunk);
             })
         }
 
 
-    } else if (url === '/login') {
-        stream = createReadStream((`${PUBLIC_FOLDER}/views/login.html`));
+    } else if (url === '/room') {
+        stream = createReadStream((`${PUBLIC_FOLDER}/views/room.html`));
     }
     else if (url.match("\.css$")) { // para los archivos CSS
         contentType = CSS_CONTENT_TYPE

@@ -1,16 +1,23 @@
-let http_utils = require('../services/http_utils');
-const {createReadStream} = require("fs");
-const path = require("path");
-
-const HTML_CONTENT_TYPE = 'text/html';
-const CSS_CONTENT_TYPE = 'text/css';
-const JS_CONTENT_TYPE = 'text/javascript';
+const usuario = require("../models/usuarioModel");
 
 
-function getUserRegisterData(req, res) {
+
+async function registerNewUser(req, res) {
+    modeloUsuario.userExists();
+    if(!userExists()){
+        try{
+            await usuario.createUser();
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write("usuario creado");
+            res.end();
+
+        }catch (error){
+            console.log(error);
+        }
+    }
 
 }
 
 module.exports = {
-    getUserRegisterData
+    registerNewUser
 }
