@@ -13,18 +13,24 @@ async function getUsuarios(req, res) {
         console.log(error);
     }
 }
+ async function checkIfExist(email, pass){
 
+
+    var userExists = await Usuario.userExists(email,pass);
+    //console.log("userExists: "+ userExists);
+    return userExists;
+
+
+ }
 // cargar vista
 
-async function createUsuario(req, res,data) {
+async function createUsuario(user, email, pass) {
     try {
         // TODO
         // llamar al modelo para crear un usuario
-        await Usuario.createUser(data);
+        await Usuario.createUser(user, email, pass);
 
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        // res.write(JSON.stringify(data));
-        res.end();
+
     } catch (error) {
         console.log(error);
     }
@@ -32,5 +38,6 @@ async function createUsuario(req, res,data) {
 // Definir que funciones exporta el controlador
 module.exports = {
     getUsuarios,
-    createUsuario
+    createUsuario,
+    checkIfExist
 }

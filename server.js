@@ -11,7 +11,7 @@ const partida = require('./src/models/Partida');
 // importar controladores y modelos
 const register = require('./src/controllers/registerController');
 const user = require("./src/models/usuarioModel");
-const {createUsuario, getUsuarios} = require("./src/controllers/usuarioController");
+const {createUsuario, getUsuarios, checkIfExist} = require("./src/controllers/usuarioController");
 
 
 // array para guardar usuarios
@@ -59,17 +59,43 @@ const requestListener = (req, res) => {
     if (url === '/') {
         stream = createReadStream(`${PUBLIC_FOLDER}/views/index.html`)
     } else if (url === '/register') {
-        if (req.method ==='GET') {
+        if (req.method === 'GET') {
             stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
         }
-        if (req.method ==='POST') {
+        if (req.method === 'POST') {
             //TODO
-            req.on('data', chunk => {
+            req.on('data', async chunk => {
                 //agregar el usuario a la array
-                usuarioArray.push(chunk);
+                let usuarioEnviado = JSON.parse(chunk);
+                console.log(usuarioEnviado.email);
+                console.log(usuarioEnviado.password);
+                console.log(usuarioEnviado.username);
+                await createUsuario(usuarioEnviado.username,usuarioEnviado.email, usuarioEnviado.password);//usuarioArray.push(chunk);
             })
         }
+    } else if(url === '/login'){
+        if (req.method === 'GET') {
+            stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
+        }
+        if (req.method === 'POST') {
+            //TODO
+            req.on('data', async chunk => {
+                let usuarioEnviado = JSON.parse(chunk);
+                var exists = await checkIfExist(usuarioEnviado.email, usuarioEnviado.password);
 
+
+                //console.log("test: " + test.valueOf());
+                //console.log("typeof: "+ typeof(test));
+
+                if (exists) {
+                    console.log("El usuario " + usuarioEnviado.email + " existe y sus credenciales son correctas. ");
+                } else {
+                    console.log("El usuario " + usuarioEnviado.email + " NO EXISTE!!! ");
+                }
+
+
+            })
+        }
 
     } else if (url === '/room') {
         stream = createReadStream((`${PUBLIC_FOLDER}/views/room.html`));
