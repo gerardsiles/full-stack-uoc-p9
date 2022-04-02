@@ -1,3 +1,6 @@
+/* Guardar el avatar en el webstorage*/
+const avatar = sessionStorage.setItem(getElementById('selectedAvatar');
+
 /* Selección de salas */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -60,4 +63,5 @@ sala04.addEventListener('drop', e => {
 function chBackimage(newBack) {
     var elem = document.getElementById('selectedAvatar')        //creamnos una variable que nos almacena el elemento que queremos cambiar, nuestra imagen acutal del avatar.
     elem.style.backgroundImage = newBack;                       //modificamos el background del elemento almacenado en la linea anterior usando el valor que nos hemos traido con newBack en el click
+    avatar = newBack;                                           // guardamos en el webstorage el avatar seleccionado
  }

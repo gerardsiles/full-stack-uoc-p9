@@ -67,7 +67,22 @@ npm run dev
 
 - Almacenar en el frontend mediante la API de HTML5 webstorage las preferencias de sala de juego del jugador y el avatar seleccionado en el registro. Así cuando se entre de nuevo en la aplicación esta información ya se encuentra almacenada en el navegador.
 Las preferencias de ala de juego se implementaran en el producto 3. Las preferencias de avatar se han implementado en la sala y se guardan en el navegador.
+```javascript
+const avatar = sessionStorage.setItem(getElementById('selectedAvatar');
+function chBackimage(newBack) {
+    var elem = document.getElementById('selectedAvatar')        
+    elem.style.backgroundImage = newBack;                       
+    avatar = newBack;                                           
+}
+```
 
 - Programar mediante la API HTML5 D&D un efecto de arrastrar el avatar del jugador a la sala seleccionada para jugar.
 <br>
 Esta implementado para escojer la sala, donde se arrastra el avatar a la partida.
+```javascript
+sala00.addEventListener('drop', e => {
+console.log('Drop');
+sala00.appendChild(selectedAvatar);
+})
+```
+
