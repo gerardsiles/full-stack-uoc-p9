@@ -1,8 +1,17 @@
 body {
-    background-color: #39197D;
+    background-color: #39197d;
     font-family: 'Lexend Deca', sans-serif;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-image: url("../images/background-00.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 
+}
 h1 {
     color: #ffffff;
     font-size: 4rem;
@@ -23,6 +32,36 @@ p {
     cursor: pointer;
 }
 
+.contenedorAvatar{
+    width: 150px;
+    height: 150px;
+}
+
+#selectedAvatar{
+    background-image: url("../images/avatar-02.png");
+    background-size: cover;
+}
+
+#avatar01{
+    background-image: url("../images/avatar-01.png");
+    background-size: cover;
+}
+
+#avatar02{
+    background-image: url("../images/avatar-02.png");
+    background-size: cover;
+}
+
+#avatar03{
+    background-image: url("../images/avatar-03.png");
+    background-size: cover;
+}
+
+#avatar04{
+    background-image: url("../images/avatar-04.png");
+    background-size: cover;
+}
+
 .btn-avatar {
     border: none;
     border-radius: 5px;
@@ -31,10 +70,56 @@ p {
     padding: .5rem;
 }
 
-.card{
-    min-height: 200px;
+.btn-sala {
+    border: none;
+    border-radius: 5px;
+    background-color: #20DF7F;
+    color:#ffffff;
+    padding: .5rem;
+    margin-top: 10px;
+}
+
+#btn-sala01 {
+    visibility: visible;
+}
+#btn-sala02 {
+    visibility: visible;
+}
+#btn-sala03 {
+    visibility: visible;
+}
+#btn-sala04 {
+    visibility: visible;
+}
+
+
+.card {
+    height: 300px;
+    width: 300px;
     border: 5px solid #20DF7F;
     border-radius: 10px;
+
+
+}
+
+.sala01 {
+    background-image: url("../images/sala-01.png");
+    background-size: cover;
+}
+
+.sala02 {
+    background-image: url("../images/sala-02.png");
+    background-size: cover;
+}
+
+.sala03 {
+    background-image: url("../images/sala-03.png");
+    background-size: cover;
+}
+
+.sala04 {
+    background-image: url("../images/sala-04.png");
+    background-size: cover;
 }
 
 .modal-header{
@@ -59,3 +144,5 @@ p {
 .modal .avatar {
     border: 5px solid #39197D;
 }
+
+

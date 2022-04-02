@@ -4,7 +4,7 @@
 
 h1 {
     color: #ffffff;
-    font-size: 70px;
+    font-size: 60px;
 }
 
 p {
@@ -23,7 +23,8 @@ body {
     background-image: url("../images/background-00.png");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover
+    background-size: cover;
+    font-family: 'Lexend Deca', sans-serif;
 }
 
 .container {
