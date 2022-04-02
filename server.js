@@ -140,7 +140,7 @@ const requestListener = (req, res) => {
     console.log(stream);
     if (stream) stream.pipe(res)
     // si no, devolvemos un string diciendo que no hemos encontrado nada
-    else return res.end('Not found me cago en dios')
+    else return res.end('Not found')
     // Leer el formulario de registro
 
 
