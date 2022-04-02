@@ -42,6 +42,7 @@ const PORT = process.env.PORT || 5000;
 const HTML_CONTENT_TYPE = 'text/html';
 const CSS_CONTENT_TYPE = 'text/css';
 const JS_CONTENT_TYPE = 'text/javascript';
+const JSON_CONTENT_TYPE = 'application/json';
 
 // creamos la ruta de las vistas
 const PUBLIC_FOLDER = path.join(__dirname, 'public');
@@ -52,6 +53,8 @@ const requestListener = (req, res) => {
     let statusCode = 200
     let contentType = HTML_CONTENT_TYPE
     let stream
+
+
     if (url === '/api/usuarios' && req.method === 'POST') {
         getUsuarios(req,res);
     }
@@ -67,10 +70,11 @@ const requestListener = (req, res) => {
             req.on('data', async chunk => {
                 //agregar el usuario a la array
                 let usuarioEnviado = JSON.parse(chunk);
-                console.log(usuarioEnviado.email);
+                /*console.log(usuarioEnviado.email);
                 console.log(usuarioEnviado.password);
-                console.log(usuarioEnviado.username);
-                await createUsuario(usuarioEnviado.username,usuarioEnviado.email, usuarioEnviado.password);//usuarioArray.push(chunk);
+                console.log(usuarioEnviado.username);*/
+                await createUsuario(usuarioEnviado.username,usuarioEnviado.email, usuarioEnviado.password);
+                //usuarioArray.push(chunk);
             })
         }
     } else if(url === '/login'){
@@ -89,8 +93,27 @@ const requestListener = (req, res) => {
 
                 if (exists) {
                     console.log("El usuario " + usuarioEnviado.email + " existe y sus credenciales son correctas. ");
+                    //res.setHeader("Content-Type", "application/json");
+                    //res.setHeader("Access-Control-Allow-Origin", "*");
+                    //contentType = JSON_CONTENT_TYPE;
+                    //statusCode = 200;
+                    //res.write(usuarioEnviado.toString());
+
+                    // si tenemos un stream, lo enviamos a la respuesta
+                   // if (stream) stream.pipe(res)
+                    // si no, devolvemos un string diciendo que no hemos encontrado nada
+                    //res.end(usuarioEnviado.toString());
+                   //res.write(({"email": usuarioEnviado.email, "password": usuarioEnviado.password}))
+                    //stream = createReadStream(usuarioEnviado.toString());
                 } else {
                     console.log("El usuario " + usuarioEnviado.email + " NO EXISTE!!! ");
+                    //res.setHeader("Content-Type", "application/json");
+                    //res.setHeader("Access-Control-Allow-Origin", "*");
+                    //contentType = JSON_CONTENT_TYPE;
+                    //statusCode = 404;
+                    //stream = usuarioEnviado.toString();
+                    //stream = createReadStream("Not found");
+
                 }
 
 
@@ -114,9 +137,10 @@ const requestListener = (req, res) => {
     // escribimos las cabeceras de la respuesta dependiendo de la request
     res.writeHead(statusCode, {'Content-Type': contentType})
     // si tenemos un stream, lo enviamos a la respuesta
+    console.log(stream);
     if (stream) stream.pipe(res)
     // si no, devolvemos un string diciendo que no hemos encontrado nada
-    else return res.end('Not found')
+    else return res.end('Not found me cago en dios')
     // Leer el formulario de registro
 
 
