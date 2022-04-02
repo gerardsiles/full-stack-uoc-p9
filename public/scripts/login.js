@@ -1,8 +1,6 @@
 const form = document.getElementById("form");
-const username = document.getElementById("username");
-const email = document.getElementById("email");
+const email = document.getElementById("username");
 const password = document.getElementById("password");
-const password2 = document.getElementById("password2");
 
 form.addEventListener("submit", e => {
     e.preventDefault();
@@ -13,20 +11,11 @@ form.addEventListener("submit", e => {
 // comprobar los inputs del registro de usuario
 function checkInputs() {
     // recibir los valores de los inputs
-    const usernameValue = username.value.trim();
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
-    const password2Value = password2.value.trim();
-    let validated = 0;
 
-    if (usernameValue === "") {
-        // mostrar error
-        // agregar clase danger
-        setErrorFor(username, "El campo de usuario no puede estar vacio");
-    } else {
-        setSuccessFor(username, "el nombre de uuario es valido");
-        validated++;
-    }
+    var validEmail = 0;
+    var validPasword = 0;
 
     if (emailValue === "") {
         setErrorFor(email, "El email no puede estar vacio");
@@ -34,31 +23,53 @@ function checkInputs() {
         setErrorFor(email, "El email introducido no es valido");
     } else {
         setSuccessFor(email, "El email es valido");
-        validated++;
+        validEmail = 1;
+
     }
     if (passwordValue === "") {
         setErrorFor(password, "la contrasena no puede estar vacia");
     } else {
-        setSuccessFor(password, "contraseña valida");
-        validated++;
+        setSuccessFor(password);
+        validPasword=1;
     }
 
-    if (password2Value === "") {
-        setErrorFor(password2, "confirma la contrasena");
-    } else if (passwordValue !== password2Value) {
-        setErrorFor(password2, "las contrasenas no son iguales");
-    } else {
-        setSuccessFor(password2);
-        validated++;
-    }
+    if((validEmail === 1) && (validPasword===1)){
 
-    if (validated === 4) {
-        console.log(usernameValue);
-        console.log(emailValue);
-        console.log(passwordValue);
-        sendUser(usernameValue, emailValue, passwordValue);
+        sendUser(emailValue, passwordValue);
     }
 }
+
+async function sendUser(uEmail, uPassword){
+    var json ={"email":  uEmail, "password": uPassword};
+
+
+    const result = await fetch("http://localhost:5000/login",{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(json)
+    })
+        //.then((res) => result.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+
+
+
+
+}
+
+/*function sendUser(uEmail, uPassword){
+  const resultado = {
+    email:uEmail,
+    password:uPassword
+
+  }
+  console.log(resultado);
+
+
+} */
+
 
 function setErrorFor(input, message) {
     //Seleccionar la clase padre del elemento, .form-control
@@ -89,27 +100,3 @@ function isEmailValid(email) {
         email
     );
 }
-
-/*function sendInformation() {*/
-async function sendUser(username, email, password){
-
-    var json = {"username": username,"email":  email, "password": password};
-    const result = await fetch("/register",{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body: JSON.stringify(json)
-    })
-        //.then((res) => result.json())
-        //.then(data => data.json())
-        .then(data =>  console.log(data))
-        .catch(error => console.error(error));
-
-
-
-
-
-
-}
-/*}*/
