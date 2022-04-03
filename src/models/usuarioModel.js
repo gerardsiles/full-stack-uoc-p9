@@ -3,6 +3,7 @@ const usuarios = require('../data/usuarios.json')
 const Usuario = require("./Usuario");
 const fs = require('fs');
 
+const { writeDataToFile} = require('../utils/userUtils');
 async function findAll() {
     // al trabajar con datos, devolvemos una promesa
     return new Promise((resolve, reject) => {
@@ -28,14 +29,15 @@ async function findByEmail(email) {
 }
 
 
+// crear un nuevo usuario en usuarios.json
 async function create(usuario) {
-
     return new Promise((resolve,reject) => {
-        const newUser = {user};
+        const newUser = {usuario};
         const username = usuario.username;
+        // comprobar que no existe antes de de crearlo
         if (!findByUsername(username)){
             usuarios.push(newUser);
-//          fs.writeFileSync('../data/usuarios.json', usuario);
+         writeDataToFile('./data/usuarios.json', usuarios);
             resolve(newUser);
         }
     });

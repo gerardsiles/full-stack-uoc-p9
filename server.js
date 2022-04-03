@@ -1,10 +1,13 @@
 // Importar los metodos de http y fs para cargar paginas
 const path = require('path');
 const {createReadStream} = require('fs');
-const {createServer} = require('http');
+const http = require('http');
+
+// importar utils
+const { getReqData } = require("./src/utils/utils")
 
 // importar las clases
-const usuario = require('./src/models/Usuario');
+const Usuario = require('./src/models/Usuario');
 const sala = require('./src/models/Sala');
 const partida = require('./src/models/Partida');
 
@@ -15,11 +18,11 @@ const { getSalas, getSala,}= require('./src/controllers/salaController')
 const {findByEmail} = require("./src/models/usuarioModel");
 
 
-// array para guardar usuarios
+// crear usuarios
 let usuarioArray = new Array();
-const usuario1 = new usuario("jugador1", "jugador1@uoc.edu", "password1");
+const usuario1 = new Usuario("jugador1", "jugador1@uoc.edu", "password1");
 usuarioArray.push(usuario1);
-const usuario2 = new usuario("jugador2", "jugador2@uoc.edu", "password2");
+const usuario2 = new Usuario("jugador2", "jugador2@uoc.edu", "password2");
 usuarioArray.push(usuario2);
 
 // Crear salas de juego
@@ -49,8 +52,8 @@ const JSON_CONTENT_TYPE = 'application/json';
 // creamos la ruta de las vistas
 const PUBLIC_FOLDER = path.join(__dirname, 'public');
 
-// creamos un requestListener para pasarle a nuestro servidor
-const requestListener = (req, res) => {
+// creamos un servidor con el requestListener
+const server = http.createServer(async (req, res) => {
     const {url} = req
     let statusCode = 200
     let contentType = HTML_CONTENT_TYPE
@@ -62,13 +65,13 @@ const requestListener = (req, res) => {
     } else if (url === '/register' && req.method === 'GET') {
         stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
     } else if (url === '/register' && req.method === 'POST') {
+        // escuchar por la informacion
+        let user_data = await getReqData(req);
 
-        req.on('data', async chunk => {
-
-
-            //usuarioArray.push(chunk);
-
-        })
+        // llamamos al controlador para crear el usuario con la informacion http POST
+//         let usuario = new Usuario().createUsuario(req, res, JSON.parse(user_data));
+        // despues de crear el usuario, cargamos login
+        stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
     } else if (url === '/login'){
         if (req.method === 'GET') {
             stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
@@ -99,12 +102,15 @@ const requestListener = (req, res) => {
         // cargamos la sala principal, y la informacion de las salas de juego
         stream = createReadStream((`${PUBLIC_FOLDER}/views/room.html`));
         // recibimos la informacion de las salas diponibles
-//        let informacionSalas = getSalas(req,res);
+       let informacionSalas = getSalas(req,res);
 
     // regex para comprobar que sala accedemos, de la 1 a la 4
     } else if (req.url.match(/\/room\/([1-4]+)/) && req.method === 'GET') {
          const id = req.url.split('/')[2];
-         getSala(req, res, id);
+         // recibir informacion de la sala
+//          getSala(req, res, id);
+        stream = createReadStream((`${PUBLIC_FOLDER}/views/room${id}.html`));
+
     }
 
 
@@ -114,7 +120,7 @@ const requestListener = (req, res) => {
     } else if (url.match("\.js$")) { // para los archivos JavaScript
         contentType = JS_CONTENT_TYPE
         stream = createReadStream(`${PUBLIC_FOLDER}${url}`)
-    }else if (url.match("\.png$")) { // para los archivos JavaScript
+    }else if (url.match("\.png$")) { // para los archivos png
              contentType = 'image/png'
              stream = createReadStream(`${PUBLIC_FOLDER}${url}`)
     } else { // si llegamos aquí, es un 404
@@ -131,10 +137,10 @@ const requestListener = (req, res) => {
 //     // Leer el formulario de registro
 
 
-}
 
-// creamos un servidor con el requestListener
-const server = createServer(requestListener)
+});
+
+
 
 // hacemos que el servidor escuche el puerto configurado
 server.listen(PORT, () => console.log(`Servidor ejecutandose en el puerto ${PORT}`));
