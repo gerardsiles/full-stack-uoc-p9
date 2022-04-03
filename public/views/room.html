@@ -63,7 +63,7 @@
 
                     </div>
                   </div>
-<!--                 <button id="btn-sala01" class="btn-sala" type="button">Entrar a la sala</button> -->
+                <button id="btn-sala01" class="btn-sala" type="button">Entrar a la sala</button>
             </div>
             <div class="col">
                 <div id="sala02" class="card sala02">
@@ -71,6 +71,7 @@
                       
                     </div>
                   </div>
+                  <button id="btn-sala02" class="btn-sala" type="button">Entrar a la sala</button>
             </div>
             <div class="col">
                 <div id="sala03" class="card sala03">
@@ -78,6 +79,7 @@
                        
                     </div>
                   </div>
+                  <button id="btn-sala03" class="btn-sala" type="button">Entrar a la sala</button>
             </div>
             <div class="col">
                 <div id="sala04" class="card sala04">
@@ -85,6 +87,7 @@
                                         
                     </div>
                   </div>
+                  <button id="btn-sala04" class="btn-sala" type="button">Entrar a la sala</button>
             </div>
         </div>
     </div>
@@ -102,6 +105,25 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     -->
+
+    <!--script jquery para los cambios de animacion-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $('#sala01').on('drop', function() {
+            $('#btn-sala01').fadeIn(1500);
+        });
+        $('#sala02').on('drop', function() {
+            $('#btn-sala02').fadeIn(1500);
+        });
+        $('#sala03').on('drop', function() {
+            $('#btn-sala03').fadeIn(1500);
+        });
+        $('#sala04').on('drop', function() {
+            $('#btn-sala04').fadeIn(1500);
+        });
+    </script>
+    
 
 
     <script src="../scripts/room.js"></script>
