@@ -10,8 +10,8 @@ const partida = require('./src/models/Partida');
 
 // importar controladores y modelos
 const register = require('./src/controllers/registerController');
-const user = require("./src/models/usuarioModel");
 const {createUsuario, getUsuarios, checkIfExist} = require("./src/controllers/usuarioController");
+const { getSalas, getSala,}= require('./src/controllers/salaController')
 
 
 // array para guardar usuarios
@@ -22,7 +22,9 @@ const usuario2 = new usuario("jugador2", "jugador2@uoc.edu", "password2");
 usuarioArray.push(usuario2);
 
 // Crear salas de juego
-const sala1 = new sala("Valhalla");
+
+const sala1 = new sala(("Asgard"));
+
 const sala2 = new sala("Elfheilm");
 const sala3 = new sala("Midgard");
 const sala4 = new sala("Asgard");
@@ -57,9 +59,7 @@ const requestListener = (req, res) => {
 
     if (url === '/api/usuarios' && req.method === 'POST') {
         getUsuarios(req,res);
-    }
-
-    if (url === '/') {
+    } else if (url === '/') {
         stream = createReadStream(`${PUBLIC_FOLDER}/views/index.html`)
     } else if (url === '/register') {
         if (req.method === 'GET') {
@@ -120,9 +120,19 @@ const requestListener = (req, res) => {
             })
         }
 
-    } else if (url === '/room') {
+    } else if (url === '/room' && req.method === 'GET') {
+        // cargamos las salas
         stream = createReadStream((`${PUBLIC_FOLDER}/views/room.html`));
+        // recibimos la informacion de las salas diponibles
+        let informacionSalas = getSalas(req,res);
+
+    // regex para comprobar que sala accedemos, de la 1 a la 4
+    } else if (req.url.match(/\/room\/([1-4]+)/) && req.method === 'GET') {
+         const id = req.url.split('/')[2];
+         getSala(req, res, id);
     }
+
+
     else if (url.match("\.css$")) { // para los archivos CSS
         contentType = CSS_CONTENT_TYPE
         stream = createReadStream(`${PUBLIC_FOLDER}${url}`)
@@ -137,11 +147,10 @@ const requestListener = (req, res) => {
     // escribimos las cabeceras de la respuesta dependiendo de la request
     res.writeHead(statusCode, {'Content-Type': contentType})
     // si tenemos un stream, lo enviamos a la respuesta
-    console.log(stream);
     if (stream) stream.pipe(res)
-    // si no, devolvemos un string diciendo que no hemos encontrado nada
-    else return res.end('Not found')
-    // Leer el formulario de registro
+//     // si no, devolvemos un string diciendo que no hemos encontrado nada
+//     else return res.end('Not found')
+//     // Leer el formulario de registro
 
 
 }
