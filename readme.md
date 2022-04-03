@@ -86,3 +86,70 @@ sala00.appendChild(selectedAvatar);
 })
 ```
 
+
+## RUBRICA
+- Este criterio depende de una competencia del aprendizajeCreación del mockup de la aplicación, los requerimentos funcionales y un diagrama de clases UML
+  - Todos los documentos están presentes, son correctos y detallados, y se justifican las decisiones en el diagrama de clases.
+- Sistema de autenticación
+  - El sistema de login está implementado, y se pueden jugar varias partidas a la vez.
+- Este criterio depende de una competencia del aprendizajeUtilitzación de Bootstrap
+- 3 puntos
+  - La aplicación utiliza Bootstrap y alguna modificación personalizada de los estilos de Bootstrap. Incorpora animacions con la bibloteca JQuery.
+
+Hemos incorporado bootstrap y bootstrap icons, como por ejemplo cuando una validacion del registro o login es incorrecto con los elementos de bootstram form-control y btn-success o btn-danger:
+```javascript
+function setSuccessFor(input, message) {
+    const formControl = input.parentElement;
+    const small = formControl.querySelector("small");
+
+    // agregar el mensage de exito
+
+    small.innerText = message;
+
+    formControl.className = "form-control btn-success";
+}
+```
+Hemos utilizado animaciones de jquery, como por ejemplo para hacer que mensajes desaparezcan:
+```javascript
+<script>
+    $(document).ready(function() {
+        $('#par').fadeOut(3000);
+    });
+</script>
+```
+
+- HTML5 Drag and drop
+  - El Frontend utiliza la API de HTML5 de drag and drop arrastrando el avatar correctamente a la sala de juego, verificando en el lado cliente si la sala se encuentra llena.
+  <br>
+  
+Podemos ver un ejemplo del integrado del drag and drop con el avatar, para soltarlo en las salas para seleccionarlas, estos eventos interactuan con el back end para agregar jugadores
+```javascript
+sala02.addEventListener('dragover', e => {  
+    e.preventDefault();                   
+    console.log('Drag Over');
+})
+sala02.addEventListener('drop', e => {
+    console.log('Drop');
+    sala02.appendChild(selectedAvatar);
+})
+```
+<br>
+  comprobamos los jugadores de la sala recibiendo la sala por su id, y comprobando si si valor es not null
+
+```javascript
+async function jugadoresSala(id) {
+    let sala = findById(id);
+    let s = JSON.parse(myJSON);
+    let jugadores = 0;
+    // si hay un jugador1 sumamos jugadores
+    let jugador1 = s.jugador1;
+    if (jugador1) {
+        jugadores++;
+    }
+    let jugador2 = s.jugador2;
+    if (jugador2) {
+        jugadores++;
+    }
+    resolve(jugadores);
+}
+```
