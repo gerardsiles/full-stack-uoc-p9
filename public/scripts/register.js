@@ -4,12 +4,11 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 
+
+
+
 form.addEventListener("submit", e => {
-    if(!checkInputs()) {
-        e.preventDefault();
-    } else {
-        sendInformation();
-    }
+    checkInputs();
 });
 
 // comprobar los inputs del registro de usuario
@@ -19,6 +18,7 @@ function checkInputs() {
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const password2Value = password2.value.trim();
+    var validated = 0;
 
     if (usernameValue === "") {
         // mostrar error
@@ -52,6 +52,12 @@ function checkInputs() {
     } else {
         setSuccessFor(password2);
     }
+
+    if (validated === 4) {
+        console.log(usernameValue);
+        console.log(emailValue);
+        console.log(passwordValue);
+        sendInformation(usernameValue, emailValue, passwordValue);
 }
 
 function setErrorFor(input, message) {
@@ -59,6 +65,7 @@ function setErrorFor(input, message) {
     const formControl = input.parentElement;
     const small = formControl.querySelector("small");
 
+    $("formControl").ready
     // agregar el mensage de error
     small.innerText = message;
 
@@ -86,18 +93,32 @@ function isEmailValid(email) {
 
 function sendInformation() {
     async function sendUser(username, email, password){
-        post("/register",{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-            body: JSON.stringify({
+     $http({
+             url: '/register',
+             method: 'POST',
+             headers:
+                 'Content-Type':'application/json',
+             data:
                 "username": username.value.trim(),
                 "email": email.value.trim(),
                 "password": password.value.trim()
-            })
-            },
         })
-            .then(data => data.json())
-            .catch(error => console.error(error));
-    }
+        .then(function(response) {
+            data => data.json();
+        });
+//         post("/register",{
+//             method:'POST',
+//             headers:{
+//                 'Content-Type':'application/json',
+//             body: JSON.stringify({
+//                 "username": username.value.trim(),
+//                 "email": email.value.trim(),
+//                 "password": password.value.trim()
+//             })
+//             },
+//         })
+//             .then(data => data.json())
+//             .catch(error => console.error(error));
+//     }
 }
+

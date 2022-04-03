@@ -67,6 +67,9 @@ npm run dev
 
 - Almacenar en el frontend mediante la API de HTML5 webstorage las preferencias de sala de juego del jugador y el avatar seleccionado en el registro. Así cuando se entre de nuevo en la aplicación esta información ya se encuentra almacenada en el navegador.
 Las preferencias de ala de juego se implementaran en el producto 3. Las preferencias de avatar se han implementado en la sala y se guardan en el navegador.
+
+Para guardar las preferencias de la sala, o del avatar, y que solamente se guarden en la sesion, utilizamos sessionStorage:
+
 ```javascript
 const avatar = sessionStorage.setItem(getElementById('selectedAvatar');
 function chBackimage(newBack) {
@@ -75,6 +78,8 @@ function chBackimage(newBack) {
     avatar = newBack;                                           
 }
 ```
+
+En este ejemplo, es como hemos implementado guardar la informacion del avatar seleccionado en el sessionStorage.
 
 - Programar mediante la API HTML5 D&D un efecto de arrastrar el avatar del jugador a la sala seleccionada para jugar.
 <br>
@@ -88,12 +93,47 @@ sala00.appendChild(selectedAvatar);
 
 
 ## RUBRICA
-- Este criterio depende de una competencia del aprendizajeCreación del mockup de la aplicación, los requerimentos funcionales y un diagrama de clases UML
+- Creacion del mockup de la aplicacion, los requerimientos funcionales y un diagrama de clases UML
   - Todos los documentos están presentes, son correctos y detallados, y se justifican las decisiones en el diagrama de clases.
+
+Hemos hecho el mockup de la aplicacion de manera grupal y colaborativa en Figma, adjuntamos el resultado en la entrega del producto. Los diagramas y las decisiones tambien estan detalladas en la entrega.
 - Sistema de autenticación
   - El sistema de login está implementado, y se pueden jugar varias partidas a la vez.
-- Este criterio depende de una competencia del aprendizajeUtilitzación de Bootstrap
-- 3 puntos
+
+El sistema de autentificacion esta implementado en registerControler y usuarioModel, donde utilizamos funciones como:
+```javascript
+// funcion que devuelve todos los usuarios 
+async function findAll() {
+    // al trabajar con datos, devolvemos una promesa
+    return new Promise((resolve, reject) => {
+        resolve(usuarios);
+    })
+}
+
+// encontrar a un usuario por su username
+async function findByUsername(username) {
+    return new Promise((resolve, reject) => {
+        const usuario = usuarios.find((u) => u.username === username);
+        resolve(usuario);
+    })
+}
+
+// encontrar a un usuario por su email
+async function findByEmail(email) {
+    return new Promise((resolve, reject) => {
+        const usuario = usuarios.find((u) => u.email === email)
+        //console.log(sala);
+        resolve(usuario);
+    })
+}
+```
+
+con estas funciones podemos autentificar si un usuario esta registrado o no.
+
+Ademas, cada partida se genera como un objeto nuevo, y en una ventana nueva (la logica de jeugo, todavia no esta implementada hasta el producto 3)
+
+
+- Utilizacion de bootstrap
   - La aplicación utiliza Bootstrap y alguna modificación personalizada de los estilos de Bootstrap. Incorpora animacions con la bibloteca JQuery.
 
 Hemos incorporado bootstrap y bootstrap icons, como por ejemplo cuando una validacion del registro o login es incorrecto con los elementos de bootstram form-control y btn-success o btn-danger:
@@ -117,7 +157,7 @@ Hemos utilizado animaciones de jquery, como por ejemplo para hacer que mensajes 
     });
 </script>
 ```
-
+tambien hemos aplicado un modal de bootstrap para indicar el cambio de avatar en la sala.
 - HTML5 Drag and drop
   - El Frontend utiliza la API de HTML5 de drag and drop arrastrando el avatar correctamente a la sala de juego, verificando en el lado cliente si la sala se encuentra llena.
   <br>
@@ -153,3 +193,79 @@ async function jugadoresSala(id) {
     resolve(jugadores);
 }
 ```
+
+Ademas, cuando accedemos a la sala principal, o a las salas individuales, se recibe un paquete JSON con la informacion de esas salas
+en el enrutado con metodo get recibimos el json con la informacion de las salas
+
+```javascript
+    } else if (url === '/room' && req.method === 'GET') {
+        // cargamos la sala principal, y la informacion de las salas de juego
+        stream = createReadStream((`${PUBLIC_FOLDER}/views/room.html`));
+        // recibimos la informacion de las salas diponibles
+       let informacionSalas = getSalas(req,res);
+```
+Esta es la informacion que recibimos en el front, que es la informacion de nuestro salas.json que se recibe en el servidor a trabes del Controlador de la Sala y su Modelo
+```json
+[
+  {
+    "id":"1",
+    "nombre":"Midgard",
+    "jugadores":0
+  },
+  {
+    "id":"2",
+    "nombre":"Valhalla",
+    "jugadores":0
+  },
+  {
+    "id":"3",
+    "nombre":"Elfheim",
+    "jugadores":0},
+  {
+    "id":"4",
+    "nombre":"Asgard",
+    "jugadores":0
+  }
+]
+```
+
+y si entramos en la sala1 a la sala4, recibimos la informacion especifica de la sala
+```json
+// informacion recibida en http://localhost:5000/room/1
+{
+  "id":"1",
+  "nombre":"Midgard",
+  "jugadores":0}
+```
+- Configuracion de NodeJs
+    - Se ha instalado NodeJS de manera correcta, eficiente y segura.
+
+hemos instalado node js tal y como esta explicado arriba, con nodemon como una dev dependency, ademas en el .gitignore no subimos las dev dependencies ni los node-modules
+
+- Modularizacion del NodeJs
+  - Se han creado más de dos módulos con NodeJS y se han documentado correctamente.
+
+hemos aplicado ya en este producto el patron de diseno MVC, asi que tanto en controladores como en modelos tenemos varios moduclos, como los de clase. Recordemos que en Node,
+cada archivo es un modulo, y se importan en los ficheros que sean necesarios:
+```javascript
+// importar el json en el modelo para la informacion de las salas
+const salas = require('../data/salas.json')
+
+// en partidaModel necesitamos interactuar con varios modulos, el objeto json, sala y jugador
+const Partida = require('../data/partidas.json')
+const Sala = require ('../models/salaModel');
+const Jugador = require ('../models/usuarioModel');
+
+```
+
+
+de esta manera cada modulo solo importa lo necesario para trabajar con sus funciones.
+
+- POO
+  - Se ha creado la clase Partida y Jugador y se han implementado métodos para las diversas operaciones de registro, autenticación. Además los datos de los diferentes jugadores y las salas de juego se encuentran implementados en estructuras de datos dinámicas en la memoria del lado servidor.
+
+tenemos implementadas las clases de Partida, Jugador y Sala. Creamos instancias para crear un nuevo usuario en login, o las diferentes salas
+para poder juguar (4 en total), y cada nueva partida es tambien una nueva instancia. De esta manera podemos acceder a sus metodos, y sus propiedades siempre seran accedidas o 
+modificadas a traves de estas instancias.
+
+Todos los datos los encontramos en la carpeta de data, que incluye 3 arreglos de objetos JSON con la informacion de los usuarios, las salas o las partidas.
