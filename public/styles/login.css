@@ -2,6 +2,17 @@
     box-sizing: border-box;
 }
 
+h1 {
+    color: #ffffff;
+    font-size: 50px;
+}
+
+p {
+    color:#ffffff;
+    font-size: 18px;
+    font-weight: 200;
+}
+
 body {
     background-color: #39197d;
     display: flex;
@@ -9,17 +20,24 @@ body {
     justify-content: center;
     min-height: 100vh;
     margin: 0;
+    background-image: url("../images/background-00.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Lexend Deca', sans-serif;
 }
+
 .container {
     background-color: transparent;
     overflow: hidden;
     width: 400px;
     max-width: 100%;
 }
+
 .header {
     background-color: transparent;
     border-bottom: 1px solid;
-    padding: 20px 40px;
+    padding: 20px 20px;
 }
 
 .header h2 {
@@ -29,21 +47,26 @@ body {
     text-align-last: center;
 }
 
-
 .form {
     padding: 30px 40px;
 }
+
+/*Espacio alrededor de los campos rellenables del formulario donde aparecen los mensajes y advertencias*/
 .form-control {
     margin-bottom: 10px;
     padding-bottom: 20px;
     position: relative;
+    border-radius: 10px;
+    font-weight: bold;
 }
+
 
 .form-control label {
     display: inline-block;
     margin-bottom: 5px;
 }
 
+/*Interior Campos rellenables formulario*/
 .form-control input {
     border: 2px solid;
     border-radius: 4px;
@@ -53,7 +76,7 @@ body {
     width: 100%;
 
     background: #224957;
-    border-radius: 7px;
+    border-radius: 10px;
 }
 
 .form-control.btn-success i.bi-check-circle {
@@ -65,9 +88,10 @@ body {
     visibility: visible;
     color: red;
 }
+
 .input {
     width: 300px;
-    height: 45px;
+    height: 100px;
     left: 490px;
     top: 278px;
 
@@ -82,11 +106,12 @@ body {
     right: 20px;
 }
 
+/* mensaje de error bajo los campos rellenables del formulario */
 .form-control small {
     visibility: hidden;
     position: absolute;
     bottom: 0;
-
+    left: 10px;
 }
 
 .form-control.btn-danger small {
@@ -98,18 +123,30 @@ body {
     visibility: visible;
     color: black;
 }
-.form h6 {
-    margin: 0;
-    border-radius: 5px;
-    font-weight: bold;
-    color: white;
-    text-align-last: left;
-}
+
 .form button {
-    background-color: #224957;
-    border-radius: 5px;
+    height: 5vh;
+    background-color: #20DF7F;
+    border-radius: 10px;
     display: block;
     width: 100%;
     color: white;
     font-weight: bold;
+}
+
+/* Botón de registro */
+/* .btn-registro {
+    border: none;
+    border-radius: 15px;
+    background-color: #20DF7F;
+    color:#ffffff;
+    padding: .5rem;
+    width: 100%;
+    padding: 18px;
+}
+ */
+
+/*Contenido botón de registro*/
+::placeholder {
+    color: white;
 }

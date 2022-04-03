@@ -12,6 +12,7 @@ const partida = require('./src/models/Partida');
 const register = require('./src/controllers/registerController');
 const {createUsuario, getUsuarios,getUsuarioByUsername,getUsuarioByEmail, checkIfExist} = require("./src/controllers/usuarioController");
 const { getSalas, getSala,}= require('./src/controllers/salaController')
+const {findByEmail} = require("./src/models/usuarioModel");
 
 
 // array para guardar usuarios
@@ -61,52 +62,44 @@ const requestListener = (req, res) => {
     } else if (url === '/register' && req.method === 'GET') {
         stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
     } else if (url === '/register' && req.method === 'POST') {
-//            stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
-//
-//             req.on('data', async chunk => {
-//                 //agregar el usuario a la array
-//                 let usuarioEnviado = JSON.parse(chunk);
-//                 /*console.log(usuarioEnviado.email);
-//                 console.log(usuarioEnviado.password);
-//                 console.log(usuarioEnviado.username);*/
-//                 await createUsuario(usuarioEnviado.username,usuarioEnviado.email, usuarioEnviado.password);
-//                 //usuarioArray.push(chunk);
-//             })
+
+        req.on('data', async chunk => {
+
+
+            //usuarioArray.push(chunk);
+
+        })
     } else if (url === '/login'){
         if (req.method === 'GET') {
             stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
         }
-//         if (req.method === 'POST') {
-//
-//             req.on('data', async chunk => {
-//                 let usuarioEnviado = JSON.parse(chunk);
-//                 var exists = await userExists(usuarioEnviado.email, usuarioEnviado.password);
-//
-//
-//                 //console.log("test: " + test.valueOf());
-//                 //console.log("typeof: "+ typeof(test));
-//
-//                 if (exists) {
-//                     console.log("El usuario " + usuarioEnviado.email + " existe y sus credenciales son correctas. ");
-//                 } else {
-//                     console.log("El usuario " + usuarioEnviado.email + " NO EXISTE!!! ");
-//                     //res.setHeader("Content-Type", "application/json");
-//                     //res.setHeader("Access-Control-Allow-Origin", "*");
-//                     //contentType = JSON_CONTENT_TYPE;
-//                     //statusCode = 404;
-//                     //stream = usuarioEnviado.toString();
-//                     //stream = createReadStream("Not found");
-//
-//                 }
-//             });
-//         }
+         if (req.method === 'POST') {
+
+             req.on('data', async chunk => {
+                 let usuarioEnviado = JSON.parse(chunk);
+                 var exists = await findByEmail(usuarioEnviado.email);
+
+
+                 if (exists) {
+                     console.log("El usuario " + usuarioEnviado.email + " existe y sus credenciales son correctas. ");
+                     res.writeHead(200, {'Content-Type': 'application/json'});
+                     res.end(JSON.stringify(exists));
+
+                 } else {
+                     console.log("El usuario " + usuarioEnviado.email + " NO EXISTE!!! ");
+                     res.writeHead(400, {'Content-Type': 'text/plain'});
+                     res.end("User no found");
+
+                 }
+             });
+         }
 
     // Ruta para las salas
     } else if (url === '/room' && req.method === 'GET') {
         // cargamos la sala principal, y la informacion de las salas de juego
         stream = createReadStream((`${PUBLIC_FOLDER}/views/room.html`));
         // recibimos la informacion de las salas diponibles
-//         let informacionSalas = getSalas(req,res);
+//        let informacionSalas = getSalas(req,res);
 
     // regex para comprobar que sala accedemos, de la 1 a la 4
     } else if (req.url.match(/\/room\/([1-4]+)/) && req.method === 'GET') {
@@ -134,7 +127,7 @@ const requestListener = (req, res) => {
     // si tenemos un stream, lo enviamos a la respuesta
     if (stream) stream.pipe(res)
 //     // si no, devolvemos un string diciendo que no hemos encontrado nada
-//     else return res.end('Not found')
+ //    else return res.end('Not found')
 //     // Leer el formulario de registro
 
 

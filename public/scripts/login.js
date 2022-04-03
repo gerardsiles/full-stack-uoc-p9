@@ -26,9 +26,9 @@ function checkInputs() {
 
     }
     if (passwordValue === "") {
-        setErrorFor(password, "la contrasena no puede estar vacia");
+        setErrorFor(password, "La contraseña no puede estar vacia");
     } else {
-        setSuccessFor(password);
+        setSuccessFor(password, "La contraseña es válida. ");
         validPasword=1;
     }
 
@@ -42,17 +42,22 @@ async function sendUser(uEmail, uPassword){
     var json ={"email":  uEmail, "password": uPassword};
 
 
-    const result = await fetch("http://localhost:5000/login",{
+    await fetch("http://localhost:5000/login",{
         method:'POST',
         headers:{
             'Content-Type':'application/json'
         },
         body:JSON.stringify(json)
     })
-        //.then((res) => result.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
 
+        .then(response => response.json())
+        .then(result => {
+            console.log('Success:', result);
+            window.location.replace("/room");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 
 
 

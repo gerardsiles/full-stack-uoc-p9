@@ -39,20 +39,19 @@ async function getUsuarioByEmail(req, res, email) {
 
 async function createUsuario(req, res,data) {
     try {
-
         let body = '';
         req.on('data', (chunk) =>{
             body += chunk.toString();
         })
         req.on('end', async () => {
-        const { username, email, password } = JSON.parse(body);
+            const { username, email, password } = JSON.parse(body);
 
-        const usuario = {
-            username,
-            email,
-            password,
-        }
-        const newUsuario = await Usuario.create(usuario);
+            const usuario = {
+                username,
+                email,
+                password,
+            }
+            const newUsuario = await Usuario.create(usuario);
 
             res.writeHead(201, {'Content-Type': 'application/json'})
             return res.end(JSON.stringify(newUsuario));
