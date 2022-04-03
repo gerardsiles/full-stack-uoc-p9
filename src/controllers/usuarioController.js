@@ -13,23 +13,50 @@ async function getUsuarios(req, res) {
         console.log(error);
     }
 }
- async function checkIfExist(email, pass){
 
-
-    var userExists = await Usuario.userExists(email,pass);
-    //console.log("userExists: "+ userExists);
-    return userExists;
-
-
- }
-// cargar vista
-
-async function createUsuario(user, email, pass) {
+// encontrar un usuario por su nombre de usuario
+async function getUsuarioByUsername(req, res, username) {
     try {
-        // TODO
-        // llamar al modelo para crear un usuario
-        await Usuario.createUser(user, email, pass);
+            const usuario = await Usuario.findByUsername(username);
 
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(usuario));
+    } catch (error){
+        console.log(error);
+    }
+}
+
+async function getUsuarioByEmail(req, res, email) {
+    try {
+            const usuario = await Usuario.findByEmail(email);
+
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(usuario));
+    } catch (error){
+        console.log(error);
+    }
+}
+
+async function createUsuario(req, res,data) {
+    try {
+
+        let body = '';
+        req.on('data', (chunk) =>{
+            body += chunk.toString();
+        })
+        req.on('end', async () => {
+        const { username, email, password } = JSON.parse(body);
+
+        const usuario = {
+            username,
+            email,
+            password,
+        }
+        const newUsuario = await Usuario.create(usuario);
+
+            res.writeHead(201, {'Content-Type': 'application/json'})
+            return res.end(JSON.stringify(newUsuario));
+        })
 
     } catch (error) {
         console.log(error);
@@ -38,6 +65,7 @@ async function createUsuario(user, email, pass) {
 // Definir que funciones exporta el controlador
 module.exports = {
     getUsuarios,
-    createUsuario,
-    checkIfExist
+    getUsuarioByEmail,
+    getUsuarioByUsername,
+    createUsuario
 }

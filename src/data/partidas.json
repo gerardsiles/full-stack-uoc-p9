@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "sala": {
+      "id": "1",
+      "nombre": "Midgard",
+      "jugadores": 0
+    },
+    "jugador1": {
+      "username":"usuario1",
+      "email":"email1@uoc.edu"
+    },
+    "jugador2": {
+      "username":"usuario2",
+      "email":"email2@uoc.edu"
+    }
+  },
+  {
+    "id": "2",
+    "sala": {
+      "id": "1",
+      "nombre": "Midgard",
+      "jugadores": 0
+    },
+    "jugador1": {
+      "username":"usuario1",
+      "email":"email1@uoc.edu"
+    },
+    "jugador2": {
+      "username":"usuario2",
+      "email":"email2@uoc.edu"
+    }
+  },
+  {
+    "id": "3",
+    "sala": {
+      "id": "1",
+      "nombre": "Midgard",
+      "jugadores": 0
+    },
+    "jugador1": {
+      "username":"usuario1",
+      "email":"email1@uoc.edu"
+    },
+    "jugador2": {
+      "username":"usuario2",
+      "email":"email2@uoc.edu"
+    }
+  }
+]

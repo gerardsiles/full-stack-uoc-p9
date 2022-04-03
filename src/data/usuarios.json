@@ -1,5 +1,6 @@
 [
-  {"username":"usuario1",
+  {
+    "username":"usuario1",
     "email":"email1@uoc.edu",
     "password":"password1"
   },
@@ -12,5 +13,5 @@
     "username":"usuario3",
     "email":"email3@uoc.edu",
     "password":"password3"
-  },
-  {"username":"tsumura.sac","email":"tsumura.sac@gmv.com","password":"12345"},{"username":"sebas","email":"sebas@sebas.com","password":"12345"},{"username":"sebas","email":"sebas@sebas.com","password":"12345"},{"username":"sebas2","email":"sebas2@seba2s.com","password":"123456"},{"username":"sebas3","email":"sebas3@seba2s.com","password":"123456"},{"username":"Floripondio","email":"floripondio@floripondio.es","password":"12345"},{"username":"Floripondio","email":"floripondio@floripondio.es","password":"12345"},{"username":"Floripondio","email":"floripondio@floripondio.es","password":"12345"},{"username":"Floripondio","email":"floripondio@floripondio.es","password":"987654"}]
+  }
+ ]

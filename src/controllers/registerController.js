@@ -3,7 +3,7 @@ const usuario = require("../models/usuarioModel");
 
 
 async function registerNewUser(req, res) {
-    modeloUsuario.userExists();
+    usuario.userExists();
     if(!userExists()){
         try{
             await usuario.createUser();

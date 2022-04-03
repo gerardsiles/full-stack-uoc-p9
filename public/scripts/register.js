@@ -17,15 +17,17 @@ function checkInputs() {
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const password2Value = password2.value.trim();
-    let validated = 0;
 
     if (usernameValue === "") {
         // mostrar error
         // agregar clase danger
-        setErrorFor(username, "El campo de usuario no puede estar vacio");
+        setErrorFor(username, "usuario no puede estar vacio");
+
+        // todo
+        // comprobar si el nombre existe
     } else {
-        setSuccessFor(username, "el nombre de uuario es valido");
-        validated++;
+        // agregar clase succes
+        setSuccessFor(username, "Este usuario esta disponible");
     }
 
     if (emailValue === "") {
@@ -34,13 +36,11 @@ function checkInputs() {
         setErrorFor(email, "El email introducido no es valido");
     } else {
         setSuccessFor(email, "El email es valido");
-        validated++;
     }
     if (passwordValue === "") {
         setErrorFor(password, "la contrasena no puede estar vacia");
     } else {
         setSuccessFor(password, "contraseña valida");
-        validated++;
     }
 
     if (password2Value === "") {
@@ -49,14 +49,6 @@ function checkInputs() {
         setErrorFor(password2, "las contrasenas no son iguales");
     } else {
         setSuccessFor(password2);
-        validated++;
-    }
-
-    if (validated === 4) {
-        console.log(usernameValue);
-        console.log(emailValue);
-        console.log(passwordValue);
-        sendUser(usernameValue, emailValue, passwordValue);
     }
 }
 
@@ -90,26 +82,20 @@ function isEmailValid(email) {
     );
 }
 
-/*function sendInformation() {*/
-async function sendUser(username, email, password){
-
-    var json = {"username": username,"email":  email, "password": password};
-    const result = await fetch("/register",{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body: JSON.stringify(json)
-    })
-        //.then((res) => result.json())
-        //.then(data => data.json())
-        .then(data =>  console.log(data))
-        .catch(error => console.error(error));
-
-
-
-
-
-
+function sendInformation() {
+    async function sendUser(username, email, password){
+        post("/register",{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+            body: JSON.stringify({
+                "username": username.value.trim(),
+                "email": email.value.trim(),
+                "password": password.value.trim()
+            })
+            },
+        })
+            .then(data => data.json())
+            .catch(error => console.error(error));
+    }
 }
-/*}*/

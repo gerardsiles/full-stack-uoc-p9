@@ -10,7 +10,7 @@ const partida = require('./src/models/Partida');
 
 // importar controladores y modelos
 const register = require('./src/controllers/registerController');
-const {createUsuario, getUsuarios, checkIfExist} = require("./src/controllers/usuarioController");
+const {createUsuario, getUsuarios,getUsuarioByUsername,getUsuarioByEmail, checkIfExist} = require("./src/controllers/usuarioController");
 const { getSalas, getSala,}= require('./src/controllers/salaController')
 
 
@@ -24,7 +24,6 @@ usuarioArray.push(usuario2);
 // Crear salas de juego
 
 const sala1 = new sala(("Asgard"));
-
 const sala2 = new sala("Elfheilm");
 const sala3 = new sala("Midgard");
 const sala4 = new sala("Asgard");
@@ -56,75 +55,58 @@ const requestListener = (req, res) => {
     let contentType = HTML_CONTENT_TYPE
     let stream
 
-
-    if (url === '/api/usuarios' && req.method === 'POST') {
-        getUsuarios(req,res);
-    } else if (url === '/') {
-        stream = createReadStream(`${PUBLIC_FOLDER}/views/index.html`)
-    } else if (url === '/register') {
-        if (req.method === 'GET') {
-            stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
-        }
-        if (req.method === 'POST') {
-            //TODO
-            req.on('data', async chunk => {
-                //agregar el usuario a la array
-                let usuarioEnviado = JSON.parse(chunk);
-                /*console.log(usuarioEnviado.email);
-                console.log(usuarioEnviado.password);
-                console.log(usuarioEnviado.username);*/
-                await createUsuario(usuarioEnviado.username,usuarioEnviado.email, usuarioEnviado.password);
-                //usuarioArray.push(chunk);
-            })
-        }
-    } else if(url === '/login'){
+    // crear los enrutados
+    if (url === '/') {
+        stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`)
+    } else if (url === '/register' && req.method === 'GET') {
+        stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
+    } else if (url === '/register' && req.method === 'POST') {
+//            stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
+//
+//             req.on('data', async chunk => {
+//                 //agregar el usuario a la array
+//                 let usuarioEnviado = JSON.parse(chunk);
+//                 /*console.log(usuarioEnviado.email);
+//                 console.log(usuarioEnviado.password);
+//                 console.log(usuarioEnviado.username);*/
+//                 await createUsuario(usuarioEnviado.username,usuarioEnviado.email, usuarioEnviado.password);
+//                 //usuarioArray.push(chunk);
+//             })
+    } else if (url === '/login'){
         if (req.method === 'GET') {
             stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
         }
-        if (req.method === 'POST') {
-            //TODO
-            req.on('data', async chunk => {
-                let usuarioEnviado = JSON.parse(chunk);
-                var exists = await checkIfExist(usuarioEnviado.email, usuarioEnviado.password);
+//         if (req.method === 'POST') {
+//
+//             req.on('data', async chunk => {
+//                 let usuarioEnviado = JSON.parse(chunk);
+//                 var exists = await userExists(usuarioEnviado.email, usuarioEnviado.password);
+//
+//
+//                 //console.log("test: " + test.valueOf());
+//                 //console.log("typeof: "+ typeof(test));
+//
+//                 if (exists) {
+//                     console.log("El usuario " + usuarioEnviado.email + " existe y sus credenciales son correctas. ");
+//                 } else {
+//                     console.log("El usuario " + usuarioEnviado.email + " NO EXISTE!!! ");
+//                     //res.setHeader("Content-Type", "application/json");
+//                     //res.setHeader("Access-Control-Allow-Origin", "*");
+//                     //contentType = JSON_CONTENT_TYPE;
+//                     //statusCode = 404;
+//                     //stream = usuarioEnviado.toString();
+//                     //stream = createReadStream("Not found");
+//
+//                 }
+//             });
+//         }
 
-
-                //console.log("test: " + test.valueOf());
-                //console.log("typeof: "+ typeof(test));
-
-                if (exists) {
-                    console.log("El usuario " + usuarioEnviado.email + " existe y sus credenciales son correctas. ");
-                    //res.setHeader("Content-Type", "application/json");
-                    //res.setHeader("Access-Control-Allow-Origin", "*");
-                    //contentType = JSON_CONTENT_TYPE;
-                    //statusCode = 200;
-                    //res.write(usuarioEnviado.toString());
-
-                    // si tenemos un stream, lo enviamos a la respuesta
-                   // if (stream) stream.pipe(res)
-                    // si no, devolvemos un string diciendo que no hemos encontrado nada
-                    //res.end(usuarioEnviado.toString());
-                   //res.write(({"email": usuarioEnviado.email, "password": usuarioEnviado.password}))
-                    //stream = createReadStream(usuarioEnviado.toString());
-                } else {
-                    console.log("El usuario " + usuarioEnviado.email + " NO EXISTE!!! ");
-                    //res.setHeader("Content-Type", "application/json");
-                    //res.setHeader("Access-Control-Allow-Origin", "*");
-                    //contentType = JSON_CONTENT_TYPE;
-                    //statusCode = 404;
-                    //stream = usuarioEnviado.toString();
-                    //stream = createReadStream("Not found");
-
-                }
-
-
-            })
-        }
-
+    // Ruta para las salas
     } else if (url === '/room' && req.method === 'GET') {
-        // cargamos las salas
+        // cargamos la sala principal, y la informacion de las salas de juego
         stream = createReadStream((`${PUBLIC_FOLDER}/views/room.html`));
         // recibimos la informacion de las salas diponibles
-        let informacionSalas = getSalas(req,res);
+//         let informacionSalas = getSalas(req,res);
 
     // regex para comprobar que sala accedemos, de la 1 a la 4
     } else if (req.url.match(/\/room\/([1-4]+)/) && req.method === 'GET') {
@@ -139,6 +121,9 @@ const requestListener = (req, res) => {
     } else if (url.match("\.js$")) { // para los archivos JavaScript
         contentType = JS_CONTENT_TYPE
         stream = createReadStream(`${PUBLIC_FOLDER}${url}`)
+    }else if (url.match("\.png$")) { // para los archivos JavaScript
+             contentType = 'image/png'
+             stream = createReadStream(`${PUBLIC_FOLDER}${url}`)
     } else { // si llegamos aquí, es un 404
         statusCode = 404
     }
