@@ -41,6 +41,33 @@ La pagina esta implementada, y tenemos comprobaciones en el lado del servidor en
 la pagina esta creada, con comprobaciones en el register.js para que los campos del registro no esten vacios e implementando bootstrap para marcar los errores.
 ademas en el lado del servidor, se comprueba que el usuario no exista antes de registrarlo
 
+ejemplo de como se comporta la aplicacion al recibir un json con la informacion del registro:
+
+```json
+// json de entrada
+{
+  "username": "funciona",
+  "email": "prueba@uoc.edu",
+  "password": "contrasena"
+} 
+
+// respuesta de la api: El usuario ya existe
+
+// ejemplo de usuario que no existe
+{
+  "username": "nuevoUsuario",
+  "email": "nuevo@uoc.edu",
+  "password": "contrasena"
+} 
+// respuesta de la api
+registrado nuevo usuario
+{
+  username: 'nuevoUsuario',
+  email: 'nuevo@uoc.edu',
+  password: 'contrasena'
+}
+
+```
 
 la implementacion del avatar la hemos hecho al escojer una sala con bootstrap.
 
