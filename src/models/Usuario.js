@@ -5,5 +5,13 @@ module.exports = class Usuario {
         this.password = password;
     }
 
+    username() {
+        return this.username
+    }
+
+    email() {
+    return this.email
+    }
+
 }
 
