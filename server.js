@@ -66,6 +66,7 @@ const server = http.createServer(async (req, res) => {
         stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
     } else if (url === '/register' && req.method === 'POST') {
         // llamar al modelo para crear al usuario
+        console.log(req);
         createUsuario(req, res);
 
         // despues de crear el usuario, cargamos login
@@ -106,9 +107,8 @@ const server = http.createServer(async (req, res) => {
     } else if (req.url.match(/\/room\/([1-4]+)/) && req.method === 'GET') {
          const id = req.url.split('/')[2];
          // recibir informacion de la sala
-//          getSala(req, res, id);
+         getSala(req, res, id);
         stream = createReadStream((`${PUBLIC_FOLDER}/views/room${id}.html`));
-
     }
 
 

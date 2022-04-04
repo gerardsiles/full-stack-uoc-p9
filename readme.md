@@ -10,27 +10,59 @@ En este producto se propone construir la parte del proyecto relacionada con el r
 - Realizar un mockup de la aplicación que se pretende desarrollar.
   <br>
   Se ha desarrollado el mockup grupalmente en Figma, y se han adjuntado en el documento de entrega.
-  <br>
+
 
 - Identificar las estructuras de datos, clases, etc., que representan el dominio.
- <br>
+
 El diagrama UML esta adjuntado en la entrega
 - Crear un repositorio de código en GitHub para el proyecto. Compartirlo con el consultor en el aula (se darán las indicaciones) y añadir el enlace al documento final.
-   <br>
+
 Este repositorio es el que hemos creado para participar grupalmente. Entre todos hemos desarrollado varias partes de la aplicacion y hemos hecho los commit una vez estaban testeados.
 - Programar el lado cliente mediante JS, haciendo uso del framework Bootstrap para crear un diseño responsive.
-<br>
-Hemos implementado bootsrap en varias partes del codigo, en seleccionar avatar, o en los botone del registro por ejemplo, donde se utilizan varios elementos de bootstrap que se adaptan a la ituacion, incluyendo tambien los bootstrap icons.
+
+Hemos implementado bootsrap en varias partes del codigo, en seleccionar avatar, o en los botones del registro por ejemplo, donde se utilizan varios elementos de bootstrap que se adaptan a la ituacion, incluyendo tambien los bootstrap icons.
+```html
+  <!-- del formulario de registro, implementamos bootstrap con form-control y los iconos de bootstrap-->
+        <div class="form-control">
+            <label>Email</label>
+            <input type="email" placeholder="Correo electrónico" name="email" id="email" />
+            <i class="bi-check-circle"></i>
+            <i class="bi-exclamation-circle"></i>
+            <small>Mensage de error</small>
+        </div>
+``` 
+
 - Crear la página de log in donde mínimo se pedirá email y contraseña. Además tiene que haber un link por si aún no te has registrado.
+
+La pagina esta implementada, y tenemos comprobaciones en el lado del servidor en el modelo que comprueban si el usuario existe
+
 - Crear la página de register, donde por ejemplo aquí ya se puede escoger el avatar que vas a querer.
-<br>
-la implementacion del avatar la hemos hecho al escojer una sala.
+
+la pagina esta creada, con comprobaciones en el register.js para que los campos del registro no esten vacios e implementando bootstrap para marcar los errores.
+ademas en el lado del servidor, se comprueba que el usuario no exista antes de registrarlo
+
+
+la implementacion del avatar la hemos hecho al escojer una sala con bootstrap.
+
 - El juego presentará diversas salas donde los jugadores se agrupan por parejas. En el producto 3 se desarrollará el juego.
-<br>
+
+se haimplementado en room, ademas se han creado 4 html para cada sala de juego, y sus enrutados en el servidor con un regex.
+la informacion de las salas se recibe en el front en formato json
+
+```json
+// ejemplo del json recibido en la room/1 en la sala 1
+{"id":"1","nombre":"Midgard","jugadores":0,"jugador1":"","jugador2":""}
+```
 Se han implementado 4 salas, con el drag and drop incluido.
+
+las 4 salas estan implementadas, con sus endpoints (room/1, room/2...).
+Previamente, podemos escojer las salas en /room, donde tambien recibimos un json del servidor con su informacion.
+
+Se puede arrastrar el avatar a cada sala para seleccionarla y agregar el jugador a la partida. Ademas, podemos cambiar el avatar en esta pagina.
 - Programar el lado servidor mediante NodeJS. En este primer producto no se debe utilizar el framework ExpressJS. Los datos referentes a los jugadores conectados y las salas con los diversos jugadores se almacenan en un array en memoria. No hay por tanto persistencia de datos en lado servidor. En este producto no se utiliza ninguna base de datos del lado servidor. En el producto 4 se realizará dicha persistencia utilizando una base de datos no SQL (MongoDB).
-  <br>
+
 hemos utilizado solamente modulos que node incluye de base, como fs, https y path para los enrutados y al comunicacion con el front.
+Los otros modulos como utils son implementados por nosotros, a parte de cada modulo en su diseno de MVC.
 
 para iniciar el primer paquete de node, insertamos ese comando en la temrinal:
 

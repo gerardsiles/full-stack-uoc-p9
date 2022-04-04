@@ -1,8 +1,8 @@
 const form = document.getElementById("form");
-const username = document.getElementById("username").value;
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
-const password2 = document.getElementById("password2").value;
+const username = document.getElementById("username");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const password2 = document.getElementById("password2");
 
 function setErrorFor(input, message) {
     //Seleccionar la clase padre del elemento, .form-control
@@ -35,8 +35,8 @@ function isEmailValid(email) {
     );
 }
 
-const form = getElementById('form');
-from.addEventListener('submit', registerUser)
+
+form.addEventListener('submit', registerUser)
 
 async function registerUser(event) {
      event.preventDefault();
@@ -44,17 +44,19 @@ async function registerUser(event) {
      const emailValue = email.value.trim();
      const passwordValue = password.value.trim();
      const password2Value = password2.value.trim();
+     let validUsername = false;
+     let validEmail = false;
+     let validPassword = false;
 
         if (usernameValue === "") {
             // mostrar error
             // agregar clase danger
             setErrorFor(username, "usuario no puede estar vacio");
 
-            // todo
-            // comprobar si el nombre existe
         } else {
             // agregar clase succes
             setSuccessFor(username, "Este usuario esta disponible");
+            validUsername = true;
         }
 
         if (emailValue === "") {
@@ -63,6 +65,8 @@ async function registerUser(event) {
             setErrorFor(email, "El email introducido no es valido");
         } else {
             setSuccessFor(email, "El email es valido");
+            validEmail = true;
+
         }
         if (passwordValue === "") {
             setErrorFor(password, "la contrasena no puede estar vacia");
@@ -76,22 +80,49 @@ async function registerUser(event) {
             setErrorFor(password2, "las contrasenas no son iguales");;
         } else {
             setSuccessFor(password2);
-            // si todo esta bien, enviar la informacion al servidor
-                const result = await fetch("/register", {
+            validPassword = true;
+        }
+        if (validEmail && validUsername && validPassword) {
+            var json = {
+                        "username": usernameValue,
+                        "email": emailValue,
+                        "password": passwordValue
+                        };
+
+
+            await fetch("http://localhost:5000/register",{
                 method:'POST',
                 headers:{
-                    'Content-Type':'application/json',
-                body: JSON.stringify({
-                    username, password
-                })
+                    'Content-Type':'application/json'
                 },
-            }).then((res) => res.json())
-                .catch(error => console.error(error));
-                console.log(response);
-            }
-        }
-});
+                body:JSON.stringify(json)
+            })
 
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+
+//          // si todo esta bien, enviar la informacion al servidor
+//             const result = await fetch("/register", {
+//             method:'POST',
+//             headers:{
+//                 'Content-Type':'application/json',
+//             body: JSON.stringify({
+//                 usernameValue, emailValue, passwordValue
+//             })
+//             },
+//             }).then((result) => result.json())
+//             .catch(error => console.error(error));
+//                 console.log(response);
+//             }
+//         }
+// });
+}
 // comprobar los inputs del registro de usuario
 function checkInputs() {
     // recibir los valores de los inputs
