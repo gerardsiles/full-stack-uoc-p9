@@ -22,6 +22,16 @@ module.exports = class Sala{
         this.jugador2 = jugador2;
     }
 
+    jugadoresSala() {
+        let jugadores = 0;
+        if(jugador1) {
+            jugadores++;
+        }
+        if(jugador2) {
+            jugadores++;
+        }
+    }
+
     getNombre() {
         return this.nombre;
     }

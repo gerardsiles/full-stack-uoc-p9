@@ -45,14 +45,14 @@ async function create(user) {
             writeDataToFile('./src/data/usuarios.json', usuarios);
             resolve(newUser);
         } else {
-            reject("El usuario ya existe")
+            reject("El usuario ya existe");
         }
 
     })
     u.then((message) => {
-        console.log(message)
+        console.log(message);
     }). catch((message) => {
-        console.log(message)
+        console.error(message);
     })
 }
 
