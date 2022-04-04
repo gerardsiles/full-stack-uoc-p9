@@ -28,22 +28,26 @@ async function getUsuarioByUsername(req, res, username) {
 
 async function getUsuarioByEmail(req, res, email) {
     try {
-            const usuario = await Usuario.findByEmail(email);
+            const user = await Usuario.findByEmail(email);
 
             res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(usuario));
+            res.end(JSON.stringify(user));
     } catch (error){
         console.log(error);
     }
 }
 
-async function createUsuario(req, res,data) {
+async function createUsuario(req, res) {
     try {
         let body = '';
-        req.on('data', (chunk) =>{
+        // recibir los datos
+        req.on('data', (chunk) => {
+            // lo convertimos a una string
             body += chunk.toString();
         })
+        // para terminar el request
         req.on('end', async () => {
+        // objeto js con la informacion
             const { username, email, password } = JSON.parse(body);
 
             const usuario = {
@@ -51,12 +55,13 @@ async function createUsuario(req, res,data) {
                 email,
                 password,
             }
+
             const newUsuario = await Usuario.create(usuario);
 
+            // escribir la informacion del head
             res.writeHead(201, {'Content-Type': 'application/json'})
             return res.end(JSON.stringify(newUsuario));
         })
-
     } catch (error) {
         console.log(error);
     }

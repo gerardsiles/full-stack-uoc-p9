@@ -59,19 +59,17 @@ const server = http.createServer(async (req, res) => {
     let contentType = HTML_CONTENT_TYPE
     let stream
 
-    // crear los enrutados
+    // crear los endpoints
     if (url === '/') {
         stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`)
     } else if (url === '/register' && req.method === 'GET') {
         stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
     } else if (url === '/register' && req.method === 'POST') {
-        // escuchar por la informacion
-        let user_data = await getReqData(req);
+        // llamar al modelo para crear al usuario
+        createUsuario(req, res);
 
-        // llamamos al controlador para crear el usuario con la informacion http POST
-//         let usuario = new Usuario().createUsuario(req, res, JSON.parse(user_data));
         // despues de crear el usuario, cargamos login
-        stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
+//         stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
     } else if (url === '/login'){
         if (req.method === 'GET') {
             stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);

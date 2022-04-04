@@ -28,6 +28,18 @@ function getLastID() {
         resolve(id);
     })
 }
+
+// agregar un jugador a la sala para la partida
+async function agregarJugador(username, idPartida) {
+    var jugador = Jugador.findByUsername(username);
+    let partida = findById(idPartida);
+
+    if(!partida.jugador1){
+        partida.jugador1 = jugador;
+    } else {
+        partida.jugador2 = jugador;
+    }
+}
 // crear una nueva partida
 function create(idSala, username1, username2) {
     // declaramos un objeto vacio

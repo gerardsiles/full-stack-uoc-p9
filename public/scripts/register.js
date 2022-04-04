@@ -1,8 +1,8 @@
 const form = document.getElementById("form");
-const username = document.getElementById("username");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const password2 = document.getElementById("password2");
+const username = document.getElementById("username").value;
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+const password2 = document.getElementById("password2").value;
 
 function setErrorFor(input, message) {
     //Seleccionar la clase padre del elemento, .form-control
@@ -35,9 +35,11 @@ function isEmailValid(email) {
     );
 }
 
+const form = getElementById('form');
+from.addEventListener('submit', registerUser)
 
-form.addEventListener("submit", e => {
-
+async function registerUser(event) {
+     event.preventDefault();
      const usernameValue = username.value.trim();
      const emailValue = email.value.trim();
      const passwordValue = password.value.trim();
@@ -47,7 +49,6 @@ form.addEventListener("submit", e => {
             // mostrar error
             // agregar clase danger
             setErrorFor(username, "usuario no puede estar vacio");
-            e.preventDefault();
 
             // todo
             // comprobar si el nombre existe
@@ -58,41 +59,35 @@ form.addEventListener("submit", e => {
 
         if (emailValue === "") {
             setErrorFor(email, "El email no puede estar vacio");
-            e.preventDefault();
         } else if (!isEmailValid(emailValue)) {
             setErrorFor(email, "El email introducido no es valido");
-            e.preventDefault();
         } else {
             setSuccessFor(email, "El email es valido");
         }
         if (passwordValue === "") {
             setErrorFor(password, "la contrasena no puede estar vacia");
-            e.preventDefault();
         } else {
             setSuccessFor(password, "contraseña valida");
         }
 
         if (password2Value === "") {
             setErrorFor(password2, "confirma la contrasena");
-            e.preventDefault();
         } else if (passwordValue !== password2Value) {
-            setErrorFor(password2, "las contrasenas no son iguales");
-            e.preventDefault();
+            setErrorFor(password2, "las contrasenas no son iguales");;
         } else {
             setSuccessFor(password2);
-            post("/register",{
+            // si todo esta bien, enviar la informacion al servidor
+                const result = await fetch("/register", {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
                 body: JSON.stringify({
-                    "username": username.value.trim(),
-                    "email": email.value.trim(),
-                    "password": password.value.trim()
+                    username, password
                 })
                 },
-            })
-                .then(data => data.json())
+            }).then((res) => res.json())
                 .catch(error => console.error(error));
+                console.log(response);
             }
         }
 });

@@ -1,17 +1,1 @@
-[
-  {
-    "username":"usuario1",
-    "email":"email1@uoc.edu",
-    "password":"password1"
-  },
-  {
-    "username":"usuario2",
-    "email":"email2@uoc.edu",
-    "password":"password2"
-  },
-  {
-    "username":"usuario3",
-    "email":"email3@uoc.edu",
-    "password":"password3"
-  }
- ]
+[{"username":"usuario1","email":"email1@uoc.edu","password":"password1"},{"username":"usuario2","email":"email2@uoc.edu","password":"password2"},{"username":"usuario3","email":"email3@uoc.edu","password":"password3"},{"username":"asdf","email":"asdfg@asdf.com","password":"asdf"},{"username":"asdfg","email":"asdfg@asdfg.com","password":"asdfg"},{"username":"funciona","email":"pornhub@jenp.com","password":"latengopequena"}]

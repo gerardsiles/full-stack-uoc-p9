@@ -29,7 +29,7 @@ p {
     background-color: #ffffff;
     width: 150px;
     height: 150px;
-    cursor: pointer;
+    cursor: move;
 }
 
 .contenedorAvatar{
@@ -99,6 +99,7 @@ p {
     width: 300px;
     border: 5px solid #20DF7F;
     border-radius: 10px;
+    margin-bottom: 20px;
 
 
 }
