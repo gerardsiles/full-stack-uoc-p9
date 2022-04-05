@@ -76,9 +76,10 @@ async function registerUser(event) {
   } else if (passwordValue !== password2Value) {
     setErrorFor(password2, "las contrasenas no son iguales");
   } else {
-    setSuccessFor(password2);
+    setSuccessFor(password2, "contraseña validada");
     validPassword = true;
   }
+
   if (validEmail && validUsername && validPassword) {
     // si todo esta bien, enviar la informacion al servidor
     sendInformation(usernameValue, emailValue, passwordValue);

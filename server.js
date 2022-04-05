@@ -68,10 +68,8 @@ const server = http.createServer(async (req, res) => {
     stream = createReadStream(`${PUBLIC_FOLDER}/views/register.html`);
   } else if (url === "/register" && req.method === "POST") {
     createUsuario(req, res);
-
-
     // despues de crear el usuario, cargamos login
-    //         stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
+    stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
   } else if (url === "/login") {
     if (req.method === "GET") {
       stream = createReadStream(`${PUBLIC_FOLDER}/views/login.html`);
@@ -103,7 +101,7 @@ const server = http.createServer(async (req, res) => {
     // cargamos la sala principal, y la informacion de las salas de juego
     stream = createReadStream(`${PUBLIC_FOLDER}/views/room.html`);
     // recibimos la informacion de las salas diponibles
-    let informacionSalas = getSalas(req, res);
+//     let informacionSalas = getSalas(req, res);
 
     // regex para comprobar que sala accedemos, de la 1 a la 4
   } else if (req.url.match(/\/room\/([1-4]+)/) && req.method === "GET") {
@@ -139,5 +137,5 @@ const server = http.createServer(async (req, res) => {
 
 // hacemos que el servidor escuche el puerto configurado
 server.listen(PORT, () =>
-  console.log(`Servidor ejecutandose en el puerto ${PORT}`);
+  console.log(`Servidor ejecutandose en el puerto ${PORT}`)
 );

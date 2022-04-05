@@ -8,9 +8,10 @@ En este producto se propone construir la parte del proyecto relacionada con el r
 ### Pasos a seguir
 
 - Realizar un mockup de la aplicación que se pretende desarrollar.
-  <br>
-  Se ha desarrollado el mockup grupalmente en Figma, y se han adjuntado en el documento de entrega.
 
+Se ha desarrollado el mockup grupalmente en Figma, y se han adjuntado en el documento de entrega.
+
+[Enlace al mockup en Figma](https://www.figma.com/file/CkWNrENGZKPvCksX5GnXyh/langostas-games?node-id=0%3A1)
 
 - Identificar las estructuras de datos, clases, etc., que representan el dominio.
 
@@ -81,6 +82,12 @@ la informacion de las salas se recibe en el front en formato json
 {"id":"1","nombre":"Midgard","jugadores":0,"jugador1":"","jugador2":""}
 ```
 Se han implementado 4 salas, con el drag and drop incluido.
+```javascript
+sala00.addEventListener('drop', e => {
+console.log('Drop');
+sala00.appendChild(selectedAvatar);
+})
+```
 
 las 4 salas estan implementadas, con sus endpoints (room/1, room/2...).
 Previamente, podemos escojer las salas en /room, donde tambien recibimos un json del servidor con su informacion.

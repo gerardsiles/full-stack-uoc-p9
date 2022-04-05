@@ -1,3 +1,5 @@
+const api_url = 'https://localhost:5000/api/room/1';
+
 
 function chStar() {
     let elem = document.querySelector(".estrella");
@@ -7,7 +9,6 @@ function chStar() {
 }
 
 
-const api_url = 'https://localhost:5000/api/room/1'
 async function getRoomsInfo() {
     const response = await fetch(api_url);
     const data = await response.json();
