@@ -150,6 +150,7 @@ En este ejemplo, es como hemos implementado guardar la informacion del avatar se
 - Programar mediante la API HTML5 D&D un efecto de arrastrar el avatar del jugador a la sala seleccionada para jugar.
 <br>
 Esta implementado para escojer la sala, donde se arrastra el avatar a la partida.
+
 ```javascript
 sala00.addEventListener('drop', e => {
 console.log('Drop');
