@@ -90,7 +90,7 @@ async function sendInformation(username, email, password) {
   //
   var json = {
     username: username,
-    email: username,
+    email: email,
     password: password,
   };
 

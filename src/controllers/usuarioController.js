@@ -30,14 +30,16 @@ async function getUsuarioByEmail(req, res, email) {
     try {
             const user = await Usuario.findByEmail(email);
 
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(user));
+           /* res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(user));*/
+            return(user);
     } catch (error){
         console.log(error);
     }
 }
 
 async function createUsuario(req, res) {
+
     try {
         let body = '';
         // recibir los datos
@@ -47,7 +49,7 @@ async function createUsuario(req, res) {
         })
         // para terminar el request
         req.on('end', async () => {
-        // objeto js con la informacion
+            // objeto js con la informacion
             const { username, email, password } = JSON.parse(body);
 
             const usuario = {
@@ -65,6 +67,27 @@ async function createUsuario(req, res) {
     } catch (error) {
         console.log(error);
     }
+
+
+
+    /*try{
+    let body=req.body;
+    const { username, email, password } = body;
+
+    const usuario = {
+        username,
+        email,
+        password,
+    }
+    const newUsuario = await Usuario.create(usuario);
+    //console.log("newuser: "+ newUsuario)
+    // escribir la informacion del head
+    //res.writeHead(201, {'Content-Type': 'application/json'})
+    return newUsuario;
+
+    } catch (error) {
+        console.log(error);
+    }*/
 }
 // Definir que funciones exporta el controlador
 module.exports = {

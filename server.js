@@ -1,4 +1,64 @@
-// Importar los metodos de http y fs para cargar paginas
+const express = require('express');
+const path = require('path');
+const app = express();
+
+//Importamos los routings
+const loginRoutes = require('./routes/loginRoutes');
+const registerRoutes = require('./routes/registerRoutes');
+const roomsRoutes = require('./routes/roomsRoutes');
+
+app.use(express.json());
+app.use(express.static('public'));
+
+//routing
+app.use(loginRoutes);
+app.use(registerRoutes);
+app.use(roomsRoutes);
+
+
+app.listen(5000, () => {
+  console.log('App listening.');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*// Importar los metodos de http y fs para cargar paginas
 const path = require("path");
 const { createReadStream } = require("fs");
 const http = require("http");
@@ -56,7 +116,8 @@ const PUBLIC_FOLDER = path.join(__dirname, "public");
 
 // creamos un servidor con el requestListener
 const server = http.createServer(async (req, res) => {
-  const { url } = req;
+
+    const { url } = req;
   let statusCode = 200;
   let contentType = HTML_CONTENT_TYPE;
   let stream;
@@ -135,7 +196,12 @@ const server = http.createServer(async (req, res) => {
   //     // Leer el formulario de registro
 });
 
+
+
+
+
+
 // hacemos que el servidor escuche el puerto configurado
 server.listen(PORT, () =>
   console.log(`Servidor ejecutandose en el puerto ${PORT}`)
-);
+);*/

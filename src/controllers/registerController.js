@@ -3,13 +3,13 @@ const usuario = require("../models/usuarioModel");
 
 
 async function registerNewUser(req, res) {
-    usuario.userExists();
-    if(!userExists()){
+    const reguser= await usuario.findByEmail(req.body.email);
+    if(!reguser){
         try{
-            await usuario.createUser();
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write("usuario creado");
-            res.end();
+            console.log("antes del  create");
+            let newuser= await usuario.create(req.body);
+            console.log("register newuser: "+ newuser);
+            return newuser;
 
         }catch (error){
             console.log(error);

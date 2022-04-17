@@ -25,9 +25,12 @@ async function findByUsername(username) {
 
 // encontrar a un usuario por su email
 async function findByEmail(email) {
+
+    let usuarios = await findAll();
+
     return new Promise((resolve, reject) => {
         const usuario = usuarios.find((u) => u.email === email)
-        //console.log(sala);
+
         resolve(usuario);
     })
 }
@@ -38,12 +41,15 @@ async function create(user) {
     let u =  new Promise((resolve,reject) => {
         const newUser = user;
         const username = user.username;
+
+        console.log("username: "+username);
         // comprobar que no existe antes de de crearlo
         if(!usernameExists(username)) {
             usuarios.push(newUser);
             // llamamos al utility para agregar los datos a la array
             writeDataToFile('./src/data/usuarios.json', usuarios);
             resolve(newUser);
+            //return newUser;
         } else {
             reject("El usuario ya existe");
         }

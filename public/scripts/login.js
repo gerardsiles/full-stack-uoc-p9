@@ -50,13 +50,14 @@ async function sendUser(uEmail, uPassword){
         body:JSON.stringify(json)
     })
 
-        .then(response => response.json())
+        //.then(response => response.json())
         .then(result => {
             console.log('Success:', result);
-            window.location.replace("/room");
+           window.location.replace("/rooms");
         })
         .catch(error => {
             console.error('Error:', error);
+
         });
 
 
