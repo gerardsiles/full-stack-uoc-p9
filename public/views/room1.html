@@ -46,7 +46,7 @@
                     <div><h2 style="color: #20df7f;">JCR</h2></div>
                     <br>
                     <div><h3>Cuadrados conquistados:</h3></div>
-                    <div><h2 style="color: #20df7f;">puntuacion_jugador01</h2></div>
+                    <div><h2 style="color: #20df7f;">1</h2></div>
                     <br>
                     <div><h3>Color asignado:</h3></div>
                     <div><h2 style="color: #ce0a29;">Rojo</h2></div>
@@ -203,10 +203,22 @@
 
 
         <script>
+/*             class Jugador{
+                constructor(id, color_jugador, puntuacion_jugador){
+                    this.id = id;
+                    this.color_jugador = color_jugador;
+                    this.puntuacion_jugador = puntuacion_jugador;
+                }
+            }
+
+            let jugador01 = new Jugador("JCR", "#ce0a29", 0);
+            let jugador02 = new Jugador("Bruno", "#a110fc", 0); */
+
+            var jugador_actual = jugador01;
             var jugador01 = "#ce0a29"; /* Rojo */
             var jugador02 = "#a110fc"; /* Violeta */
             var color_jugador = jugador01;
-            var puntuacion_jugador01 = 0;
+            
 
             /* creamos una función que recorreremos para cada cuadrado donde se creará un nuevo cudrado de color encima si clicamos sobre las coordenadas del cuadrado transparante */
             var i;
@@ -215,14 +227,13 @@
                 
                     if(e.clientX-canvas.offsetLeft > cuadrado[i].x && e.clientX-canvas.offsetLeft < cuadrado[i].x+c){
                         if(e.clientY-canvas.offsetTop > cuadrado[i].y && e.clientY-canvas.offsetTop < cuadrado[i].y+c){
-                            if (cuadrado[i].color = ""){
+                             if (cuadrado[i].color == ""){   /* comprueba si no se ha asignado un color ya */
                                 ctx.fillStyle = color_jugador;
                                 ctx.fillRect(cuadrado[i].x, cuadrado[i].y, c, c);
                                 cuadrado[i].color = color_jugador;
-                                puntuacion_jugador01 ++;
                                 console.log(cuadrado);
-                                /* ctx.fill(); */
-                            }
+                                ctx.fill();
+                             } 
                         }
                     }
                 }
