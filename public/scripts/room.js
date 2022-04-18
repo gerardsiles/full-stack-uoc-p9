@@ -86,3 +86,10 @@ function chBackimage(newBack) {
     elem.style.backgroundImage = newBack;                       //modificamos el background del elemento almacenado en la linea anterior usando el valor que nos hemos traido con newBack en el click
     //avatar = newBack;                                           // guardamos en el webstorage el avatar seleccionado
  }
+
+
+
+
+
+    
+

@@ -19,3 +19,4 @@ async function getRoomsInfo() {
     console.log(nombre);
 }
 
+
