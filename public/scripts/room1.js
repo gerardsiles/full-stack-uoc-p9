@@ -23,86 +23,89 @@ async function getRoomsInfo() {
 
 /* ------------------------- TABLERO ------------------------- */
 
-var canvas = document.getElementById('tablero_canvas');
-var ctx = canvas.getContext('2d');
-var c = canvas.width/6; /* Calcula el ancho del canvas y lo divide entre 7. Sólo usamos un valor porque alto y ancho son iguales */
-
-var jugador_actual = jugador01;
 var jugador01 = "#ce0a29"; /* Rojo */
 var jugador02 = "#a110fc"; /* Violeta */
 var color_jugador = jugador01;
 
-/* Objeto con arrays de las posiciones y color responsive de cada cuadrado */
-const cuadrado = {
-    '1':{ x: c*0, y: c*0, color:""},
-    '2':{ x: c*1, y: c*0, color:""},
-    '3':{ x: c*2, y: c*0, color:""},
-    '4':{ x: c*3, y: c*0, color:""},
-    '5':{ x: c*4, y: c*0, color:""},
-    '6':{ x: c*5, y: c*0, color:""},
-
-    '7':{ x: c*0, y: c*1, color:""},
-    '8':{ x: c*1, y: c*1, color:""},
-    '9':{ x: c*2, y: c*1, color:""},
-    '10':{ x: c*3, y: c*1, color:""},
-    '11':{ x: c*4, y: c*1, color:""},
-    '12':{ x: c*5, y: c*1, color:""},
-
-    '13':{ x: c*0, y: c*2, color:""},
-    '14':{ x: c*1, y: c*2, color:""},
-    '15':{ x: c*2, y: c*2, color:""},
-    '16':{ x: c*3, y: c*2, color:""},
-    '17':{ x: c*4, y: c*2, color:""},
-    '18':{ x: c*5, y: c*2, color:""},
-    
-    '19':{ x: c*0, y: c*3, color:""},
-    '20':{ x: c*1, y: c*3, color:""},
-    '21':{ x: c*2, y: c*3, color:""},
-    '22':{ x: c*3, y: c*3, color:""},
-    '23':{ x: c*4, y: c*3, color:""},
-    '24':{ x: c*5, y: c*3, color:""},
-
-    '25':{ x: c*0, y: c*4, color:""},
-    '26':{ x: c*1, y: c*4, color:""},
-    '27':{ x: c*2, y: c*4, color:""},
-    '28':{ x: c*3, y: c*4, color:""},
-    '29':{ x: c*4, y: c*4, color:""},
-    '30':{ x: c*5, y: c*4, color:""},
-
-    '31':{ x: c*0, y: c*5, color:""},
-    '32':{ x: c*1, y: c*5, color:""},
-    '33':{ x: c*2, y: c*5, color:""},
-    '34':{ x: c*3, y: c*5, color:""},
-    '35':{ x: c*4, y: c*5, color:""},
-    '36':{ x: c*5, y: c*5, color:""}
-}
-
-function crearTablero(){
-
-    /* Dibujamos todos los cuadrados en sus posiciones */
-    var i;
-    for (var i = 1; i <= 36; i++) {
-        ctx.strokeRect(cuadrado[i].x, cuadrado[i].y, c, c);
-        
+//clase para cada cuadrado
+class Cuadrado {
+    constructor(posx, posy, cuadSize, color){
+        this.posx = posx;
+        this.posy = posy;
+        this.cuadSize = cuadSize;
+        this.color = color;
     }
 
-    /* creamos una función que recorreremos para cada cuadrado donde se creará un nuevo cudrado de color encima si clicamos sobre las coordenadas del cuadrado transparante */   
-    canvas.addEventListener("click", function(e){
-        for (var i = 1; i <= 36; i++) {
-        
-            if(e.clientX-canvas.offsetLeft > cuadrado[i].x && e.clientX-canvas.offsetLeft < cuadrado[i].x+c){
-                if(e.clientY-canvas.offsetTop > cuadrado[i].y && e.clientY-canvas.offsetTop < cuadrado[i].y+c){
-                    if (cuadrado[i].color == ""){   /* comprueba si no se ha asignado un color ya */
-                        ctx.fillStyle = color_jugador;
-                        ctx.fillRect(cuadrado[i].x, cuadrado[i].y, c, c);
-                        cuadrado[i].color = color_jugador;
-                        console.log(cuadrado);
-                        ctx.fill();
-                    } 
+    draw(context){
+        context.beginPath();            //Iniciamos Path (trazo)
+        context.lineWidth = 1;          //grosor de la linea
+        context.rect(this.posx, this.posy, this.cuadSize, this.cuadSize);  //Posición y medidas del cuadrado
+        context.strokeStyle = 'black';  //color de la línea
+        context.fillStyle = this.color; //usamos este color para la línea
+        context.fill();                 //método rellenar cuadrado
+        context.stroke();               //crear la línea
+        context.closePath();            //Cerramos Path (trazo)
+    }
+}
+
+
+let cuadrados = []; //creo un array vacio para meter los cuadrados con el método push()
+let punto = [];     
+
+//Función para agregar objetos cuadrado a la lista de cuadrados
+function lista(x, y, color){
+    punto = {
+        x: x,
+        y: y,
+        color: color
+    };
+    cuadrados.push(punto); //En el array cuadrados hacemos push de cada punto (propiedades) de cada cuadrado
+}
+
+//función que se ejecuta automáticamente desde el html con la método onload al cargar el body
+function crearTablero(){
+
+    //Variables para crear el tablero
+    let canvas = document.getElementById('tablero_canvas'); //metemos en una variable el canvas obtenido por id del documento html
+    let context = canvas.getContext('2d');  //método canvas 2d
+    let tamanyoCuad = canvas.width/6;
+
+    // Dibujamos todos los cuadrados en sus posiciones 
+    for (let i = 0; i < 6; i++) {  //creamos fila y abajo en j crea las casillas de la fila, después vuelve a i suma 1 y vuelve ha hacer todas las casillas j de la nueva fila
+        let fila = i;
+        for (let j= 0; j < 6; j++) {
+            let xOffset = j * tamanyoCuad;  //la coordenada x del cuadrado que vamos a crear
+            let yOffset = i * tamanyoCuad;  //la coordenada y del cuadrado que vamos a crear
+
+            //creamos el objeto cuadrado usando class Cuadrado
+            let cuadrado = new Cuadrado(xOffset, yOffset, tamanyoCuad, "transparent");
+
+            //Añadimos el cuadrado creado y sus valores a la nuestra lista de cuadrados
+            lista(xOffset, yOffset, "transparent");
+
+            //dibujamos el objeto cuadrado que hemos creado
+            cuadrado.draw(context);
+        } 
+    }
+
+    let puntuacion_01 = 0;
+    let puntuacion_02 = 0;
+
+    canvas.addEventListener('click', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        cuadrados.forEach(element => {
+            if ((x > element.x && x < element.x + tamanyoCuad) && (y > element.y && y < element.y + tamanyoCuad)) {
+                if (element.color == "transparent"){
+                    //LO DEJO AQUÍ---------------------------------------------------------------------------------
                 }
             }
-        }
-    },false);
+        })
+    } )
+
+    console.log(cuadrados);
 }
 
 

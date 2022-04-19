@@ -26,6 +26,6 @@ body {
 
 #tablero_canvas {
     border: 2px solid #000000;  /* Comentamos la propiedad ya que solo queremos el borde para visualizarlo mientras se edita */
-    margin: 25px;
+    margin: 20px;
 }
 
