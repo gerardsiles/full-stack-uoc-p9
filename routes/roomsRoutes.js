@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const {getSalas} = require('../src/controllers/salaController');
 
 router.route("/rooms")
     .get((req,res)=>{
@@ -20,4 +20,5 @@ router.route("/rooms/:roomnumber")
 
     });
 
+router.route('/api/v2/getRoomsInfo').get(getSalas);
 module.exports=router;

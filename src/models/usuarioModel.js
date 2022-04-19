@@ -30,7 +30,6 @@ async function findByEmail(email) {
 
     return new Promise((resolve, reject) => {
         const usuario = usuarios.find((u) => u.email === email)
-
         resolve(usuario);
     })
 }

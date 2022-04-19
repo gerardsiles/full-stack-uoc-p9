@@ -14,7 +14,7 @@ async function getRoomsInfo() {
     const data = await response.json();
     const { id, nombre, jugadores, jugador1, jugador2 } = data;
 
-    document.getElementById('nombre-jugador-1').textContent = jugador1;
+    document.getElementById('nombre-jugador-01').textContent = jugador1;
     console.log(jugador1);
     console.log(nombre);
 }

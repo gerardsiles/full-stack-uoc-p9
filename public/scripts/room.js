@@ -86,3 +86,21 @@ function chBackimage(newBack) {
     elem.style.backgroundImage = newBack;                       //modificamos el background del elemento almacenado en la linea anterior usando el valor que nos hemos traido con newBack en el click
     //avatar = newBack;                                           // guardamos en el webstorage el avatar seleccionado
  }
+
+/* Conseguir la informacion de las salas */
+const showRoomsInfo = async() => {
+	const serverResponse = await fetch('/api/v2/getRoomsInfo');
+	const data = await serverResponse.json();
+
+	// insertar la informacion en el DOM
+	document.getElementById('nombre1').textContent = data[0].nombre;
+	document.getElementById('jugadores1').textContent = `Numero de jugadores ${data[0].jugadores}`;
+		document.getElementById('nombre2').textContent = data[1].nombre;
+  	document.getElementById('jugadores2').textContent = `Numero de jugadores ${data[1].jugadores}`;
+  		document.getElementById('nombre3').textContent = data[2].nombre;
+    	document.getElementById('jugadores3').textContent = `Numero de jugadores ${data[2].jugadores}`;
+    		document.getElementById('nombre4').textContent = data[3].nombre;
+      	document.getElementById('jugadores4').textContent = `Numero de jugadores ${data[3].jugadores}`;
+}
+
+showRoomsInfo();

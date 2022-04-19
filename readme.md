@@ -1,5 +1,8 @@
 ## Desarrollo full stack
 
+### producto 3
+
+
 ### Producto 2
 
 En este producto se propone construir la parte del proyecto relacionada con el registro de los jugadores y la selección de las salas de juego, mediante un diseño responsive y sin persistencia de datos en el lado servidor.
@@ -163,7 +166,12 @@ sala00.appendChild(selectedAvatar);
 - Creacion del mockup de la aplicacion, los requerimientos funcionales y un diagrama de clases UML
   - Todos los documentos están presentes, son correctos y detallados, y se justifican las decisiones en el diagrama de clases.
 
-Hemos hecho el mockup de la aplicacion de manera grupal y colaborativa en Figma, adjuntamos el resultado en la entrega del producto. Los diagramas y las decisiones tambien estan detalladas en la entrega.
+Hemos hecho el mockup de la aplicacion de manera grupal y colaborativa en Figma. El enlace esta en este .md
+
+Los diagramas estan en la entrega, y decidimos implementar este producto directamente con MVC, implementando las funcionalidades 
+que detectamos de este producto, hacer el login, el formulario de registro, la sala principal de juego y las partidas, 
+ademas de los enrutados en el servidor de node implementando los modulos necesarios para verificar la informacion recibida
+y devolver la informacion al front con los datos de los usuarios y las salas.
 - Sistema de autenticación
   - El sistema de login está implementado, y se pueden jugar varias partidas a la vez.
 

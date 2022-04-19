@@ -9,19 +9,22 @@
   {
     "id": "2",
     "nombre": "Valhalla",
-    "jugadores": 0
-
+    "jugadores": 0,
+    "jugador1" : "",
+    "jugador2": ""
   },
   {
     "id": "3",
     "nombre": "Elfheim",
-    "jugadores": 0
-
+    "jugadores": 0,
+    "jugador1" : "",
+    "jugador2": ""
   },
   {
     "id": "4",
     "nombre": "Asgard",
-    "jugadores": 0
-
+    "jugadores": 0,
+    "jugador1" : "",
+    "jugador2": ""
   }
 ]
