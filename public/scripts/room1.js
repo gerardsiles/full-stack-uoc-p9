@@ -111,7 +111,7 @@ function crearTablero(){
     document.getElementById("col_jugador_local").innerHTML = jugador_actual.color;
     document.getElementById("col_jugador_local").style.color = jugador_actual.color;
     document.getElementById("Jugador-01").style.borderColor = jugador_actual.color;
-    document.getElementById("punt_jugador_local").innerHTML = jugador_actual.puntuacion;
+    //document.getElementById("punt_jugador_local").innerHTML = jugador_actual.puntuacion;
 
 
     
