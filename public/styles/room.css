@@ -1,4 +1,4 @@
-body {
+    body {
     background-color: #39197d;
     font-family: 'Lexend Deca', sans-serif;
     display: flex;
@@ -101,7 +101,23 @@ p {
     border-radius: 10px;
     margin-bottom: 20px;
 
+}
 
+.rotulo-sala {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 1.1rem;
+    opacity: 0.6;
+    
+}
+
+.nombre-sala {
+    
+    opacity: 1;    
+}
+
+.sala00 {
+    min-height: 150px;
 }
 
 .sala01 {

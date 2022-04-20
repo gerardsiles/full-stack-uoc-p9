@@ -1,0 +1,92 @@
+html(lang="es") 
+
+head
+    meta(charset="utf-8") 
+    meta(name="viewport" content="width=device-width, initial-scale=1") 
+    //favicon
+    link(rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" ) 
+    //Styles
+    link(rel="preconnect" href="https://fonts.googleapis.com") 
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin) 
+    link(href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@200;400;600&display=swap" rel="stylesheet") 
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous") 
+    link(rel="stylesheet" href="../styles/room.css") 
+
+    title Langosta.games
+
+
+body
+    div(class='container text-center')
+        div(class="row mt-4") 
+            h1 Seleccionar sala
+            p Arrastra tu avatar a la sala
+        div#sala00(class="row mt-4 justify-content-center sala00") 
+            //div#sala00(class="contenedorAvatar" )
+            div#selectedAvatar(class="avatar m-auto" draggable="true")
+        div(class="mt-4")
+            button(type="button" class="btn-avatar" data-bs-toggle="modal" data-bs-target="#avatarModal") Cambiar avatar
+            div#avatarModal(class="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
+                div(class="modal-dialog modal-dialog-centered modal-xl") 
+                    div(class="modal-content")                          
+                        div(class="modal-header")             
+                            button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+                        div(class="modal-body")
+                            h1(class="modal-h1") Seleccionar avatar
+                            p(class="modal-p") Selecciona un avatar para tu jugador
+                            div(class="row justify-content-around mt-4")                                
+                                div#avatar01(class="avatar" onclick="chBackimage('url(../images/avatar-01.png)')")                           
+                                div#avatar02(class="avatar" onclick="chBackimage('url(../images/avatar-02.png)')")                                      
+                                div#avatar03(class="avatar" onclick="chBackimage('url(../images/avatar-03.png)')")             
+                                div#avatar04(class="avatar" onclick="chBackimage('url(../images/avatar-04.png)')")
+        div(class="row mt-4")
+            div(class="col")
+                div#sala01(class="card sala01") 
+                    div(class="rotulo-sala pb-3 pt-3")
+                        div
+                            #nombre1 
+                            #jugadores1
+                button#btn-sala01(class="btn-sala m-auto" type="button") Entrar a la sala         
+            div(class="col") 
+                div#sala02(class="card sala02") 
+                    div(class="rotulo-sala pb-3 pt-3")
+                        div
+                            #nombre2 
+                            #jugadores2                 
+                button#btn-sala02(class="btn-sala m-auto" type="button") Entrar a la sala       
+            div(class="col") 
+                div#sala03(class="card sala03") 
+                    div(class="rotulo-sala pb-3 pt-3")
+                            div
+                                #nombre3 
+                                #jugadores3                  
+                button#btn-sala03(class="btn-sala m-auto" type="button") Entrar a la sala
+            div(class="col")
+                div#sala04(class="card sala04")
+                    div(class="rotulo-sala pb-3 pt-3")
+                        div
+                            #nombre4 
+                            #jugadores4                  
+                button#btn-sala04(class="btn-sala m-auto" type="button") Entrar a la sala
+    
+    //Optional JavaScript; choose one of the two!
+
+    //Option 1: Bootstrap Bundle with Popper
+    script(
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"
+        ) 
+
+
+    //Option 2: Separate Popper and Bootstrap JS
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous") 
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous") 
+
+    //script jquery para los cambios de animacion
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js") 
+
+
+
+
+    script(src="../scripts/room.js") 
+
