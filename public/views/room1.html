@@ -26,9 +26,8 @@
         <script src="https://kit.fontawesome.com/a4d54da7ac.js" crossorigin="anonymous"></script>
     </head>
 
-    <body>
+    <body onload="crearTablero()">
         <div class="container">
-
             <div class="header">
                 <div class="row">
                     <div class="col-2"></div>
@@ -43,16 +42,13 @@
                     <div id="Jugador-01" class="avatar"></div>
                     <br>
                     <div><h3>Nombre Jugador 01:</h3></div>
-                    <div><h2 id="nombre-jugador-01" style="color: #20df7f;">JCR</h2></div>
+                    <div><h2 id="jugador_local" style="color: #20df7f;">Nombre</h2></div>
                     <br>
-                    <div><h3>Score:</h3></div>
-                    <div><h2 style="color: #20df7f;">1597</h2></div>
+                    <div><h3>Cuadrados conquistados:</h3></div>
+                    <div><h2 id="punt_jugador_local" style="color: #20df7f;">1</h2></div>
                     <br>
-                    <div><h3>Info:</h3></div>
-                    <div><h2 style="color: #20df7f;">No se</h2></div>
-                    <br>
-                    <div><h3>Info:</h3></div>
-                    <div><h2 style="color: #20df7f;">Lo otro</h2></div>
+                    <div><h3>Color asignado:</h3></div>
+                    <div><h2 id="col_jugador_local">Color</h2></div>
                     <br>
                     <div class="mt-4">
                         <button type="button" class="btn-salir" data-bs-toggle="modal" data-bs-target="#salirModal" style="visibility: visible">
@@ -62,26 +58,27 @@
 
                 </div>
 
-                <div class="col">
-                    <div id="fondoTablero">
 
+                <!-- TABLERO con Canvas -->
+                <div class="col">
+                    <div id="fondoTablero">         
+                        <canvas id="tablero_canvas" width="660" height="660"></canvas>
                     </div>
                 </div>
+                <!-- CIERRE TABLERO con Canvas -->
+
 
                 <div id="colJugador02" class="col colJugador">
                     <div id="Jugador-02" class="avatar"></div>
                     <br>
-                    <div><h3>Nombre Jugador 01:</h3></div>
+                    <div><h3>Nombre Jugador 02:</h3></div>
                     <div id="nombre-jugador-1"><h2 style="color: #20df7f;">Bruno</h2></div>
                     <br>
-                    <div><h3>Score:</h3></div>
-                    <div><h2 style="color: #20df7f;">8500</h2></div>
+                    <div><h3>Cuadrados conquistados:</h3></div>
+                    <div><h2 style="color: #20df7f;">3</h2></div>
                     <br>
-                    <div><h3>Info:</h3></div>
-                    <div><h2 style="color: #20df7f;">No se</h2></div>
-                    <br>
-                    <div><h3>Info:</h3></div>
-                    <div><h2 style="color: #20df7f;">Lo otro</h2></div>
+                    <div><h3>Color asignado:</h3></div>
+                    <div><h2 style="color: #a110fc;">Violeta</h2></div>
                     <br>
                     <div class="mt-4">
                         <button type="button" class="btn-salir" data-bs-toggle="modal" data-bs-target="#salirModal" style="visibility: hidden">
@@ -125,6 +122,11 @@
 
         </div>
         <!-- Cierre container -->
+
+        <div>
+            <p id="jugadorActual" class="display:none">Pepe</p>
+        </div>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
