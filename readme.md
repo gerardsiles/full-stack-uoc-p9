@@ -2,6 +2,17 @@
 
 ### producto 3
 
+Para instalar pug, empezamos con el comando:
+```node 
+npm install pug-cli
+```
+
+esto nos permitria renderizar lo que escribamos en los archivos pug.
+
+para hacer que pug mire a nuestro archivo pug y genere el html, utilizamos este comando:
+```node 
+pug -w ./public/views -o ./public/views -P
+```
 
 ### Producto 2
 

@@ -30,8 +30,7 @@ sala01.addEventListener('drop', e => {
     playBtn = document.getElementById('btn-sala01');
     console.log(playBtn);
     playBtn.style.display = "block";
-/*     var elem = document.getElementById('btn-sala01')        //creamnos una variable que nos almacena el elemento que queremos cambiar, nuestra boton oculto de la sala.
-    elem.style.visibility = visible;    //hace visible el botón para acceder a la sala */
+
 
 })
 
@@ -46,6 +45,7 @@ sala02.addEventListener('dragover', e => {
 sala02.addEventListener('drop', e => {
     console.log('Drop');
     sala02.appendChild(selectedAvatar);
+    addPlayerRoom();
 })
 
 
@@ -104,3 +104,8 @@ const showRoomsInfo = async() => {
 }
 
 showRoomsInfo();
+
+const addPlayerRoom = async() => {
+	console.log('Player added to the room');
+// 	const sendPlayer = await post('/api/v2/getRoomsInfo')
+};
