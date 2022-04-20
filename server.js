@@ -1,62 +1,26 @@
-const express = require('express');
-const path = require('path');
+const express = require("express");
+const path = require("path");
 const app = express();
 
 //Importamos los routings
-const loginRoutes = require('./routes/loginRoutes');
-const registerRoutes = require('./routes/registerRoutes');
-const roomsRoutes = require('./routes/roomsRoutes');
+const loginRoutes = require("./routes/loginRoutes");
+const registerRoutes = require("./routes/registerRoutes");
+const roomsRoutes = require("./routes/roomsRoutes");
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
+// redifinir la ruta de los archivos pug, declarar el motor de vistas
+app.set("views", path.join(__dirname, "./public/views"));
+app.set("view engine", "pug");
 
 //routing
 app.use(loginRoutes);
 app.use(registerRoutes);
 app.use(roomsRoutes);
 
-
 app.listen(5000, () => {
-  console.log('App listening.');
+  console.log("App listening.");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*// Importar los metodos de http y fs para cargar paginas
 const path = require("path");

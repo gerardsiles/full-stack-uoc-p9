@@ -6,14 +6,18 @@ Para instalar pug, empezamos con el comando:
 ```node 
 npm install pug-cli
 ```
-
-esto nos permitria renderizar lo que escribamos en los archivos pug.
+esto nos permitria renderizar lo que escribamos en los archivos pug durante el desarrollo.
 
 para hacer que pug mire a nuestro archivo pug y genere el html, utilizamos este comando:
 ```node 
 pug -w ./public/views -o ./public/views -P
 ```
-
+luego, para que el servidor sepa que utilizamos pug, definimos la ruta donde los archivos estan localizados
+y declaramos a pug como motor de vistas en el server.js:
+```node 
+app.set("views", path.join(__dirname, "./public/views"));
+app.set("view engine", "pug");
+```
 ### Producto 2
 
 En este producto se propone construir la parte del proyecto relacionada con el registro de los jugadores y la selección de las salas de juego, mediante un diseño responsive y sin persistencia de datos en el lado servidor.
