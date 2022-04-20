@@ -2,8 +2,12 @@ const form = document.getElementById("form");
 const email = document.getElementById("username");
 const password = document.getElementById("password");
 
+var socket = io();
+
+
 form.addEventListener("submit", e => {
     e.preventDefault();
+    socket.emit('new login', 'Trying to login');
     checkInputs();
 });
 
