@@ -23,3 +23,8 @@ body {
     min-height: 100vh;
     margin: 0;
 }
+
+#tablero_canvas {
+    border: 2px solid #000000;  /* Comentamos la propiedad ya que solo queremos el borde para visualizarlo mientras se edita */
+    margin: 20px;
+}

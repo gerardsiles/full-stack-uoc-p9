@@ -3,6 +3,11 @@ const path = require("path");
 const app = express();
 require("dotenv").config();
 
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
 //Importamos los routings
 const loginRoutes = require("./routes/loginRoutes");
 const registerRoutes = require("./routes/registerRoutes");
@@ -19,9 +24,19 @@ app.use(loginRoutes);
 app.use(registerRoutes);
 app.use(roomsRoutes);
 
-app.listen(5000, () => {
+
+server.listen(5000, () => {
   console.log("App listening.");
 });
+
+io.on('connection', (socket) => {
+  console.log('Nueva conexion');
+  socket.on('new login', (msg) => {
+    console.log(msg);
+  })
+})
+
+
 
 /*// Importar los metodos de http y fs para cargar paginas
 const path = require("path");
