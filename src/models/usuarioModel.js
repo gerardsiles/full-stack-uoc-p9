@@ -13,57 +13,38 @@ async function findAll() {
 }
 // econtrar si un nombre de usuario existe
 function usernameExists(username) {
-  return usuarios.some((u) => u.username === username);
+  return usuarios.some((u) => u.user.username === username);
 }
 
 function emailExists(email) {
-  return usuarios.some((u) => u.email === email);
+  return usuarios.some((u) => u.user.email === email);
 }
 // encontrar a un usuario por su username
 async function findByUsername(username) {
   return new Promise((resolve, reject) => {
-    const usuario = usuarios.find((u) => u.username === username);
+    const usuario = usuarios.find((u) => u.user.username === username);
     resolve(usuario);
   });
 }
 
 // encontrar a un usuario por su email
 async function findByEmail(email) {
-  let usuarios = await findAll();
-
   return new Promise((resolve, reject) => {
-    const usuario = usuarios.find((u) => u.email === email);
-    const { username, email } = usuario;
+    const user = usuarios.find((u) => u.user.email === email);
+    console.log(user + " modelo");
     resolve(user);
   });
 }
 
-async function passwordMatches(email, password) {
-  const usuarios = await findAll();
-  const usuario = usuarios.find((u) => u.email === email);
-}
-
 // crear un nuevo usuario en usuarios.json
 async function create(user) {
-  let u = new Promise((resolve, reject) => {
-    const newUser = user;
-    const username = user.username;
+  return new Promise((resolve, reject) => {
+    const newUser = { user };
+    usuarios.push(newUser);
 
-    // comprobar que no existe antes de de crearlo
-    if (!usernameExists(username)) {
-      usuarios.push(newUser);
-      // llamamos al utility para agregar los datos a la array
-      writeDataToFile("./src/data/usuarios.json", usuarios);
-      resolve(newUser);
-      //return newUser;
-    } else {
-      reject("El usuario ya existe");
-    }
-  });
-  u.then((message) => {
-    console.log(message);
-  }).catch((message) => {
-    console.error(message);
+    // llamamos al utility para agregar los datos a la array
+    writeDataToFile("./src/data/usuarios.json", usuarios);
+    resolve(newUser);
   });
 }
 

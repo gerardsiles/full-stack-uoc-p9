@@ -1,18 +1,7 @@
 const Usuario = require("../models/usuarioModel");
-
-// find devulve una promesa, al llamarlo lo hacemos con una funcion asincrona
-async function getUsuarios(req, res) {
-  try {
-    // llamamos al modelo para deolvernos los usuarios
-    const usuarios = await Usuario.findAll();
-
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.write(JSON.stringify(usuarios));
-    res.end();
-  } catch (error) {
-    console.log(error);
-  }
-}
+const asyncHandler = require("../middleware/asyncHandler");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // encontrar un usuario por su nombre de usuario
 async function getUsuarioByUsername(req, res, username) {
@@ -38,52 +27,88 @@ async function getUsuarioByEmail(req, res, email) {
   }
 }
 
-async function createUsuario(req, res) {
+// @desc Registrar a un usuario nuevo
+// @route POST /register
+// @access public
+const createUsuario = asyncHandler(async (req, res, next) => {
   // objeto js con la informacion encontrada en el req
   const { username, email, password } = req.body;
+  // validar la informacion recibida
   const usernameExists = await Usuario.usernameExists(username);
   const emailExists = await Usuario.emailExists(email);
   // si el usuario ya existe, informamos del error
   if (usernameExists) {
     res.status(400);
-    console.log("Este nombre de usuario ya existe");
+    throw new Error("Este nombre de usuario ya existe");
   }
   if (emailExists) {
     res.status(400);
-    console.log("Este email ya esta registrado");
+    throw new Error("Este email ya esta registrado");
   }
+
+  // hash contrasena
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   // crear json con la informacion del usuario
   const usuario = {
     username,
     email,
-    password,
+    password: hashedPassword,
   };
   // Crear al usuario
   if (!usernameExists && !emailExists) {
     // escribir la informacion del head
-    const newUsuario = await Usuario.create(usuario);
-    console.log(newUsuario);
-    if (newUsuario) {
-      res.redirect("/login"); // probar el redireccionar despues de register
-      //       res.writeHead(201, { "Content-Type": "application/json" });
-      //       return res.end(JSON.stringify(newUsuario));
+    const newUser = await Usuario.create(usuario);
+    if (newUser) {
+      res.status(201).json({
+        username: newUser.username,
+        email: newUser.email,
+        token: generateToken(newUser.username),
+      });
     } else {
       res.status(400);
       console.log("Informacion de usuario incorrecta");
     }
   }
+});
+
+// @desc cargar la vista de login
+// @route GET /login
+// @access public
+async function renderLogin(req, res) {
+  res.render("login");
 }
 
-async function login(req, res) {
-  // find if there is a cookie present
-  // .then(function) if there is no cookie, login
+// @desc login del usuario
+// @route POST /login
+// @access Public
+const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-}
+  const user = await Usuario.findByEmail(email);
+
+  if (user && (await bcrypt.compare(password, user.user.password))) {
+    res.json({
+      username: user.user.username,
+      email: user.user.email,
+      token: generateToken(user.username),
+    });
+    console.log;
+  } else {
+    res.status(400);
+    throw new Error("Informacion de usuario incorrecta");
+  }
+});
+
+// Generate JWT token
+const generateToken = (username) => {
+  return jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: "30d" });
+};
 // Definir que funciones exporta el controlador
 module.exports = {
-  getUsuarios,
   getUsuarioByEmail,
   getUsuarioByUsername,
   createUsuario,
+  renderLogin,
   login,
 };
