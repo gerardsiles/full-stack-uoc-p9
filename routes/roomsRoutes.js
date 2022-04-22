@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { getSalas } = require("../src/controllers/salaController");
+const {
+  getSalas,
+  agregarJugador,
+} = require("../src/controllers/salaController");
 // const { protect } = require("../middleware/authMiddleware");
 // en el get hay que meter protect como segundo parametro, para evitar que accedan si
 // no han iniciado sesion .get('/rooms', protect, funcion para cargar rooms)
@@ -27,4 +30,5 @@ router
   .post((req, res) => {});
 
 router.route("/api/v2/getRoomsInfo").get(getSalas);
+router.route("/api/v2/rooms").post(agregarJugador);
 module.exports = router;
