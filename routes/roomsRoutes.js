@@ -9,7 +9,7 @@ const { getSalas } = require("../src/controllers/salaController");
 router
   .route("/rooms")
   .get((req, res) => {
-    res.sendFile(__dirname.replace("\\routes", "") + "/public/views/room.html");
+    res.sendFile("/public/views/register.html", { root: "./" });
   })
   .post((req, res) => {});
 
@@ -17,12 +17,7 @@ router
   .route("/rooms/:roomnumber")
   .get((req, res) => {
     let roomNumber = req.params.roomnumber;
-    res.sendFile(
-      __dirname.replace("\\routes", "") +
-        "/public/views/room" +
-        roomNumber +
-        ".html"
-    );
+    res.sendFile("/public/views/room"+ roomNumber + ".html", { root: "./" });
   })
   .post((req, res) => {});
 
