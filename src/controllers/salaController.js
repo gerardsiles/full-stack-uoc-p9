@@ -45,10 +45,16 @@ async function agregarJugador(req, res) {
   console.log(sala);
   res.end(JSON.stringify(sala));
 }
-
+// @desc cargar la vista de rooms
+// @route GET /rooms
+// @access public
+async function renderRooms(req, res) {
+  res.render("rooms");
+}
 module.exports = {
   getSalas,
   getSala,
   jugadoresEnSala,
   agregarJugador,
+  renderRooms,
 };

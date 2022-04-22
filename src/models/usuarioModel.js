@@ -13,16 +13,16 @@ async function findAll() {
 }
 // econtrar si un nombre de usuario existe
 function usernameExists(username) {
-  return usuarios.some((u) => u.user.username === username);
+  return usuarios.some((u) => u.username === username);
 }
 
 function emailExists(email) {
-  return usuarios.some((u) => u.user.email === email);
+  return usuarios.some((u) => u.email === email);
 }
 // encontrar a un usuario por su username
 async function findByUsername(username) {
   return new Promise((resolve, reject) => {
-    const usuario = usuarios.find((u) => u.user.username === username);
+    const usuario = usuarios.find((u) => u.username === username);
     resolve(usuario);
   });
 }
@@ -30,8 +30,7 @@ async function findByUsername(username) {
 // encontrar a un usuario por su email
 async function findByEmail(email) {
   return new Promise((resolve, reject) => {
-    const user = usuarios.find((u) => u.user.email === email);
-    console.log(user + " modelo");
+    const user = usuarios.find((u) => u.email === email);
     resolve(user);
   });
 }
@@ -39,11 +38,13 @@ async function findByEmail(email) {
 // crear un nuevo usuario en usuarios.json
 async function create(user) {
   return new Promise((resolve, reject) => {
-    const newUser = { user };
+    const { username, email, password } = user;
+    const newUser = { username, email, password };
     usuarios.push(newUser);
 
     // llamamos al utility para agregar los datos a la array
     writeDataToFile("./src/data/usuarios.json", usuarios);
+    console.log(newUser);
     resolve(newUser);
   });
 }

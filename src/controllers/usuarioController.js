@@ -31,6 +31,7 @@ async function getUsuarioByEmail(req, res, email) {
 // @route POST /register
 // @access public
 const createUsuario = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
   // objeto js con la informacion encontrada en el req
   const { username, email, password } = req.body;
   // validar la informacion recibida
@@ -60,11 +61,13 @@ const createUsuario = asyncHandler(async (req, res, next) => {
   if (!usernameExists && !emailExists) {
     // escribir la informacion del head
     const newUser = await Usuario.create(usuario);
+    console.log(newUser + " usuario de controller");
+
     if (newUser) {
+      console.log("entras en new user");
       res.status(201).json({
         username: newUser.username,
         email: newUser.email,
-        token: generateToken(newUser.username),
       });
     } else {
       res.status(400);
@@ -84,16 +87,16 @@ async function renderLogin(req, res) {
 // @route POST /login
 // @access Public
 const login = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const { email, password } = req.body;
   const user = await Usuario.findByEmail(email);
 
-  if (user && (await bcrypt.compare(password, user.user.password))) {
+  if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
-      username: user.user.username,
-      email: user.user.email,
+      username: user.username,
+      email: user.email,
       token: generateToken(user.username),
     });
-    console.log;
   } else {
     res.status(400);
     throw new Error("Informacion de usuario incorrecta");
