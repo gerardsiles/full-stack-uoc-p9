@@ -2,11 +2,13 @@ const form = document.getElementById("form");
 const email = document.getElementById("username");
 const password = document.getElementById("password");
 
+/*
 var socket = io();
+*/
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  socket.emit("new login", "Trying to login");
+ /* socket.emit("new login", "Trying to login");*/
   checkInputs();
 });
 
@@ -42,32 +44,19 @@ function checkInputs() {
 async function sendUser(uEmail, uPassword) {
   var json = { email: uEmail, password: uPassword };
 
-  await fetch("http://localhost:5000/login", {
+  const response = await fetch("http://localhost:5000/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(json),
-  })
-    //.then(response => response.json())
-    //     .then((result) => {
-    //       window.location.replace("/rooms");
-    //     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  });
+
+  const data = await response.json();
+  await window.sessionStorage.setItem("token",JSON.stringify(data.token));
 }
 
-/*function sendUser(uEmail, uPassword){
-  const resultado = {
-    email:uEmail,
-    password:uPassword
 
-  }
-  console.log(resultado);
-
-
-} */
 
 function setErrorFor(input, message) {
   //Seleccionar la clase padre del elemento, .form-control

@@ -92,6 +92,7 @@ const login = asyncHandler(async (req, res) => {
   const user = await Usuario.findByEmail(email);
 
   if (user && (await bcrypt.compare(password, user.password))) {
+
     res.json({
       username: user.username,
       email: user.email,

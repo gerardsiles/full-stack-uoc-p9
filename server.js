@@ -9,9 +9,9 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 //Importamos los routings
-const loginRoutes = require("./routes/loginRoutes");
-const registerRoutes = require("./routes/registerRoutes");
-const roomsRoutes = require("./routes/roomsRoutes");
+const loginRoutes = require("./src/routes/loginRoutes");
+const registerRoutes = require("./src/routes/registerRoutes");
+const roomsRoutes = require("./src/routes/roomsRoutes");
 
 app.use(express.json());
 app.use(express.static("public"));
