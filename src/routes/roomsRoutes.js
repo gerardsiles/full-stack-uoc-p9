@@ -5,7 +5,7 @@ const {
   agregarJugador,
   renderRooms,
 } = require("../controllers/salaController");
-// const { protect } = require("../middleware/authMiddleware");
+//const { protect } = require("../middleware/authMiddleware");
 // en el get hay que meter protect como segundo parametro, para evitar que accedan si
 // no han iniciado sesion .get('/rooms', protect, funcion para cargar rooms)
 

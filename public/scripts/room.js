@@ -1,3 +1,23 @@
+if (getToken){
+    window.onload;
+}
+
+
+/*window.onload = function(){
+    console.log("cargando rooms");
+    getToken();
+
+}*/
+function getToken() {
+    const token = JSON.parse(sessionStorage.getItem('token'));
+    if (token) {
+        return true;
+    } else {
+        document.location.href="/login";
+        return false;
+
+    }
+}
 /* Guardar el avatar en el webstorage*/
 let newBack = 'url(../images/avatar-01.png)';
 const avatar = sessionStorage.setItem('avatar', newBack);

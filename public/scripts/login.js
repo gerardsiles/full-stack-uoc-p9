@@ -54,6 +54,18 @@ async function sendUser(uEmail, uPassword) {
 
   const data = await response.json();
   await window.sessionStorage.setItem("token",JSON.stringify(data.token));
+  console.log(data.token);
+
+  if(data.token){
+
+    console.log("dentro if");
+    document.location.href="/rooms";
+  }
+
+
+
+      /*.then(data => history.push('/rooms'))
+      .catch(err => history.push('/login'));*/
 }
 
 
