@@ -13,6 +13,11 @@ const loginRoutes = require("./src/routes/loginRoutes");
 const registerRoutes = require("./src/routes/registerRoutes");
 const roomsRoutes = require("./src/routes/roomsRoutes");
 
+//Optional midddleware funtion to disable all the server request
+/*app.use((req,res,next)=>{
+    res.status(503).send("The server is currently down.  Please check soon! ")
+})*/
+
 app.use(express.json());
 app.use(express.static("public"));
 // redifinir la ruta de los archivos pug, declarar el motor de vistas
