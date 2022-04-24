@@ -1,9 +1,9 @@
-const modelo = require("../models/salaModel");
+const Room = require("../models/salaModel");
 
 // devuelve todas las salas
 async function getSalas(req, res) {
   try {
-    const salas = await modelo.findAll();
+    const salas = await Room.findAll();
 
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(salas));
@@ -15,7 +15,7 @@ async function getSalas(req, res) {
 // devuelve una sala en concreto
 async function getSala(req, res, id) {
   try {
-    const sala = await modelo.findById(id);
+    const sala = await Room.findById(id);
 
     // comprobar si el producto existe
     if (!sala) {
@@ -40,8 +40,8 @@ function jugadoresEnSala(sala) {
 // @access public
 async function agregarJugador(req, res) {
   const { username, id } = req.body;
-  const room = await modelo.findById(id);
-  const sala = modelo.addPlayerRoom(room, username);
+  const room = await Room.findById(id);
+  const sala = await Room.addPlayerRoom(room, username);
   console.log(sala);
   res.end(JSON.stringify(sala));
 }

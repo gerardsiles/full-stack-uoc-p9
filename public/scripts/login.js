@@ -2,13 +2,11 @@ const form = document.getElementById("form");
 const email = document.getElementById("username");
 const password = document.getElementById("password");
 
-/*
 var socket = io();
-*/
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
- /* socket.emit("new login", "Trying to login");*/
+  /* socket.emit("new login", "Trying to login");*/
   checkInputs();
 });
 
@@ -53,22 +51,17 @@ async function sendUser(uEmail, uPassword) {
   });
 
   const data = await response.json();
-  await window.sessionStorage.setItem("token",JSON.stringify(data.token));
+  await window.sessionStorage.setItem("token", JSON.stringify(data.token));
   console.log(data.token);
 
-  if(data.token){
-
+  if (data.token) {
     console.log("dentro if");
-    document.location.href="/rooms";
+    document.location.href = "/rooms";
   }
 
-
-
-      /*.then(data => history.push('/rooms'))
+  /*.then(data => history.push('/rooms'))
       .catch(err => history.push('/login'));*/
 }
-
-
 
 function setErrorFor(input, message) {
   //Seleccionar la clase padre del elemento, .form-control

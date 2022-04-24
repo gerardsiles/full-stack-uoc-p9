@@ -44,7 +44,6 @@ async function create(user) {
 
     // llamamos al utility para agregar los datos a la array
     writeDataToFile("./src/data/usuarios.json", usuarios);
-    console.log(newUser);
     resolve(newUser);
   });
 }

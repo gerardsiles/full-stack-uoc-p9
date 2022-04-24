@@ -43,7 +43,8 @@ async function addPlayerRoom(room, username) {
     if (jugadores === 0) {
       console.log("entra aqui 0");
       jugador1 = username;
-      jugadores++;
+      jugadores += 1;
+      console.log("jugadores: " + jugadores);
     } else {
       console.log("entra aqui 1");
       jugador2 = username;

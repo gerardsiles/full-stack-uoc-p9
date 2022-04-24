@@ -1,29 +1,29 @@
 [
   {
     "id": "1",
-    "nombre": "Midgard",
-    "jugadores": 0,
-    "jugador1" : "",
-    "jugador2": ""
+    "name": "Midgard",
+    "players": 0,
+    "player1" : "",
+    "player2": ""
   },
   {
     "id": "2",
     "nombre": "Valhalla",
-    "jugadores": 0,
+    "players": 0,
     "jugador1" : "",
     "jugador2": ""
   },
   {
     "id": "3",
     "nombre": "Elfheim",
-    "jugadores": 0,
+    "players": 0,
     "jugador1" : "",
     "jugador2": ""
   },
   {
     "id": "4",
     "nombre": "Asgard",
-    "jugadores": 0,
+    "players": 0,
     "jugador1" : "",
     "jugador2": ""
   }

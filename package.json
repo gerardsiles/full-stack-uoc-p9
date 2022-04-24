@@ -27,6 +27,7 @@
     "mime": "^3.0.0",
     "mustache": "^4.2.0",
     "pug-cli": "^1.0.0-alpha6",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.5.0"
   }
 }

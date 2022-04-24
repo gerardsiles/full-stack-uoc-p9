@@ -61,10 +61,8 @@ const createUsuario = asyncHandler(async (req, res, next) => {
   if (!usernameExists && !emailExists) {
     // escribir la informacion del head
     const newUser = await Usuario.create(usuario);
-    console.log(newUser + " usuario de controller");
 
     if (newUser) {
-      console.log("entras en new user");
       res.status(201).json({
         username: newUser.username,
         email: newUser.email,
@@ -92,7 +90,6 @@ const login = asyncHandler(async (req, res) => {
   const user = await Usuario.findByEmail(email);
 
   if (user && (await bcrypt.compare(password, user.password))) {
-
     res.json({
       username: user.username,
       email: user.email,

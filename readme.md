@@ -1,12 +1,33 @@
 ## Desarrollo full stack
 
 ### producto 3
+// TODOS
+
+[x] introducir informacion del juego en las partidas.<br>
+[x] Porcentaje consquistado<br>
+[] Iniciar Partida<br>
+[] Partidas en el backend<br>
+[] Logout<br>
+[] Websockets <br>
+[] Testear funcionalidad<br>
+
+
+- Identificar las estructuras de datos, clases, etc., que representan el dominio del juego multijugador.
+- Adaptar la solución obtenida en el producto 2 para incorporarla a un proyecto de ExpressJS.
+- Programar una aplicación web MVC mediante ExpressJS
+- Desarrollar la lógica del juego de conquistar celdas
+- Implementar el framework Socket.io para conseguir transmitir las celdas de conquista entre los clientes y el servidor mediante websockets. Los datos de sala, usuario y posición se encuentran encapsulados en un JSON que se transmite entre cliente y servidor de  manera bidireccional.
+- Programar mediante la API HTML5 Canvas la rejillas, celdas y colores de las zonas conquistadas en cada sala por parte de cada jugador.
+
+### RUBRICA
+- motor de plantillas Pug
 
 Para instalar pug, empezamos con el comando:
 ```node 
 npm install pug-cli
 ```
-esto nos permitria renderizar lo que escribamos en los archivos pug durante el desarrollo.
+esto nos permitria renderizar lo que escribamos en los archivos pug durante el desarrollo, de esta menra podemos
+comprobar durante el desarrollo que las plantillas se renderizan correctamente.
 
 para hacer que pug mire a nuestro archivo pug y genere el html, utilizamos este comando:
 ```node 
@@ -18,6 +39,11 @@ y declaramos a pug como motor de vistas en el server.js:
 app.set("views", path.join(__dirname, "./public/views"));
 app.set("view engine", "pug");
 ```
+
+- La aplicación hace un uso completamente funcional de canvas para indicar las celdas conquistadas, incorporando texto para por ejemplo indicar el porcentaje conquistado. Dispone de imágenes de fondo cargadas con canvas para dar un entorno visual más atractivo al juego.
+- La lógica del juego es correcta. Se indica visualmente quién está ganando. Se utiliza encaminamiento. Además se ha hecho servir el motor de plantillas Pug o Jade.
+- Se ha creado la clase Partida y Jugador y se han implementado métodos para la gestión del juego. Se hacen las verificaciones necesarias y asociadas a la lógica del juego.
+- Se ha utilizado WebSockets, con objetos JSON. Se hace uso de la biblioteca Socket.io
 ### Producto 2
 
 En este producto se propone construir la parte del proyecto relacionada con el registro de los jugadores y la selección de las salas de juego, mediante un diseño responsive y sin persistencia de datos en el lado servidor.

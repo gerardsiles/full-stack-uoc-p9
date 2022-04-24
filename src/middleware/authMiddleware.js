@@ -11,24 +11,23 @@ const protect = asyncHandler(async (req, res, next) => {
   ) {
     try {
       // recibir el token, split elimina el Bearer
-      //token = req.headers.authorization.split("")[1];
-      token = req.headers.authorization.replace('Bearer ', '');
+      token = req.headers.authorization.split(" ")[1];
+      //       token = req.headers.authorization.replace("Bearer ", "");
       //verrificar el token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Recibir al usuario en el token
       //console.log(decoded.username);
       const user = await User.findByUsername(decoded.username);
-      if(!user){
-        throw new Error()
+      if (!user) {
+        throw new Error();
       }
       /*req.user = await User.findByUsername(decoded.username).select(
         "-password"
-      )*/;
-      next();
+      )*/ next();
     } catch (e) {
       console.log(e);
-      res.status(401).send({error: 'please authenticate'})
+      res.status(401).send({ error: "please authenticate" });
       //throw new Error("Sin autorizacion");
     }
   }
@@ -38,4 +37,4 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = protect;
+module.exports = { protect };
