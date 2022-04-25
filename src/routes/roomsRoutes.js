@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getSalas,
-  agregarJugador,
+  roomsAction,
   renderRooms,
 } = require("../controllers/salaController");
 const protect = require("../middleware/authMiddleware");
@@ -17,7 +17,7 @@ router
   })
   .post((req, res) => {});
 
-router.route("/api/v2/rooms").post(agregarJugador);
+router.route("/api/v2/rooms").post(roomsAction);
 router.route("/api/v2/getRoomsInfo").get(getSalas);
 
 //Export

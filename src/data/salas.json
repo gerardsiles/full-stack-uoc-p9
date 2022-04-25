@@ -8,21 +8,21 @@
   },
   {
     "id": "2",
-    "nombre": "Valhalla",
+    "name": "Valhalla",
     "players": 0,
     "jugador1" : "",
     "jugador2": ""
   },
   {
     "id": "3",
-    "nombre": "Elfheim",
+    "name": "Elfheim",
     "players": 0,
     "jugador1" : "",
     "jugador2": ""
   },
   {
     "id": "4",
-    "nombre": "Asgard",
+    "name": "Asgard",
     "players": 0,
     "jugador1" : "",
     "jugador2": ""

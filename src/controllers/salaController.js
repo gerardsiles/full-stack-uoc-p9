@@ -35,17 +35,32 @@ function jugadoresEnSala(sala) {
   //todo
   // buscar cuantos jugadores hay en la sala y devolver un numero
 }
-
+async function roomsAction(req, res) {
+  const { method, id, username } = req.body;
+  switch (method) {
+    case "addPlayer":
+      await agregarJugador(id, username);
+      res.end();
+      break;
+    case "removePlayer":
+      await quitarJugador(id, username);
+      res.end();
+      break;
+  }
+}
 // @desc Agregar un jugador a la sala
 // @method POST api/v2/rooms
 // @access public
-async function agregarJugador(req, res) {
-  const { username, id } = req.body;
-  console.log(id);
+async function agregarJugador(id, username) {
   const room = await Room.findById(id);
-  console.log(room);
   const sala = await Room.addPlayerRoom(room, username);
-  res.end(JSON.stringify(sala));
+  //   res.end(JSON.stringify(sala));
+}
+
+async function quitarJugador(id, username) {
+  const room = await Room.findById(id);
+  const sala = await Room.removePlayerRoom(room, username);
+  //   res.end(JSON.stringify(sala));
 }
 // @desc cargar la vista de rooms
 // @route GET /rooms
@@ -59,4 +74,5 @@ module.exports = {
   jugadoresEnSala,
   agregarJugador,
   renderRooms,
+  roomsAction,
 };

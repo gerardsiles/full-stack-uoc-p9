@@ -35,9 +35,6 @@ async function jugadoresSala(id) {
   });
 }
 
-async function loadJson() {
-  return JSON.parse(fs.readFile(salas));
-}
 async function addPlayerRoom(room, username) {
   let r = new Promise((resolve, reject) => {
     let { id, name, players, player1, player2 } = room;
@@ -47,7 +44,6 @@ async function addPlayerRoom(room, username) {
       for (var i = 0; i < salas.length; i++) {
         if (salas[i].id == id) {
           salas[i].players = 1;
-          console.log("loop " + JSON.stringify(salas[i]));
           resolve(salas[i]);
         }
       }
@@ -55,7 +51,32 @@ async function addPlayerRoom(room, username) {
       for (var i = 0; i < salas.length; i++) {
         if (salas[i].id == id) {
           salas[i].players = 2;
-          console.log("loop " + JSON.stringify(salas[i]));
+          resolve(salas[i]);
+        }
+      }
+    }
+    resolve(salas);
+  });
+}
+
+async function removePlayerRoom(room, username) {
+  let r = new Promise((resolve, reject) => {
+    let { id, name, players, player1, player2 } = room;
+    let updatedRoom = room;
+
+    if (players === 1) {
+      for (var i = 0; i < salas.length; i++) {
+        if (salas[i].id == id) {
+          salas[i].players = 0;
+          salas[i].player1 = username;
+          resolve(salas[i]);
+        }
+      }
+    } else {
+      for (var i = 0; i < salas.length; i++) {
+        if (salas[i].id == id) {
+          salas[i].players = 1;
+          salas[i].player2 = username;
           resolve(salas[i]);
         }
       }
@@ -69,4 +90,5 @@ module.exports = {
   findById,
   jugadoresSala,
   addPlayerRoom,
+  removePlayerRoom,
 };

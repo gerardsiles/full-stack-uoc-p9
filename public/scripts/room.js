@@ -34,16 +34,13 @@ const avatar = sessionStorage.setItem("avatar", newBack);
 sala00.addEventListener("dragover", (e) => {
   //este es el comportamiento por defecto del navegador el cual no queremos que actue
   e.preventDefault(); // con preventDefault evitamos el comportamiento por defecto del navegador
-  console.log("Drag Over");
 });
 sala00.addEventListener("drop", (e) => {
-  console.log("Droping");
   sala00.appendChild(selectedAvatar);
 });
 
 sala01.addEventListener("dragover", (e) => {
   e.preventDefault();
-  console.log("Drag Over");
   playBtn = document.getElementById("btn-sala01");
   if (playBtn.style.display === "block") {
     playBtn.style.display = "none";
@@ -53,84 +50,61 @@ sala01.addEventListener("drop", (e) => {
   sala01.appendChild(selectedAvatar);
   playBtn = document.getElementById("btn-sala01");
   playBtn.style.display = "block";
-  updatePlayer("1", "jugador1");
+  updatePlayer("1", "jugadorX");
 });
 
 sala01.addEventListener("dragstart", (e) => {
-  let players = document.getElementById("jugadores1").innerHTML;
-  players--;
-  document.getElementById("jugadores1").textContent = players;
-  startGame();
+  /* si el jugador cambia de sala, quitarlo en el back */
+  removePlayer("1", "jugadorX");
 });
 
 sala02.addEventListener("dragover", (e) => {
   e.preventDefault();
-  console.log("Drag Over");
   playBtn = document.getElementById("btn-sala02");
   if (playBtn.style.display === "block") {
     playBtn.style.display = "none";
   }
 });
 sala02.addEventListener("drop", (e) => {
-  let players = document.getElementById("jugadores2").innerHTML;
-  document.getElementById("jugadores2").textContent = players;
   sala02.appendChild(selectedAvatar);
-  startGame();
+  updatePlayer("2", "jugadorX");
 });
 
 sala02.addEventListener("dragstart", (e) => {
-  let players = document.getElementById("jugadores2").innerHTML;
-  players--;
-  document.getElementById("jugadores2").textContent = players;
+  /* si el jugador cambia de sala, quitarlo en el back */
+  removePlayer("2", "jugadorX");
 });
 
 sala03.addEventListener("dragover", (e) => {
   e.preventDefault();
-  console.log("Drag Over");
   playBtn = document.getElementById("btn-sala03");
   if (playBtn.style.display === "block") {
     playBtn.style.display = "none";
   }
 });
 sala03.addEventListener("drop", (e) => {
-  let players = document.getElementById("jugadores3").innerHTML;
-  players++;
-  document.getElementById("jugadores3").textContent = players;
   sala03.appendChild(selectedAvatar);
-  if (players === 2) {
-    startGame();
-  }
+  updatePlayer("3", "jugadorX");
 });
 
 sala03.addEventListener("dragstart", (e) => {
-  let players = document.getElementById("jugadores3").innerHTML;
-  players--;
-  document.getElementById("jugadores3").textContent = players;
+  removePlayer("3", "jugadorX");
 });
 
 sala04.addEventListener("dragover", (e) => {
   e.preventDefault();
-  console.log("Drag Over");
   playBtn = document.getElementById("btn-sala04");
   if (playBtn.style.display === "block") {
     playBtn.style.display = "none";
   }
 });
 sala04.addEventListener("drop", (e) => {
-  let players = document.getElementById("jugadores4").innerHTML;
-  players++;
-  if (players === 2) {
-    startGame();
-  }
-  document.getElementById("jugadores4").textContent = players;
   sala04.appendChild(selectedAvatar);
-  updatePlayer(4, "jugadorLogin");
+  updatePlayer("4", "jugadorX");
 });
 
 sala04.addEventListener("dragstart", (e) => {
-  let players = document.getElementById("jugadores4").innerHTML;
-  players--;
-  document.getElementById("jugadores4").textContent = players;
+  removePlayer("4", "jugadorX");
 });
 /* Elección de avatar */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
@@ -150,7 +124,6 @@ function startGame(roomID, player1, player2) {
 const showRoomsInfo = async () => {
   const serverResponse = await fetch("/api/v2/getRoomsInfo");
   const data = await serverResponse.json();
-  console.log(data);
   /* Insertar informacion en el DOM */
   /* ------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -170,11 +143,33 @@ const showRoomsInfo = async () => {
   document.getElementById(
     "jugadores4"
   ).textContent = `Numero de jugadores ${data[3].players}`;
+
+  if (data[3].players == 2) {
+    window.open("http://localhost:5000/rooms/1");
+    startGame(3, "player1", "player2");
+  }
 };
 
 /* Actualizar jugadores al drop avatar */
 async function updatePlayer(roomId, username) {
   var json = {
+    method: "addPlayer",
+    id: roomId,
+    username: username,
+  };
+
+  const response = await fetch("/api/v2/rooms", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(json),
+  }).then(showRoomsInfo);
+}
+
+async function removePlayer(roomId, username) {
+  var json = {
+    method: "removePlayer",
     id: roomId,
     username: username,
   };
