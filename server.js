@@ -39,15 +39,18 @@ server.listen(5000, () => {
 });
 
 /* socket.io */
-const socketRooms = io.of("/rooms");
-socketRooms.on("update-players", (players) => {
-  console.log(players);
-});
+
 
 io.on("connect", (socket) => {
   console.log("Nueva conexion");
-  // console.log(socket.id);
-  socket.on('playerUpdate', (msg) => {
-    io.emit('updateRoomInfo');
-  })
 });
+
+io.of("/rooms").on("connection", (socket) => {
+  socket.on('playerUpdate', (msg) => {
+    console.log('Room Info updated');
+    io.of("/rooms").emit('updateRoomInfo');
+  })
+  socket.on('startGame', (msg) => {
+    console.log(msg);
+  })
+})
