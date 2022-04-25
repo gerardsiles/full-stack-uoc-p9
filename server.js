@@ -46,5 +46,8 @@ socketRooms.on("update-players", (players) => {
 
 io.on("connect", (socket) => {
   console.log("Nueva conexion");
-  console.log(socket.id);
+  // console.log(socket.id);
+  socket.on('playerUpdate', (msg) => {
+    io.emit('updateRoomInfo');
+  })
 });

@@ -2,17 +2,21 @@ if (getToken) {
   window.onload;
 }
 var socket = io("http://localhost:5000");
-socket.on("connect", () => {
-  console.log("conectado al back socket");
-});
+// socket.on("connect", () => {
+//   console.log("conectado al back socket");
+// });
+
+socket.on('updateRoomInfo', () => {
+  showRoomsInfo();
+})
 
 window.onload = function () {
   showRoomsInfo();
 };
 /* Actualizar informacion de las salas cada segundo */
-const interval = setInterval(function () {
-  showRoomsInfo();
-}, 1000);
+// const interval = setInterval(function () {
+//   showRoomsInfo();
+// }, 1000);
 
 // clearInterval(interval);
 function getToken() {
@@ -51,11 +55,13 @@ sala01.addEventListener("drop", (e) => {
   playBtn = document.getElementById("btn-sala01");
   playBtn.style.display = "block";
   updatePlayer("1", "jugadorX");
+  socket.emit('playerUpdate');
 });
 
 sala01.addEventListener("dragstart", (e) => {
   /* si el jugador cambia de sala, quitarlo en el back */
   removePlayer("1", "jugadorX");
+  socket.emit('playerUpdate');
 });
 
 sala02.addEventListener("dragover", (e) => {
@@ -68,11 +74,13 @@ sala02.addEventListener("dragover", (e) => {
 sala02.addEventListener("drop", (e) => {
   sala02.appendChild(selectedAvatar);
   updatePlayer("2", "jugadorX");
+  socket.emit('playerUpdate');
 });
 
 sala02.addEventListener("dragstart", (e) => {
   /* si el jugador cambia de sala, quitarlo en el back */
   removePlayer("2", "jugadorX");
+  socket.emit('playerUpdate');
 });
 
 sala03.addEventListener("dragover", (e) => {
@@ -85,10 +93,12 @@ sala03.addEventListener("dragover", (e) => {
 sala03.addEventListener("drop", (e) => {
   sala03.appendChild(selectedAvatar);
   updatePlayer("3", "jugadorX");
+  socket.emit('playerUpdate');
 });
 
 sala03.addEventListener("dragstart", (e) => {
   removePlayer("3", "jugadorX");
+  socket.emit('playerUpdate');
 });
 
 sala04.addEventListener("dragover", (e) => {
@@ -101,10 +111,12 @@ sala04.addEventListener("dragover", (e) => {
 sala04.addEventListener("drop", (e) => {
   sala04.appendChild(selectedAvatar);
   updatePlayer("4", "jugadorX");
+  socket.emit('playerUpdate');
 });
 
 sala04.addEventListener("dragstart", (e) => {
   removePlayer("4", "jugadorX");
+  socket.emit('playerUpdate');
 });
 /* Elección de avatar */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
