@@ -1,11 +1,20 @@
 if (getToken) {
   window.onload;
 }
+var socket = io("http://localhost:5000");
+socket.on("connect", () => {
+  console.log("conectado al back socket");
+});
 
-/*window.onload = function(){
-    console.log("cargando rooms");
-    getToken();
-}*/
+window.onload = function () {
+  showRoomsInfo();
+};
+/* Actualizar informacion de las salas cada segundo */
+const interval = setInterval(function () {
+  showRoomsInfo();
+}, 1000);
+
+// clearInterval(interval);
 function getToken() {
   const token = JSON.parse(sessionStorage.getItem("token"));
   if (token) {
@@ -41,19 +50,17 @@ sala01.addEventListener("dragover", (e) => {
   }
 });
 sala01.addEventListener("drop", (e) => {
-  let players = document.getElementById("jugadores1").innerHTML;
-  players++;
-  document.getElementById("jugadores1").textContent = players;
   sala01.appendChild(selectedAvatar);
   playBtn = document.getElementById("btn-sala01");
-  console.log(playBtn);
   playBtn.style.display = "block";
+  updatePlayer("1", "jugador1");
 });
 
 sala01.addEventListener("dragstart", (e) => {
   let players = document.getElementById("jugadores1").innerHTML;
   players--;
   document.getElementById("jugadores1").textContent = players;
+  startGame();
 });
 
 sala02.addEventListener("dragover", (e) => {
@@ -66,9 +73,9 @@ sala02.addEventListener("dragover", (e) => {
 });
 sala02.addEventListener("drop", (e) => {
   let players = document.getElementById("jugadores2").innerHTML;
-  players++;
   document.getElementById("jugadores2").textContent = players;
   sala02.appendChild(selectedAvatar);
+  startGame();
 });
 
 sala02.addEventListener("dragstart", (e) => {
@@ -90,6 +97,9 @@ sala03.addEventListener("drop", (e) => {
   players++;
   document.getElementById("jugadores3").textContent = players;
   sala03.appendChild(selectedAvatar);
+  if (players === 2) {
+    startGame();
+  }
 });
 
 sala03.addEventListener("dragstart", (e) => {
@@ -109,8 +119,12 @@ sala04.addEventListener("dragover", (e) => {
 sala04.addEventListener("drop", (e) => {
   let players = document.getElementById("jugadores4").innerHTML;
   players++;
+  if (players === 2) {
+    startGame();
+  }
   document.getElementById("jugadores4").textContent = players;
   sala04.appendChild(selectedAvatar);
+  updatePlayer(4, "jugadorLogin");
 });
 
 sala04.addEventListener("dragstart", (e) => {
@@ -129,4 +143,51 @@ function chBackimage(newBack) {
 
 function startGame(roomID, player1, player2) {
   /* Empezar una nueva partida en la sala y jugadores */
+  console.log("empezando juego");
+}
+
+/* Conseguir la informacion de las salas */
+const showRoomsInfo = async () => {
+  const serverResponse = await fetch("/api/v2/getRoomsInfo");
+  const data = await serverResponse.json();
+  console.log(data);
+  /* Insertar informacion en el DOM */
+  /* ------------------------------------------------------------------------------------------------------------------------------- */
+
+  document.getElementById("nombre1").textContent = data[0].name;
+  document.getElementById(
+    "jugadores1"
+  ).textContent = `Numero de jugadores ${data[0].players}`;
+  document.getElementById("nombre2").textContent = data[1].name;
+  document.getElementById(
+    "jugadores2"
+  ).textContent = `Numero de jugadores ${data[1].players}`;
+  document.getElementById("nombre3").textContent = data[2].name;
+  document.getElementById(
+    "jugadores3"
+  ).textContent = `Numero de jugadores ${data[2].players}`;
+  document.getElementById("nombre4").textContent = data[3].name;
+  document.getElementById(
+    "jugadores4"
+  ).textContent = `Numero de jugadores ${data[3].players}`;
+};
+
+/* Actualizar jugadores al drop avatar */
+async function updatePlayer(roomId, username) {
+  var json = {
+    id: roomId,
+    username: username,
+  };
+
+  const response = await fetch("/api/v2/rooms", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(json),
+  }).then(showRoomsInfo);
+}
+
+async function handleInit(data) {
+  console.log(data);
 }

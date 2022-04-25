@@ -5,8 +5,11 @@
 
 [x] introducir informacion del juego en las partidas.<br>
 [x] Porcentaje consquistado<br>
+[x] Redirect register<br>
 [] Iniciar Partida<br>
-[] Partidas en el backend<br>
+[] Partidas en el backend al terminar<br>
+[] sesiones de la partida<br>
+[] avatar, nombre etc en sesion<br>
 [] Logout<br>
 [] Websockets <br>
 [] Testear funcionalidad<br>

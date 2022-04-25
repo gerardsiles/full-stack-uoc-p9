@@ -100,7 +100,14 @@ async function sendInformation(username, email, password) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(json),
-  });
+  }).then(
+    await function (res) {
+      if (res.status === 201) {
+        console.log("Registered");
+        window.location.replace("http://localhost:5000/login");
+      }
+    }
+  );
 
   const prueba = await response;
 }

@@ -1,12 +1,13 @@
 const Room = require("../models/salaModel");
 
 // devuelve todas las salas
+
 async function getSalas(req, res) {
   try {
     const salas = await Room.findAll();
-
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(salas));
+    return JSON.stringify(salas);
   } catch (error) {
     console.log(error);
   }
@@ -40,9 +41,10 @@ function jugadoresEnSala(sala) {
 // @access public
 async function agregarJugador(req, res) {
   const { username, id } = req.body;
+  console.log(id);
   const room = await Room.findById(id);
+  console.log(room);
   const sala = await Room.addPlayerRoom(room, username);
-  console.log(sala);
   res.end(JSON.stringify(sala));
 }
 // @desc cargar la vista de rooms

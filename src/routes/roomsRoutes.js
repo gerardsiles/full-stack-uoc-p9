@@ -6,8 +6,6 @@ const {
   renderRooms,
 } = require("../controllers/salaController");
 const protect = require("../middleware/authMiddleware");
-// en el get hay que meter protect como segundo parametro, para evitar que accedan si
-// no han iniciado sesion .get('/rooms', protect, funcion para cargar rooms)
 
 router.get("/rooms", renderRooms);
 
@@ -20,6 +18,7 @@ router
   .post((req, res) => {});
 
 router.route("/api/v2/rooms").post(agregarJugador);
+router.route("/api/v2/getRoomsInfo").get(getSalas);
 
 //Export
 module.exports = router;

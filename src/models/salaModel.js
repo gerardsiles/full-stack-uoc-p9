@@ -35,24 +35,32 @@ async function jugadoresSala(id) {
   });
 }
 
+async function loadJson() {
+  return JSON.parse(fs.readFile(salas));
+}
 async function addPlayerRoom(room, username) {
   let r = new Promise((resolve, reject) => {
-    console.log(room);
-    let { id, nombre, jugadores, jugador1, jugador2 } = room;
-
-    if (jugadores === 0) {
-      console.log("entra aqui 0");
-      jugador1 = username;
-      jugadores += 1;
-      console.log("jugadores: " + jugadores);
-    } else {
-      console.log("entra aqui 1");
-      jugador2 = username;
-      jugadores++;
-    }
+    let { id, name, players, player1, player2 } = room;
     let updatedRoom = room;
-    console.log("updated Room" + updatedRoom);
-    resolve(updatedRoom);
+
+    if (players === 0) {
+      for (var i = 0; i < salas.length; i++) {
+        if (salas[i].id == id) {
+          salas[i].players = 1;
+          console.log("loop " + JSON.stringify(salas[i]));
+          resolve(salas[i]);
+        }
+      }
+    } else {
+      for (var i = 0; i < salas.length; i++) {
+        if (salas[i].id == id) {
+          salas[i].players = 2;
+          console.log("loop " + JSON.stringify(salas[i]));
+          resolve(salas[i]);
+        }
+      }
+    }
+    resolve(salas);
   });
 }
 
