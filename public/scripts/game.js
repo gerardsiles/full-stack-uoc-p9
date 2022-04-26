@@ -1,5 +1,8 @@
 const api_url = "https://localhost:5000/api/room/1";
 
+
+var socket = io("http://localhost:5000");
+
 function chStar() {
   let elem = document.querySelector(".estrella");
   elem.innerHTML = '<i id="favorite" class="fas fa-star fa-2x"></i>';
@@ -112,6 +115,15 @@ function junto(x, y, jugador) {
 let jugador_actual;
 let tamanyoCuad;
 
+
+//Recibe las posiciones del click del oponente (y el suyo) a través de sockets
+var cuadradoOponente = new Cuadrado();
+socket.on('tableroUpdate', (msg) => {
+  cuadradoOponente = msg;
+  console.log(cuadradoOponente);
+  //cuadradoOponente.draw(context);
+})
+
 //función que se ejecuta automáticamente desde el html con la método onload al cargar el body
 function crearTablero() {
   //Entra nuevo jugador
@@ -176,6 +188,7 @@ function crearTablero() {
               tamanyoCuad,
               jugador_actual.color
             );
+            socket.emit("newCuadrado", newCuadrado);
             newCuadrado.draw(context);
             element.color = jugador_actual.color;
             /* Sumar un punto a la puntuacion */
@@ -192,6 +205,7 @@ function crearTablero() {
                 tamanyoCuad,
                 jugador_actual.color
               );
+              socket.emit("newCuadrado", newCuadrado);
               newCuadrado.draw(context);
               element.color = jugador_actual.color;
               /* Sumar un punto a la puntuacion */

@@ -60,11 +60,14 @@ server.listen(5000, () => {
 
 io.on("connect", (socket) => {
   console.log("Nueva conexion");
+  socket.on('newCuadrado', (msg) => {
+    io.emit('tableroUpdate', msg);
+  })
 });
 
 io.of("/rooms").on("connection", (socket) => {
   socket.on("playerUpdate", (msg) => {
-    console.log("Room Info updated");
+    //console.log("Room Info updated");
     io.of("/rooms").emit("updateRoomInfo");
   });
   socket.on("startGame", (msg) => {
