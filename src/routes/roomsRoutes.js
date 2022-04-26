@@ -5,7 +5,7 @@ const {
   roomsAction,
   renderRooms,
 } = require("../controllers/salaController");
-const protect = require("../middleware/authMiddleware");
+const { protect } = require("../middleware/authMiddleware");
 
 router.get("/rooms", renderRooms);
 

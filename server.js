@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const session = require("express-session");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const socketio = require("socket.io");
@@ -18,6 +20,22 @@ const loginRoutes = require("./src/routes/loginRoutes");
 const registerRoutes = require("./src/routes/registerRoutes");
 const roomsRoutes = require("./src/routes/roomsRoutes");
 
+/* Tratamiento de sesiones */
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(
+  session({
+    name: "sid",
+    resave: false,
+    saveUninitialized: false,
+    secret: "shh!es,un-secreto",
+    cookie: {
+      maxAge: oneDay,
+      sameSite: true,
+      secure: "production",
+    },
+  })
+);
+app.use(bodyParser.urlencoded({ extended: true }));
 //Optional midddleware funtion to disable all the server request
 /*app.use((req,res,next)=>{
     res.status(503).send("The server is currently down.  Please check soon! ")
@@ -40,17 +58,16 @@ server.listen(5000, () => {
 
 /* socket.io */
 
-
 io.on("connect", (socket) => {
   console.log("Nueva conexion");
 });
 
 io.of("/rooms").on("connection", (socket) => {
-  socket.on('playerUpdate', (msg) => {
-    console.log('Room Info updated');
-    io.of("/rooms").emit('updateRoomInfo');
-  })
-  socket.on('startGame', (msg) => {
+  socket.on("playerUpdate", (msg) => {
+    console.log("Room Info updated");
+    io.of("/rooms").emit("updateRoomInfo");
+  });
+  socket.on("startGame", (msg) => {
     console.log(msg);
-  })
-})
+  });
+});

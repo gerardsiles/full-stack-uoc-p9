@@ -1,7 +1,7 @@
 const Usuario = require("../models/usuarioModel");
 const asyncHandler = require("../middleware/asyncHandler");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const session = require("express-session");
 
 // encontrar un usuario por su nombre de usuario
 async function getUsuarioByUsername(req, res, username) {
@@ -85,15 +85,15 @@ async function renderLogin(req, res) {
 // @route POST /login
 // @access Public
 const login = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const { email, password } = req.body;
   const user = await Usuario.findByEmail(email);
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
+    console.log("esntra");
+    req.session.username = user.username;
+    res.status(201).json({
       username: user.username,
       email: user.email,
-      token: generateToken(user.username),
     });
   } else {
     res.status(400);
@@ -101,10 +101,16 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-// Generate JWT token
-const generateToken = (username) => {
-  return jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: "30d" });
-};
+const logout = asyncHandler(async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      res.redirect("rooms");
+    }
+    res.clearCookie("sid");
+    res.redirect("login");
+  });
+});
+
 // Definir que funciones exporta el controlador
 module.exports = {
   getUsuarioByEmail,

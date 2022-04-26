@@ -48,19 +48,14 @@ async function sendUser(uEmail, uPassword) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(json),
-  });
-
-  const data = await response.json();
-  await window.sessionStorage.setItem("token", JSON.stringify(data.token));
-  console.log(data.token);
-
-  if (data.token) {
-    console.log("dentro if");
-    document.location.href = "/rooms";
-  }
-
-  /*.then(data => history.push('/rooms'))
-      .catch(err => history.push('/login'));*/
+  }).then(
+    await function (res) {
+      if (res.status === 201) {
+        console.log("logged in");
+        window.location.replace("http://localhost:5000/rooms");
+      }
+    }
+  );
 }
 
 function setErrorFor(input, message) {

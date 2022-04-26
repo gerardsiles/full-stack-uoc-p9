@@ -60,7 +60,6 @@ async function agregarJugador(id, username) {
 async function quitarJugador(id, username) {
   const room = await Room.findById(id);
   const sala = await Room.removePlayerRoom(room, username);
-  //   res.end(JSON.stringify(sala));
 }
 // @desc cargar la vista de rooms
 // @route GET /rooms
