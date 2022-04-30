@@ -1,29 +1,242 @@
 ## Desarrollo full stack
-
+- Como utilizar la aplicacion?
+La aplicacion funciona en el http://localhost:5000/ 
+En la terminal, introduce npm run start, y en el navegador solamente hay que ir a esa direccion. Te llevara al login,
+si no tienes una cuenta, puedes crear una, y al hacer el login te llevara a rooms, donde puedes escojer la sala donde 
+jugar. Haz lo mismo en otro navegador para que hayan 2 jugadores en una sala, y el juego empezara en una ventana nueva.
 ### producto 3
-// TODOS
-
-[x] introducir informacion del juego en las partidas.<br>
-[x] Porcentaje consquistado<br>
-[x] Redirect register<br>
-[x] Iniciar Partida<br>
-[] Partidas en el backend jsonr<br>
-[x] sesiones<br>
-[x] avatar, nombre etc en sesion<br>
-[] Logout(falta el boton)<br>
-[] Websockets rooms y room/:id <br>
-[] Pug room 2, 3, 4 <br>
-[x] Testear funcionalidad<br>
-[] Arreglar estrella partida<br>
-[] Informar de ganador de partida<br>
-
 
 - Identificar las estructuras de datos, clases, etc., que representan el dominio del juego multijugador.
+
+No se han agregado clases o estructuras nuevas en este producto, seguimos utilizando la misma estructura identificada en
+el anterior producto.
+
 - Adaptar la solución obtenida en el producto 2 para incorporarla a un proyecto de ExpressJS.
-- Programar una aplicación web MVC mediante ExpressJS
+
+- Para realizar la adaptacion a express, despues de instalarlo, hemos definido las rutas estaticas en el servidor para 
+servir los .css y los .js
+```javascript
+app.use(express.json());
+app.use(express.static("public"));
+```
+
+Luego, hemos creado las rutas en la carpeta de routes, cada modulo en routes se encarga de direccionar y 
+llamar a los metodos necesarios para manejar las situaciones especificas de los enrutados.
+```javascript
+router
+  .route("/register")
+  .get((req, res) => {
+    res.sendFile("/public/views/register.html", { root: "./" });
+  })
+  .post(createUsuario);
+```
+
+Despues se ha procedido a instalar express-sessions para manejar las sesiones en el servidor:
+```javascript
+/* Tratamiento de sesiones */
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(
+  session({
+    name: "sid",
+    resave: false,
+    saveUninitialized: false,
+    secret: "shh!es,un-secreto",
+    cookie: {
+      maxAge: oneDay,
+      sameSite: true,
+      secure: "production",
+    },
+  })
+);
+```
+
+Tambien se han generado varios middleware propios para manejar situaciones de acceso con o sin session, encargarse de 
+los errores o un asyncHandler que nos permite eliminar todas las lineas de codio try-catch a traves de este middleware.
+Se encuentran en la carpeta de middleware.
+
+- Programar una aplicación web MVC mediante ExpressJS<br>
+
+Toda la aplicacion esta modularizada con el patron de diseno de MVC. El servidor solamente contiene lo necesario para 
+funcionar, estando lo mas limpio posible. Las rutas se encuentran en router, que manejan las peticiones del front, y
+llaman al controlador para manejar las diferentes situaciones de recibir datos del modelo y enviarlos a la vista. 
+El controlador tambien se encarga de cargar las vistas con sus metodos. 
+<br>
+Los modulos en datos se encargan de trabajar con los datos de la aplicacion, en este caso todavia siguen conectandose
+a los archivos JSON que contienen la informacion de los usuarios, partidas y salas, y los devuelve al controlador.
+<br>
+Todo esto se hace de manera asincrona des del controlador, utilizando en el modelo las promesas para devolver la informacion.
+De esta manera, se respeta en todo momento el patron MVC y un servidor asincrono para que las peticiones no bloqueen los procesos.
+
 - Desarrollar la lógica del juego de conquistar celdas
+
+En este apartado vamos a discutir excluisvamente en la logica en el Controlador. El es el que se encarga de la mayoria 
+comprobaciones del juego, y solamente se comunica con el modelo al crear la partida para recibir los datos.<br>
+Pero antes, vamos a entender como se genera el juego y es mostrado en al usuario: <br>
+Se genera un canvas de 660 x 660, y este se divide por cuadrados de 110x110. Este conjunto forma una matriz, y es lo que 
+encontramos en el JSON de la partida en el gameboard, una matriz de 6x6 con las coordenadas x, y y su color.
+Al iniciarse su color es transparente, y cuando el usuario hace click encima del canvas, se envian esas coordenadas 
+al servidor para ser comprobadas. <br>
+
+Ahora pasamos a la logica en el servidor:<br>
+Cuando los datos llegan al controlador, lo primero que se hace es encontrar el nodo que pertenece a esas coordenadas:
+```javascript
+ for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      let currentNode = state.gameboard[i][j];
+
+      /* Buscamos el nodo en la matriz con las cordenadas recibidas */
+      if (
+              keyCodeX > currentNode.x &&
+              keyCodeX < currentNode.x + squareSize &&
+              keyCodeY > currentNode.y &&
+              keyCodeY < currentNode.y + squareSize
+      ) {
+      }
+    }
+}
+```
+Este loop de doble dimension encuentra el nodo que el usuario ha hecho click en el front. Una vez ha encontrado el nodo,
+hace las diferentes comprobaciones para comprobar que si es el primer nodo que quiere conquistar, se encuentre disponible
+(es decir, que el otro usuario no lo haya conquistado todavia), y si esta disponible, lo conquista, cambiando el color
+de "transaprente" al color del usuario.
+```javascript
+  /* Si la celda no ha sido conquistada */
+        if (currentNode.color === "transparent") {
+          // si es el primer cuadrado
+          if (state.playerOne.cellsConquered === 0) {
+            /* Si la celda no ha sido conquistada todavia actualizamos valores*/
+            currentNode.color = state.playerOne.color;
+            state.playerOne.cellsConquered++;
+            state.cellsConquered++;
+          }
+        }
+```
+
+Por ultimo, si ya hay una celda conquistada y siguiendo bajo la condicion de que el color de la celda sea 
+"transparent", comprobamos con un segundo loop de dos niveles que se encarga de comprobar que el nodo que el usuario ha
+seleccionado, sea colindante con un nodo previamente conquistado por ese usuario siempre que todavia queden celdas
+por conquistar:
+
+```javascript
+else if (state.cellsConquered != 36) {
+  /* comprobar si los nodos colindantes han sido conquistados por el jugador */
+  if (legalMove(state, i, j)) {
+    currentNode.color = state.playerOne.color;
+    state.playerOne.cellsConquered++;
+    state.cellsConquered++;
+  }
+}
+
+/* Comprobar los nodos adyacentes por celdas conquistadas del jugador */
+const legalMove = (state, i, j) => {
+  for (let k = -1; k <= 1; k++) {
+    for (let l = -1; l <= 1; l++) {
+      /* Delimitamos los nodos fuera de la matriz */
+      if (
+              i + k < 0 ||
+              i + k > state.gridsize - 1 ||
+              j + l < 0 ||
+              j + l > state.gridsize - 1
+      ) {
+        /* si el nodo esta fuera, salimos de la iteracion actual y continuamos */
+        continue;
+      }
+      /* comprobar si hay un nodo conquistado por el jugador */
+      if (state.gameboard[i + k][j + l].color == state.playerOne.color) {
+        return true;
+      }
+    }
+  }
+};
+```
+
+Si pasa los condicionales, la celda es conquistada por el usuario, de lo contrario, no pasa nada.
 - Implementar el framework Socket.io para conseguir transmitir las celdas de conquista entre los clientes y el servidor mediante websockets. Los datos de sala, usuario y posición se encuentran encapsulados en un JSON que se transmite entre cliente y servidor de  manera bidireccional.
+
+Despues de instalar socket.io, hemos implementado los sockets en el front, agregando su script al pug y hemos manejado 
+los emit y socket.on sus js. 
+
+```javascript
+/* Socket.io */
+const socket = io("http://localhost:5000");
+socket.on("init", handleInit);
+socket.on("gameState", handleGameState);
+socket.on("gameOver", handleGameOver);
+socket.on("gameWin", handleGameWin);
+```
+
+En la parte del servidor, hemos implementado los sockets dentro de los enrutados, asi se generan las conexiones necesarias 
+en cada sala de juego sin que se interfieran entre ellas.
+
+```javascript
+router
+  .get("/rooms/:roomNumber", (req, res) => {
+    var io = req.app.get("socketio");
+
+    io.on("connection", (client) => {
+      let state = createGameState();
+
+      /* Al recibir del cliente el evento click con el raton */
+      client.on("mousedown", handleMouseDown);
+
+      function handleMouseDown(keyCode) {
+        try {
+          /* Parseamos los valores recibidos de las coordenadas */
+          keyCodeX = parseInt(keyCode.x);
+          keyCodeY = parseInt(keyCode.y);
+
+          updateState(keyCodeX, keyCodeY, state);
+        } catch (e) {
+          console.log(e);
+          return;
+        }
+      }
+      startGameInterval(client, state);
+    });
+```
+
+Ademas, tambien hemos aplicado un socket en rooms, que se utiliza para enviar y recibir informacion de la cantidad de
+usuarios que se encuentran en las salas, de esta manera podemos ver los usuarios en cada sala a tiempo real des de los 
+navegadores de los jugadores que esten conectados.
+
 - Programar mediante la API HTML5 Canvas la rejillas, celdas y colores de las zonas conquistadas en cada sala por parte de cada jugador.
+
+La area de juego se genera con un canvas, y se dibuja dentro de el las divisiones de las celdas:
+```javascript
+function init() {
+  let canvas = document.getElementById("tablero_canvas"); //metemos en una variable el canvas obtenido por id del documento html
+  let context = canvas.getContext("2d"); //método canvas 2d
+  canvas.width = canvas.height = 660;
+  let squareSize = canvas.width / 6;
+
+  // Dibujamos todos los cuadrados en sus posiciones
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      let xOffset = j * squareSize;
+      let yOffset = i * squareSize;
+
+      drawSquare(context, xOffset, yOffset, squareSize, "transparent");
+    }
+  }
+
+  document.addEventListener("mousedown", mousedown);
+}
+```
+
+Tambien se utiliza el canvas para detectar las coordenadas del click del usuario, para ser enviadas al servidor.
+```javascript
+function mousedown(event) {
+  let canvas = document.getElementById("tablero_canvas");
+  const rect = canvas.getBoundingClientRect();
+  let position = {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top,
+  };
+  socket.emit("mousedown", position);
+}
+```
+
+Se utiliza de nuevo el canvas para dibujar de manera sistematica el estado del juego recibida por el socket del servidor.
 
 ### RUBRICA
 - motor de plantillas Pug
@@ -47,9 +260,51 @@ app.set("view engine", "pug");
 ```
 
 - La aplicación hace un uso completamente funcional de canvas para indicar las celdas conquistadas, incorporando texto para por ejemplo indicar el porcentaje conquistado. Dispone de imágenes de fondo cargadas con canvas para dar un entorno visual más atractivo al juego.
+
+El canvas es totalmente funcional en el juego. Ademas se inserta el nombre de usuario, su color seleccionado en el aura 
+del jugador y en el div color, y se utiliza tambien para insertar su porcentaje conquistado. 
+En el canvas se dibuja el tablero de juego con sus nodos, y tambien recoje las coordenadas para enviarlas al servidor. 
+Se cargan imagenes de fondo en la sala de juego.
+
 - La lógica del juego es correcta. Se indica visualmente quién está ganando. Se utiliza encaminamiento. Además se ha hecho servir el motor de plantillas Pug o Jade.
+
+La logica de juego esta totalmente testeada y optimizada para evitar hacer comprobaciones innecesarias. Lo primero que 
+se comprueba una vez encontrado el nodo en la matriz, es que este disponible para ser conquistada. Una vez hecha la 
+comprobacion, se miran los diferentes requisitos para ser conquistadas y proceder o denegar la conquista. 
+
+Todo esto se hace con un game loop dentro del socket, retransmitiendo a 30fps esa informacion. El game loop se rompe una 
+vez se han conquistado todas las celdas y se presenta el resultado de la partida. En todo momento tambien se actualiza 
+el porcentaje de celdas conquistadas de cada jugador.
+
+Todas las vistas se renderizan a traves de pug des del controlador.
+```javascript
+// Router
+router.route("/").get(renderLogin).post(login);
+router.route("/login").get(renderLogin).post(login);
+router.route("/logout");
+
+// Controlador
+// @desc cargar la vista de login
+// @route GET /login
+// @access public
+async function renderLogin(req, res) {
+  res.render("login");
+}
+```
+
 - Se ha creado la clase Partida y Jugador y se han implementado métodos para la gestión del juego. Se hacen las verificaciones necesarias y asociadas a la lógica del juego.
+
+Podemos encontrar las verificaciones de la partida en el controlador, donde se encarga de comprobar todos los requisitos 
+para la logica del juego. 
+
+La clase partida se encarga de generar una nueva partida, con dos jugadores dentro, y lso metodos de gestion del juego.
+
 - Se ha utilizado WebSockets, con objetos JSON. Se hace uso de la biblioteca Socket.io
+
+Se ha implementado socket.io como se ha descrito anteriormente, des de los enrutados, emitiendo y actualizando con loops 
+la informacion de las salas de juego y de las partidas, informacin que se encuentra en los JSON, que son trabajados por 
+el controlador una vez son recolectados des del modelo.
+
 ### Producto 2
 
 En este producto se propone construir la parte del proyecto relacionada con el registro de los jugadores y la selección de las salas de juego, mediante un diseño responsive y sin persistencia de datos en el lado servidor.

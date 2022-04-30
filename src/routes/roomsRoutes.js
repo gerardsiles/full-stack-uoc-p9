@@ -47,12 +47,11 @@ router
       const intervalId = setInterval(() => {
         const winner = gameLoop(state);
 
-        //         if (!winner) {
-
-        client.emit("gameState", JSON.stringify(state));
-        //         } else {
-        //           client.emit(intervalId);
-        //         }
+        if (!winner) {
+          client.emit("gameState", JSON.stringify(state));
+        } else {
+          client.emit(intervalId);
+        }
       }, 1000 / 10);
     }
     res.render(`room${req.params.roomNumber}`);

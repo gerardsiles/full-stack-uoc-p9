@@ -41,29 +41,32 @@ async function finalizarPartida() {
 }
 
 const createGameState = () => {
+  /* Crear una nueva partida con su estado */
   const state = returnGameState();
 
   return state;
 };
 
-const gameLoop = asyncHandler(async (req, res, state) => {
+const gameLoop = (state) => {
   if (!state) {
+    console.log("no llega el ");
     return;
   }
   const playerOne = state.playerOne;
+  const playerTwo = state.playerTwo;
   /* comprobar si hay un ganador */
   if (state.cellsConquered === 36) {
-    if (playerOne.cellsConquered > PlayerTwo.cellsConquered) {
-      return 1;
-    } else if (playerOne.cellsConquered < PlayerTwo.cellsConquered) {
-      return 2;
-    } else if (playerOne.cellsConquered === PlayerTwo.cellsConquered) {
-      return 3;
+    if (playerOne.cellsConquered > playerTwo.cellsConquered) {
+      return 1; // jugador 1 gana
+    } else if (playerOne.cellsConquered < playerTwo.cellsConquered) {
+      return 2; // jugador 2 gana
+    } else if (playerOne.cellsConquered === playerTwo.cellsConquered) {
+      return 3; // empate
     }
   }
   /* si no hay ganador continuamos con el juego */
   return false;
-});
+};
 
 /* Al recibir el click del usuario, actualizamos la celda */
 const updateState = (keyCodeX, keyCodeY, state) => {
@@ -86,7 +89,7 @@ const updateState = (keyCodeX, keyCodeY, state) => {
           if (state.playerOne.cellsConquered === 0) {
             /* Si la celda no ha sido conquistada todavia actualizamos valores*/
 
-            state.gameboard[i][j].color = state.playerOne.color;
+            currentNode.color = state.playerOne.color;
             state.playerOne.cellsConquered++;
             state.cellsConquered++;
 

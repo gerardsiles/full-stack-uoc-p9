@@ -3,6 +3,8 @@ const api_url = "https://localhost:5000/api/room/1";
 const socket = io("http://localhost:5000");
 socket.on("init", handleInit);
 socket.on("gameState", handleGameState);
+socket.on("gameOver", handleGameOver);
+socket.on("gameWin", handleGameWin);
 
 /* Indicar la sala favorita */
 function chStar() {
@@ -93,4 +95,12 @@ function handleInit(state) {
 function handleGameState(gameState) {
   gameState = JSON.parse(gameState);
   requestAnimationFrame(() => paintGame(gameState));
+}
+
+function handleGameOver() {
+  alert("Has perdido!");
+}
+
+function handleGameWin() {
+  console.log("Has ganado!");
 }
