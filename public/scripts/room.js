@@ -24,8 +24,8 @@ function getToken() {
   }
 }
 /* Guardar el avatar en el webstorage*/
-let newBack = "url(../images/avatar-01.png)";
-const avatar = sessionStorage.setItem("avatar", newBack);
+let newBack = localStorage.getItem("avatar");
+const avatar = localStorage.setItem("avatar", newBack);
 
 /* Selección de salas */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
@@ -116,16 +116,15 @@ sala04.addEventListener("dragstart", (e) => {
 });
 /* Elección de avatar */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
-
+// add event listener to change the avatar
+// TODO
 function chBackimage(newBack) {
   var elem = document.getElementById("selectedAvatar"); //creamnos una variable que nos almacena el elemento que queremos cambiar, nuestra imagen acutal del avatar.
   elem.style.backgroundImage = newBack; //modificamos el background del elemento almacenado en la linea anterior usando el valor que nos hemos traido con newBack en el click
   console.log(newBack);
-  var data = sessionStorage.getItem("avatar");
+  var data = localStorage.getItem("avatar");
   console.log(data);
-  sessionStorage.setItem("avatar", newBack); // guardamos en el webstorage el avatar seleccionado
-  var data = sessionStorage.getItem("avatar");
-  console.log(data);
+  localStorage.setItem("avatar", newBack); // guardamos en el webstorage el avatar seleccionado
 }
 
 function startGame(roomID, player1, player2) {

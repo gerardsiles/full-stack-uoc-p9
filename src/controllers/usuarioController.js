@@ -1,5 +1,5 @@
 const Usuario = require("../models/usuarioModel");
-const asyncHandler = require("../middleware/asyncHandler");
+const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
@@ -30,7 +30,7 @@ async function getUsuarioByEmail(req, res, email) {
 // @desc Registrar a un usuario nuevo
 // @route POST /register
 // @access public
-const createUsuario = asyncHandler(async (req, res, next) => {
+const createUsuario = asyncHandler(async (req, res) => {
   console.log(req.body);
   // objeto js con la informacion encontrada en el req
   const { username, email, password } = req.body;
@@ -89,8 +89,9 @@ const login = asyncHandler(async (req, res) => {
   const user = await Usuario.findByEmail(email);
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    console.log("esntra");
     req.session.username = user.username;
+    console.log(req.session);
+
     res.status(201).json({
       username: user.username,
       email: user.email,

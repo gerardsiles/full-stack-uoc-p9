@@ -7,12 +7,15 @@
 [x] Porcentaje consquistado<br>
 [x] Redirect register<br>
 [x] Iniciar Partida<br>
-[] Partidas en el backend al terminar<br>
+[] Partidas en el backend jsonr<br>
 [x] sesiones<br>
 [x] avatar, nombre etc en sesion<br>
-[] Logout<br>
-[] Websockets <br>
-[] Testear funcionalidad<br>
+[] Logout(falta el boton)<br>
+[] Websockets rooms y room/:id <br>
+[] Pug room 2, 3, 4 <br>
+[x] Testear funcionalidad<br>
+[] Arreglar estrella partida<br>
+[] Informar de ganador de partida<br>
 
 
 - Identificar las estructuras de datos, clases, etc., que representan el dominio del juego multijugador.

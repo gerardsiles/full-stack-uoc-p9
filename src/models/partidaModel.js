@@ -1,6 +1,7 @@
 const Partida = require("../data/partidas.json");
 const Sala = require("../models/salaModel");
 const Jugador = require("../models/usuarioModel");
+const asyncHandler = require("express-async-handler");
 
 // encontrar todas las partidas
 function findAll() {
@@ -55,3 +56,93 @@ function create(idSala, username1, username2) {
     partida = new Partida(id, sala, jugador1, jugador2);
   });
 }
+
+function returnGameState() {
+  const gameState = {
+    /* player1 and player2 */
+    playerOne: {
+      id: 0,
+      username: "",
+      cellsConquered: 0,
+      color: "",
+    },
+    playerTwo: {
+      id: 0,
+      username: "",
+      cellsConquered: 0,
+      color: "",
+    },
+    gameboard: [
+      [
+        { x: 0, y: 0, color: "transparent" },
+        { x: 110, y: 0, color: "transparent" },
+        { x: 220, y: 0, color: "transparent" },
+        { x: 330, y: 0, color: "transparent" },
+        { x: 440, y: 0, color: "transparent" },
+        { x: 550, y: 0, color: "transparent" },
+      ],
+      [
+        { x: 0, y: 110, color: "transparent" },
+        { x: 110, y: 110, color: "transparent" },
+        { x: 220, y: 110, color: "transparent" },
+        { x: 330, y: 110, color: "transparent" },
+        { x: 440, y: 110, color: "transparent" },
+        { x: 550, y: 110, color: "transparent" },
+      ],
+      [
+        { x: 0, y: 220, color: "transparent" },
+        { x: 110, y: 220, color: "transparent" },
+        { x: 220, y: 220, color: "transparent" },
+        { x: 330, y: 220, color: "transparent" },
+        { x: 440, y: 220, color: "transparent" },
+        { x: 550, y: 220, color: "transparent" },
+      ],
+      [
+        { x: 0, y: 330, color: "transparent" },
+        { x: 110, y: 330, color: "transparent" },
+        { x: 220, y: 330, color: "transparent" },
+        { x: 330, y: 330, color: "transparent" },
+        { x: 440, y: 330, color: "transparent" },
+        { x: 550, y: 330, color: "transparent" },
+      ],
+      [
+        { x: 0, y: 440, color: "transparent" },
+        { x: 110, y: 440, color: "transparent" },
+        { x: 220, y: 440, color: "transparent" },
+        { x: 330, y: 440, color: "transparent" },
+        { x: 440, y: 440, color: "transparent" },
+        { x: 550, y: 440, color: "transparent" },
+      ],
+      [
+        { x: 0, y: 550, color: "transparent" },
+        { x: 110, y: 550, color: "transparent" },
+        { x: 220, y: 550, color: "transparent" },
+        { x: 330, y: 550, color: "transparent" },
+        { x: 440, y: 550, color: "transparent" },
+        { x: 550, y: 550, color: "transparent" },
+      ],
+    ],
+    gridsize: 6,
+    cellsConquered: 0,
+  };
+
+  /* generar un color aleatorio y asignarselo al jugador */
+  const userColor = createRandomColor(gameState);
+  gameState.playerOne.color = userColor;
+
+  return gameState;
+}
+
+/* Funcion para generar un color aleatorio para el jugador */
+const createRandomColor = (state) => {
+  var letters = "0123456789ABCDEF";
+  var randomColor = "#";
+  for (var i = 0; i < 6; i++) {
+    randomColor += letters[Math.floor(Math.random() * 16)];
+  }
+  //   state.playerOne.color = randomColor;
+  //   state.playerTwo.color = randomColor;
+  return randomColor;
+};
+
+module.exports = { returnGameState };

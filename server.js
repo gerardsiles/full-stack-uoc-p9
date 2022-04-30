@@ -10,11 +10,6 @@ const http = require("http");
 const server = http.createServer(app);
 const io = socketio(server);
 
-const {
-  getSalas,
-  agregarJugador,
-} = require("./src/controllers/salaController");
-
 //Importamos los routings
 const loginRoutes = require("./src/routes/loginRoutes");
 const registerRoutes = require("./src/routes/registerRoutes");
@@ -46,7 +41,7 @@ app.use(express.static("public"));
 // redifinir la ruta de los archivos pug, declarar el motor de vistas
 app.set("views", path.join(__dirname, "./public/views"));
 app.set("view engine", "pug");
-
+app.set("socketio", io);
 //routing
 app.use(loginRoutes);
 app.use(registerRoutes);
@@ -57,10 +52,6 @@ server.listen(5000, () => {
 });
 
 /* socket.io */
-
-io.on("connect", (socket) => {
-  console.log("Nueva conexion");
-});
 
 io.of("/rooms").on("connection", (socket) => {
   socket.on("playerUpdate", (msg) => {
