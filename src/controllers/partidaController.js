@@ -1,5 +1,6 @@
 const { returnGameState } = require("../models/partidaModel");
 const asyncHandler = require("express-async-handler");
+const Partida = require("../models/Partida");
 
 // encontrar todas las partidas
 async function getPartidas(req, res) {
@@ -31,25 +32,32 @@ async function getPartida(req, res, id) {
   }
 }
 
-async function crearPartida(req, res, idSala, username1, username2) {}
-
-async function iniciarPartida() {
-  //todo
-}
-async function finalizarPartida() {
-  //todo
-}
-
-const createGameState = () => {
-  /* Crear una nueva partida con su estado */
-  const state = returnGameState();
-
+/* Inicio de funciones para socket.io */
+const initGame = () => {
+  const state = createGameState();
+  /* agregar jugadores a la partida */
   return state;
 };
 
+const createGameState = () => {
+  /* Crear una nueva partida con su estado */
+  const params = returnGameState();
+  const state = new Partida(
+    params.matchId,
+    params.roomId,
+    params.playerOne,
+    params.playerTwo,
+    params.gameboard,
+    params.gridsize,
+    params.cellsConquered
+  );
+  console.log(state);
+  return state;
+};
+
+/* Loop de una partida para actualizar la informacion */
 const gameLoop = (state) => {
   if (!state) {
-    console.log("no llega el ");
     return;
   }
   const playerOne = state.playerOne;
@@ -130,11 +138,20 @@ const legalMove = (state, i, j) => {
     }
   }
 };
+
+/* Gerard un nuevo id unico de partida */
+function handleNewGame(client) {
+  /* Generamos un nuevo id para la sala de tamano 5 */
+  let roomName = makeid(5);
+  /* Agregamos el id del socket a la partida */
+  clientRooms[client.id] = roomName;
+}
 module.exports = {
   getPartidas,
   getPartida,
-  crearPartida,
+  initGame,
   createGameState,
   gameLoop,
   updateState,
+  handleNewGame,
 };

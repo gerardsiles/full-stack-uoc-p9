@@ -1,36 +1,36 @@
 module.exports = class Sala {
-  constructor(id, nombre, jugadores, jugador1, jugador2) {
+  constructor(id, name, players, playerOne, playerTwo) {
     this.id = id;
-    this.nombre = nombre;
-    this.jugadores = jugadores;
-    this.jugador1 = jugador1;
-    this.jugador2 = jugador2;
+    this.name = name;
+    this.players = players;
+    this.playerOne = playerOne;
+    this.playerTwo = playerTwo;
   }
 
-  get nombre() {
+  get name() {
     return this.nombre;
   }
-  get jugadores() {
+  get players() {
     return this.jugadores;
   }
-  get jugador1() {
+  get playerOne() {
     return this.jugador1;
   }
 
-  get jugador2() {
+  get playerTwo() {
     return this.jugador2;
   }
-  set nombre(nombre) {
+  set name(nombre) {
     this._nombre = nombre;
   }
-  set jugadores(jugadores) {
+  set players(jugadores) {
     this._jugadores = jugadores;
   }
-  set jugador1(jugador1) {
+  set playerOne(jugador1) {
     this._jugador1 = jugador1;
   }
 
-  set jugador2(jugador2) {
+  set playerTwo(jugador2) {
     this._jugador2 = jugador2;
   }
 
@@ -43,9 +43,5 @@ module.exports = class Sala {
     if (this.jugador2) {
       jugadores++;
     }
-  }
-
-  static getNombre() {
-    return this.nombre;
   }
 };

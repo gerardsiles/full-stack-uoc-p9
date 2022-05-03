@@ -1,18 +1,15 @@
 const form = document.getElementById("form");
-const email = document.getElementById("username");
+const email = document.getElementById("email");
 const password = document.getElementById("password");
-
-var socket = io();
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  /* socket.emit("new login", "Trying to login");*/
   checkInputs();
 });
 
 // comprobar los inputs del registro de usuario
 function checkInputs() {
-  // recibir los valores de los inputs
+  // recibir los valores de los inputs y limpiarlos
   const emailValue = email.value.trim();
   const passwordValue = password.value.trim();
 
@@ -30,7 +27,7 @@ function checkInputs() {
   if (passwordValue === "") {
     setErrorFor(password, "La contraseña no puede estar vacia");
   } else {
-    setSuccessFor(password, "La contraseña es válida. ");
+    setSuccessFor(password, "");
     validPasword = 1;
   }
 
@@ -41,21 +38,25 @@ function checkInputs() {
 
 async function sendUser(uEmail, uPassword) {
   var json = { email: uEmail, password: uPassword };
-
   const response = await fetch("http://localhost:5000/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(json),
-  }).then(
-    await function (res) {
-      if (res.status === 201) {
+  });
+  console.log(response);
+  return await response
+    .json()
+
+    .then((res) => {
+      document.cookie = JSON.stringify(res);
+      sessionStorage.setItem("username", res.username);
+      if (response.status === 200) {
         console.log("logged in");
         window.location.replace("http://localhost:5000/rooms");
       }
-    }
-  );
+    });
 }
 
 function setErrorFor(input, message) {

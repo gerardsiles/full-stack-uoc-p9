@@ -13,6 +13,9 @@
     "jugador2": {
       "username":"usuario2",
       "email":"email2@uoc.edu"
+    },
+    "gameState": {
+
     }
   },
   {

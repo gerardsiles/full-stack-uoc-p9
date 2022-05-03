@@ -6,6 +6,12 @@ socket.on("gameState", handleGameState);
 socket.on("gameOver", handleGameOver);
 socket.on("gameWin", handleGameWin);
 
+/* Global variables*/
+let canvas = document.getElementById("tablero_canvas"); //metemos en una variable el canvas obtenido por id del documento html
+let context = canvas.getContext("2d"); //método canvas 2d
+canvas.width = canvas.height = 660;
+let squareSize = canvas.width / 6;
+let playerNumber;
 /* Indicar la sala favorita */
 function chStar() {
   let elem = document.querySelector(".estrella");
@@ -13,11 +19,6 @@ function chStar() {
 }
 
 function init() {
-  let canvas = document.getElementById("tablero_canvas"); //metemos en una variable el canvas obtenido por id del documento html
-  let context = canvas.getContext("2d"); //método canvas 2d
-  canvas.width = canvas.height = 660;
-  let squareSize = canvas.width / 6;
-
   // Dibujamos todos los cuadrados en sus posiciones
   for (let i = 0; i < 6; i++) {
     for (let j = 0; j < 6; j++) {
@@ -32,7 +33,6 @@ function init() {
 }
 
 function mousedown(event) {
-  let canvas = document.getElementById("tablero_canvas");
   const rect = canvas.getBoundingClientRect();
   let position = {
     x: event.clientX - rect.left,
@@ -66,10 +66,6 @@ function paintGame(state) {
     ((state.playerOne.cellsConquered * 100) / 36).toFixed(2) + "%";
 
   /* Actualizar la informacion del juego */
-  let canvas = document.getElementById("tablero_canvas"); //metemos en una variable el canvas obtenido por id del documento html
-  let context = canvas.getContext("2d"); //método canvas 2d
-  canvas.width = canvas.height = 660;
-  let squareSize = canvas.width / 6;
 
   for (let i = 0; i < 6; i++) {
     for (let j = 0; j < 6; j++) {
@@ -81,9 +77,8 @@ function paintGame(state) {
   }
 }
 
-function paintPlayerSquare(playerState, size, color) {}
-
 function handleInit(state) {
+  playerNumber = number;
   const jugador1 = document.getElementById("jugadorActual").innerHTML;
   document.getElementById("jugador_local").innerHTML = state.playerOne.username;
   document.getElementById("col_jugador_local").innerHTML = playerOne.color;

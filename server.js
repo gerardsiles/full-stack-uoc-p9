@@ -2,7 +2,9 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+
 require("dotenv").config();
 
 const socketio = require("socket.io");
@@ -16,7 +18,9 @@ const registerRoutes = require("./src/routes/registerRoutes");
 const roomsRoutes = require("./src/routes/roomsRoutes");
 
 /* Tratamiento de sesiones */
+app.use(cookieParser());
 const oneDay = 1000 * 60 * 60 * 24;
+app.set("trust proxy", 1);
 app.use(
   session({
     name: "sid",
@@ -26,10 +30,11 @@ app.use(
     cookie: {
       maxAge: oneDay,
       sameSite: true,
-      secure: "production",
+      secure: "true",
     },
   })
 );
+
 app.use(bodyParser.urlencoded({ extended: true }));
 //Optional midddleware funtion to disable all the server request
 /*app.use((req,res,next)=>{
@@ -49,16 +54,4 @@ app.use(roomsRoutes);
 
 server.listen(5000, () => {
   console.log("App listening.");
-});
-
-/* socket.io */
-
-io.of("/rooms").on("connection", (socket) => {
-  socket.on("playerUpdate", (msg) => {
-    console.log("Room Info updated");
-    io.of("/rooms").emit("updateRoomInfo");
-  });
-  socket.on("startGame", (msg) => {
-    console.log(msg);
-  });
 });

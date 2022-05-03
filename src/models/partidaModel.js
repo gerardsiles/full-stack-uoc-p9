@@ -1,7 +1,13 @@
 const Partida = require("../data/partidas.json");
+const Game = require("../data/gameState.json");
 const Sala = require("../models/salaModel");
 const Jugador = require("../models/usuarioModel");
 const asyncHandler = require("express-async-handler");
+
+/* Crear un state de partida global para que sea accesible por varios jugadores */
+const state = {};
+/* tabla para encontrar la partida del usuario entre las existentes */
+const clientRooms = {};
 
 // encontrar todas las partidas
 function findAll() {
@@ -59,6 +65,8 @@ function create(idSala, username1, username2) {
 
 function returnGameState() {
   const gameState = {
+    matchId: 0,
+    roomId: 0,
     /* player1 and player2 */
     playerOne: {
       id: 0,

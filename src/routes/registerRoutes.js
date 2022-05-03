@@ -5,7 +5,7 @@ const { createUsuario } = require("../controllers/usuarioController");
 router
   .route("/register")
   .get((req, res) => {
-    res.sendFile("/public/views/register.html", { root: "./" });
+    res.render("register");
   })
   .post(createUsuario);
 

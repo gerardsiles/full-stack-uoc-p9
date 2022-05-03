@@ -85,30 +85,30 @@ async function renderLogin(req, res) {
 // @route POST /login
 // @access Public
 const login = asyncHandler(async (req, res) => {
+  console.log(req.xhr);
   const { email, password } = req.body;
   const user = await Usuario.findByEmail(email);
 
   if (user && (await bcrypt.compare(password, user.password))) {
+    /* agregar al usuario a la cookie */
     req.session.username = user.username;
     console.log(req.session);
-
-    res.status(201).json({
-      username: user.username,
-      email: user.email,
-    });
+    return res.status(200).send(req.session);
+    //     return res.render("rooms", { username: req.session.username });
   } else {
     res.status(400);
     throw new Error("Informacion de usuario incorrecta");
   }
+  res.render("login");
 });
 
 const logout = asyncHandler(async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.redirect("rooms");
+      return res.redirect("rooms");
     }
     res.clearCookie("sid");
-    res.redirect("login");
+    res.render("login");
   });
 });
 
