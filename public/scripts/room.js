@@ -1,34 +1,21 @@
-if (getToken) {
-  window.onload;
-}
-//var socket = io("http://localhost:5000");
+var socket = io("http://localhost:5000");
 var roomSocket = io("/rooms");
 
-roomSocket.on("updateRoomInfo", () => {
-  console.log("Test");
-  showRoomsInfo();
-});
+socket.on("roomState", handleRoomsState);
+socket.on("addPlayer", handleAddPlayer);
+socket.on("removePlayer", handleRemovePlayer);
 
-window.onload = function () {
-  showRoomsInfo();
-};
-
-// clearInterval(interval);
-function getToken() {
-  const token = JSON.parse(sessionStorage.getItem("token"));
-  if (token) {
-    return true;
-  } else {
-    document.location.href = "/login";
-    return false;
-  }
-}
+const usernameParagraph = document.getElementById("username");
+const username = sessionStorage.getItem("username");
+usernameParagraph.innerText = `Hola ${username}. Arrastra tu avatar a la sala`;
 /* Guardar el avatar en el webstorage*/
 let newBack = localStorage.getItem("avatar");
 const avatar = localStorage.setItem("avatar", newBack);
 
 /* Selección de salas */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
+/* Globales */
+playBtn1 = document.getElementById("btn-sala01"); // boton para unirse a la sala
 
 sala00.addEventListener("dragover", (e) => {
   //este es el comportamiento por defecto del navegador el cual no queremos que actue
@@ -47,17 +34,12 @@ sala01.addEventListener("dragover", (e) => {
 });
 sala01.addEventListener("drop", (e) => {
   sala01.appendChild(selectedAvatar);
-  playBtn = document.getElementById("btn-sala01");
-  playBtn.style.display = "block";
-  updatePlayer("1", "jugadorX");
-  //socket.emit('playerUpdate');
-  roomSocket.emit("playerUpdate");
+  playBtn1.style.display = "block";
+  handleAddPlayer("1", "prueba");
 });
 
 sala01.addEventListener("dragstart", (e) => {
-  /* si el jugador cambia de sala, quitarlo en el back */
-  removePlayer("1", "jugadorX");
-  roomSocket.emit("playerUpdate");
+  handleRemovePlayer("1", "jugadorX");
 });
 
 sala02.addEventListener("dragover", (e) => {
@@ -69,14 +51,11 @@ sala02.addEventListener("dragover", (e) => {
 });
 sala02.addEventListener("drop", (e) => {
   sala02.appendChild(selectedAvatar);
-  updatePlayer("2", "jugadorX");
-  roomSocket.emit("playerUpdate");
+  handleAddPlayer("2", "prueba");
 });
 
 sala02.addEventListener("dragstart", (e) => {
-  /* si el jugador cambia de sala, quitarlo en el back */
-  removePlayer("2", "jugadorX");
-  roomSocket.emit("playerUpdate");
+  handleRemovePlayer("2", "jugadorX");
 });
 
 sala03.addEventListener("dragover", (e) => {
@@ -88,13 +67,11 @@ sala03.addEventListener("dragover", (e) => {
 });
 sala03.addEventListener("drop", (e) => {
   sala03.appendChild(selectedAvatar);
-  updatePlayer("3", "jugadorX");
-  roomSocket.emit("playerUpdate");
+  handleAddPlayer("3", "prueba");
 });
 
 sala03.addEventListener("dragstart", (e) => {
-  removePlayer("3", "jugadorX");
-  roomSocket.emit("playerUpdate");
+  handleRemovePlayer("3", "jugadorX");
 });
 
 sala04.addEventListener("dragover", (e) => {
@@ -106,18 +83,21 @@ sala04.addEventListener("dragover", (e) => {
 });
 sala04.addEventListener("drop", (e) => {
   sala04.appendChild(selectedAvatar);
-  updatePlayer("4", "jugadorX");
-  roomSocket.emit("playerUpdate");
+  handleAddPlayer("4", "prueba");
 });
 
 sala04.addEventListener("dragstart", (e) => {
-  removePlayer("4", "jugadorX");
-  roomSocket.emit("playerUpdate");
+  handleRemovePlayer("4", "jugadorX");
 });
+
+playBtn1.addEventListener("click", joinGame);
+
+async function joinGame() {
+  socket.emit("joinGame");
+}
 /* Elección de avatar */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
 // add event listener to change the avatar
-// TODO
 function chBackimage(newBack) {
   var elem = document.getElementById("selectedAvatar"); //creamnos una variable que nos almacena el elemento que queremos cambiar, nuestra imagen acutal del avatar.
   elem.style.backgroundImage = newBack; //modificamos el background del elemento almacenado en la linea anterior usando el valor que nos hemos traido con newBack en el click
@@ -131,17 +111,16 @@ function startGame(roomID, player1, player2) {
   /* Empezar una nueva partida en la sala y jugadores */
   roomSocket.emit("startGame", { roomID, player1, player2 });
   console.log("empezando juego");
-  /* reiniciar la pagina de rooms */
-  document.location.reload();
 }
 
-/* Conseguir la informacion de las salas */
-const showRoomsInfo = async () => {
-  const serverResponse = await fetch("/api/v2/getRoomsInfo");
-  const data = await serverResponse.json();
-  /* Insertar informacion en el DOM */
-  /* ------------------------------------------------------------------------------------------------------------------------------- */
+/* Socket.io */
+/* Al iniciar, cargar la informacion en el DOM */
+async function handleRoomsState(state) {
+  roomsState = state;
+  await showRoomsInfo(state);
+}
 
+async function showRoomsInfo(data) {
   document.getElementById("nombre1").textContent = data[0].name;
   document.getElementById(
     "jugadores1"
@@ -165,41 +144,22 @@ const showRoomsInfo = async () => {
     removePlayer("3", data[3].player1);
     removePlayer("3", data[3].player2);
   }
-};
-
-/* Actualizar jugadores al drop avatar */
-async function updatePlayer(roomId, username) {
-  var json = {
-    method: "addPlayer",
-    id: roomId,
-    username: username,
-  };
-
-  const response = await fetch("/api/v2/rooms", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(json),
-  }).then(showRoomsInfo);
 }
 
-async function removePlayer(roomId, username) {
-  var json = {
-    method: "removePlayer",
-    id: roomId,
-    username: username,
+async function handleAddPlayer(id, user) {
+  let data = {
+    roomId: id,
+    username: user,
   };
-
-  const response = await fetch("/api/v2/rooms", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(json),
-  }).then(showRoomsInfo);
+  socket.emit("addPlayer", data);
+  console.log("emit add player");
 }
 
-async function handleInit(data) {
-  console.log(data);
+async function handleRemovePlayer(id, user) {
+  let data = {
+    roomId: id,
+    username: user,
+  };
+  socket.emit("removePlayer", data);
+  console.log("emit removePlayer player");
 }

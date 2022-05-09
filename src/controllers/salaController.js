@@ -1,4 +1,6 @@
 const Room = require("../models/salaModel");
+const Sala = require("../models/sala");
+const asyncHandler = require("express-async-handler");
 
 // devuelve todas las salas
 
@@ -51,11 +53,10 @@ async function roomsAction(req, res) {
 // @desc Agregar un jugador a la sala
 // @method POST api/v2/rooms
 // @access public
-async function agregarJugador(id, username) {
+const agregarJugador = asyncHandler(async (id, username) => {
   const room = await Room.findById(id);
   const sala = await Room.addPlayerRoom(room, username);
-  //   res.end(JSON.stringify(sala));
-}
+});
 
 async function quitarJugador(id, username) {
   const room = await Room.findById(id);
@@ -67,11 +68,36 @@ async function quitarJugador(id, username) {
 async function renderRooms(req, res) {
   res.render("rooms");
 }
+
+async function createRoomState() {
+  // get state
+  const state = await Room.findAll();
+  return state;
+}
+
+function roomLoop(state) {
+  if (!state) {
+    return;
+  }
+  // TODO
+  // recibir los jugadores y agregarlos a la sala
+
+  const Midgard = new Sala();
+
+  /* Si los jugadores en sala son 2, iniciar una nueva partida */
+  if (Midgard.players === 2) {
+    return 1;
+  }
+}
+
 module.exports = {
   getSalas,
   getSala,
   jugadoresEnSala,
   agregarJugador,
+  quitarJugador,
   renderRooms,
   roomsAction,
+  createRoomState,
+  roomLoop,
 };

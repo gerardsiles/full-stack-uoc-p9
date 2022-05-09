@@ -1,7 +1,6 @@
 const Usuario = require("../models/usuarioModel");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const session = require("express-session");
 
 // encontrar un usuario por su nombre de usuario
@@ -32,6 +31,7 @@ async function getUsuarioByEmail(req, res, email) {
 // @route POST /register
 // @access public
 const createUsuario = asyncHandler(async (req, res) => {
+  console.log(req.body);
   // objeto js con la informacion encontrada en el req
   const { username, email, password } = req.body;
   // validar la informacion recibida
@@ -66,7 +66,6 @@ const createUsuario = asyncHandler(async (req, res) => {
       res.status(201).json({
         username: newUser.username,
         email: newUser.email,
-        token: generateToken(user.username),
       });
     } else {
       res.status(400);
@@ -86,34 +85,27 @@ async function renderLogin(req, res) {
 // @route POST /login
 // @access Public
 const login = asyncHandler(async (req, res) => {
+  console.log(req.xhr);
   const { email, password } = req.body;
   const user = await Usuario.findByEmail(email);
 
   if (user && (await bcrypt.compare(password, user.password))) {
+    /* agregar al usuario a la cookie */
     req.session.username = user.username;
-
-    res.status(201).json({
-      username: user.username,
-      email: user.email,
-      token: generateToken(user.username),
-    });
+    console.log(req.session);
+    return res.status(200).send(req.session);
+    //     return res.render("rooms", { username: req.session.username });
   } else {
-    res.status(401).json({
-      success: false,
-      msg: "Credenciales no validas",
-    });
+    res.status(400);
+    throw new Error("Informacion de usuario incorrecta");
   }
+  res.render("login");
 });
-
-// Generate JWT token
-const generateToken = (username) => {
-  return jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: "30d" });
-};
 
 const logout = asyncHandler(async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      res.render("rooms");
+      return res.redirect("rooms");
     }
     res.clearCookie("sid");
     res.render("login");

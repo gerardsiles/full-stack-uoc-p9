@@ -1,5 +1,6 @@
 const { returnGameState } = require("../models/partidaModel");
 const asyncHandler = require("express-async-handler");
+const Partida = require("../models/Partida");
 
 // encontrar todas las partidas
 async function getPartidas(req, res) {
@@ -31,39 +32,49 @@ async function getPartida(req, res, id) {
   }
 }
 
-async function crearPartida(req, res, idSala, username1, username2) {}
-
-async function iniciarPartida() {
-  //todo
-}
-async function finalizarPartida() {
-  //todo
-}
-
-const createGameState = () => {
-  const state = returnGameState();
-
+/* Inicio de funciones para socket.io */
+const initGame = () => {
+  const state = createGameState();
+  /* agregar jugadores a la partida */
   return state;
 };
 
-const gameLoop = asyncHandler(async (req, res, state) => {
+const createGameState = () => {
+  /* Crear una nueva partida con su estado */
+  const params = returnGameState();
+  const state = new Partida(
+    params.matchId,
+    params.roomId,
+    params.playerOne,
+    params.playerTwo,
+    params.gameboard,
+    params.gridsize,
+    params.cellsConquered
+  );
+  console.log(state);
+  return state;
+};
+
+/* Loop de una partida para actualizar la informacion */
+const gameLoop = (state) => {
   if (!state) {
     return;
   }
   const playerOne = state.playerOne;
+  const playerTwo = state.playerTwo;
   /* comprobar si hay un ganador */
   if (state.cellsConquered === 36) {
-    if (playerOne.cellsConquered > PlayerTwo.cellsConquered) {
-      return 1;
-    } else if (playerOne.cellsConquered < PlayerTwo.cellsConquered) {
-      return 2;
-    } else if (playerOne.cellsConquered === PlayerTwo.cellsConquered) {
-      return 3;
+    if (playerOne.cellsConquered > playerTwo.cellsConquered) {
+      return 1; // jugador 1 gana
+    } else if (playerOne.cellsConquered < playerTwo.cellsConquered) {
+      return 2; // jugador 2 gana
+    } else if (playerOne.cellsConquered === playerTwo.cellsConquered) {
+      return 3; // empate
     }
   }
   /* si no hay ganador continuamos con el juego */
   return false;
-});
+};
 
 /* Al recibir el click del usuario, actualizamos la celda */
 const updateState = (keyCodeX, keyCodeY, state) => {
@@ -86,7 +97,7 @@ const updateState = (keyCodeX, keyCodeY, state) => {
           if (state.playerOne.cellsConquered === 0) {
             /* Si la celda no ha sido conquistada todavia actualizamos valores*/
 
-            state.gameboard[i][j].color = state.playerOne.color;
+            currentNode.color = state.playerOne.color;
             state.playerOne.cellsConquered++;
             state.cellsConquered++;
 
@@ -127,11 +138,20 @@ const legalMove = (state, i, j) => {
     }
   }
 };
+
+/* Gerard un nuevo id unico de partida */
+function handleNewGame(client) {
+  /* Generamos un nuevo id para la sala de tamano 5 */
+  let roomName = makeid(5);
+  /* Agregamos el id del socket a la partida */
+  clientRooms[client.id] = roomName;
+}
 module.exports = {
   getPartidas,
   getPartida,
-  crearPartida,
+  initGame,
   createGameState,
   gameLoop,
   updateState,
+  handleNewGame,
 };

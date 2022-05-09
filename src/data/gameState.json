@@ -1,48 +1,68 @@
 [{
-  "player": {
+  "matchID" : 0,
+  "room": 0,
+  "playerOne": {
     "id": 0,
     "username": "",
     "cellsConquered": 0,
-   " color": ""
+    "color": ""
+  },
+  "playerTwo": {
+    "id": 0,
+    "username": "",
+    "cellsConquered": 0,
+    "color": ""
   },
   "gameboard": [
-    { "x": 0, "y": 0, "color": "transparent" },
-    { "x": 110, "y": 0, "color": "transparent" },
-    { "x": 220, "y": 0, "color": "transparent" },
-    { "x": 330, "y": 0, "color": "transparent" },
-    { "x": 440, "y": 0, "color": "transparent" },
-    { "x": 550, "y": 0, "color": "transparent" },
-    { "x": 0, "y": 110, "color": "transparent" },
-    { "x": 110, "y": 110, "color": "transparent" },
-    { "x": 220, "y": 110, "color": "transparent" },
-    { "x": 330, "y": 110, "color": "transparent" },
-    { "x": 440, "y": 110, "color": "transparent" },
-    { "x": 550, "y": 110, "color": "transparent" },
-    { "x": 0, "y": 220, "color": "transparent" },
-    { "x": 110, "y": 220, "color": "transparent" },
-    { "x": 220, "y": 220, "color": "transparent" },
-    { "x": 330, "y": 220, "color": "transparent" },
-    { "x": 440, "y": 220, "color": "transparent" },
-    { "x": 550, "y": 220, "color": "transparent" },
-    { "x": 0, "y": 330, "color": "transparent" },
-    { "x": 110, "y": 330, "color": "transparent" },
-    { "x": 220, "y": 330, "color": "transparent" },
-    { "x": 330, "y": 330, "color": "transparent" },
-    { "x": 440, "y": 330, "color": "transparent" },
-    { "x": 550, "y": 330, "color": "transparent" },
-    { "x": 0, "y": 440, "color": "transparent" },
-    { "x": 110, "y": 440, "color": "transparent" },
-    { "x": 220, "y": 440, "color": "transparent" },
-    { "x": 330, "y": 440, "color": "transparent" },
-    { "x": 440, "y": 440, "color": "transparent" },
-    { "x": 550, "y": 440, "color": "transparent" },
-    { "x": 0, "y": 550, "color": "transparent" },
-    { "x": 110, "y": 550, "color": "transparent" },
-    { "x": 220, "y": 550, "color": "transparent" },
-    { "x": 330, "y": 550, "color": "transparent" },
-    { "x": 440, "y": 550, "color": "transparent" },
-    { "x": 550, "y": 550, "color": "transparent" }
+    [
+      { "x": 110, "y": 0, "color": "transparent" },
+      { "x": 220, "y": 0, "color": "transparent" },
+      { "x": 330, "y": 0, "color": "transparent" },
+      { "x": 440, "y": 0, "color": "transparent" },
+      { "x": 550, "y": 0, "color": "transparent" },
+      { "x": 0, "y": 0, "color": "transparent" }
+    ],
+    [
+      { "x": 0, "y": 110, "color": "transparent" },
+      { "x": 110, "y": 110, "color": "transparent" },
+      { "x": 220, "y": 110, "color": "transparent" },
+      { "x": 330, "y": 110, "color": "transparent" },
+      { "x": 440, "y": 110, "color": "transparent" },
+      { "x": 550, "y": 110, "color": "transparent" }
+    ],
+    [
+      { "x": 0, "y": 220, "color": "transparent" },
+      { "x": 110, "y": 220, "color": "transparent" },
+      { "x": 220, "y": 220, "color": "transparent" },
+      { "x": 330, "y": 220, "color": "transparent" },
+      { "x": 440, "y": 220, "color": "transparent" },
+      { "x": 550, "y": 220, "color": "transparent" }
+    ],
+    [
+      { "x": 0, "y": 330, "color": "transparent" },
+      { "x": 110, "y": 330, "color": "transparent" },
+      { "x": 220, "y": 330, "color": "transparent" },
+      { "x": 330, "y": 330, "color": "transparent" },
+      { "x": 440, "y": 330, "color": "transparent" },
+      { "x": 550, "y": 330, "color": "transparent" }
+    ],
+    [
+      { "x": 0, "y": 440, "color": "transparent" },
+      { "x": 110, "y": 440, "color": "transparent" },
+      { "x": 220, "y": 440, "color": "transparent" },
+      { "x": 330, "y": 440, "color": "transparent" },
+      { "x": 440, "y": 440, "color": "transparent" },
+      { "x": 550, "y": 440, "color": "transparent" }
+    ],
+    [
+      { "x": 550, "y": 550, "color": "transparent" },
+      { "x": 0, "y": 550, "color": "transparent" },
+      { "x": 110, "y": 550, "color": "transparent" },
+      { "x": 220, "y": 550, "color": "transparent" },
+      { "x": 330, "y": 550, "color": "transparent" },
+      { "x": 440, "y": 550, "color": "transparent" }
+    ]
   ],
   "gridsize": 6,
-
+  "cellsConquered": 0
 }]
