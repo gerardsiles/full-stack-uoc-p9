@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const session = require("express-session");
+var cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
@@ -35,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /*app.use((req,res,next)=>{
     res.status(503).send("The server is currently down.  Please check soon! ")
 })*/
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public"));
 // redifinir la ruta de los archivos pug, declarar el motor de vistas

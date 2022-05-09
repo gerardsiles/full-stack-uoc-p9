@@ -1,9 +1,14 @@
 const asyncHandler = require("./asyncHandler");
+const jwt = require("jsonwebtoken");
+const user = require("../controllers/usuarioController");
+var cookieParser = require("cookie-parser");
 
 const protect = asyncHandler(async (req, res, next) => {
-  if (req.session.username == null) {
-    console.log(req.session);
-    return res.redirect("login");
+  let username = req.cookies.username;
+  console.log(username);
+
+  if (!username) {
+    res.render("login");
   }
   next();
 });

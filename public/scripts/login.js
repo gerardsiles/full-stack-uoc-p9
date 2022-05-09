@@ -48,14 +48,23 @@ async function sendUser(uEmail, uPassword) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(json),
-  }).then(
-    await function (res) {
-      if (res.status === 201) {
-        console.log("logged in");
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (data.success === false) {
+        setErrorFor(email, "Credenciales incorrectas");
+        setErrorFor(password, "Revisa la informacion");
+      } else {
+        document.cookie = `username=${data.username}`;
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("JWT_TOKEN", data.token);
         window.location.replace("http://localhost:5000/rooms");
       }
-    }
-  );
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function setErrorFor(input, message) {

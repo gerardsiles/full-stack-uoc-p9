@@ -1,4 +1,5 @@
 const api_url = "https://localhost:5000/api/room/1";
+const username = JSON.parse(localStorage.getItem("username"));
 /* Socket.io */
 const socket = io("http://localhost:5000");
 socket.on("init", handleInit);

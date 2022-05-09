@@ -14,12 +14,12 @@ const {
 } = require("../controllers/partidaController");
 const { protect } = require("../middleware/authMiddleware");
 
-router.get("/rooms", renderRooms);
+router.get("/rooms", protect, renderRooms);
 
 //   .post((req, res) => {});
 // en post crea una partida
 router
-  .get("/rooms/:roomNumber", (req, res) => {
+  .get("/rooms/:roomNumber", protect, (req, res) => {
     var io = req.app.get("socketio");
 
     io.on("connection", (client) => {

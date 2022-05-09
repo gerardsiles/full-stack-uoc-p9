@@ -26,6 +26,7 @@
     "express": "^4.17.3",
     "express-async-handler": "^1.2.0",
     "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
     "mime": "^3.0.0",
     "mustache": "^4.2.0",
     "pug-cli": "^1.0.0-alpha6",

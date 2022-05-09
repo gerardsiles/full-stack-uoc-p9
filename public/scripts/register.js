@@ -100,14 +100,22 @@ async function sendInformation(username, email, password) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(json),
-  }).then(
-    await function (res) {
-      if (res.status === 201) {
-        console.log("Registered");
-        window.location.replace("http://localhost:5000/login");
+  })
+    .then(
+      await function (res) {
+        console.log(res.data);
+        if (res.status === 201) {
+          localStorage.setItem("JWT_TOKEN", response.data.token);
+          window.location.replace("http://localhost:5000/login");
+        }
       }
-    }
-  );
+    )
+    .catch((err) => {
+      if (err.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+    });
 
   const prueba = await response;
 }
