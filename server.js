@@ -4,6 +4,7 @@ const app = express();
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const connectDB = require('./src/db/connect')
 
 require("dotenv").config();
 
@@ -11,6 +12,10 @@ const socketio = require("socket.io");
 const http = require("http");
 const server = http.createServer(app);
 const io = socketio(server);
+
+//Conexion a la BBDD
+connectDB()
+
 
 //Importamos los routings
 const loginRoutes = require("./src/routes/loginRoutes");
