@@ -29,15 +29,17 @@ async function getUsuarioByEmail(req, res, email) {
   }
 }
 
-// @desc Registrar a un usuario nuevo
+// @desc Registrar a un usuario nuevo en MongoDB
 // @route POST /register
 // @access public
 const createUsuario = asyncHandler(async (req, res) => {
+  console.log(req.body);
   // objeto js con la informacion encontrada en el req
   const { username, email, password } = req.body;
   // validar la informacion recibida
-  const usernameExists = await Usuario.usernameExists(username);
-  const emailExists = await Usuario.emailExists(email);
+  
+  const usernameExists = await User.findOne({ username });
+  const emailExists = await User.findOne({ email });
   // si el usuario ya existe, informamos del error
   if (usernameExists) {
     res.status(400);
@@ -61,20 +63,22 @@ const createUsuario = asyncHandler(async (req, res) => {
   // Crear al usuario
   if (!usernameExists && !emailExists) {
     // escribir la informacion del head
-    const newUser = await Usuario.create(usuario);
+    const newUser = await User.create(usuario);
 
     if (newUser) {
       res.status(201).json({
         username: newUser.username,
         email: newUser.email,
-        token: generateToken(user.username),
-      });
+      })
     } else {
       res.status(400);
       console.log("Informacion de usuario incorrecta");
     }
   }
 });
+
+
+
 
 // @desc cargar la vista de login
 // @route GET /login
@@ -83,26 +87,26 @@ async function renderLogin(req, res) {
   res.render("login");
 }
 
-// @desc login del usuario
+// @desc login del usuario recuperando user de MongoDB
 // @route POST /login
 // @access Public
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await Usuario.findByEmail(email);
+  const user = await User.findOne({ email }).select(' password email username')
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    req.session.username = user.username;
-
-    res.status(201).json({
-      username: user.username,
-      email: user.email,
-      token: generateToken(user.username),
-    });
+  if(!user){
+    return res.status(400);
+    throw new Error("Informacion de usuario incorrecta")    
   } else {
-    res.status(400).json({
-      success: false,
-      msg: "Credenciales no validas",
-    });
+    const isMatch = await bcrypt.compare(password, user.password)
+    if(!isMatch){
+      res.status(400);
+      throw new Error("Contraseña incorrecta");
+    }else {
+      req.session.username = user.username;
+      console.log(req.session);
+      return res.status(200).send(req.session);
+    }
   }
 });
 
