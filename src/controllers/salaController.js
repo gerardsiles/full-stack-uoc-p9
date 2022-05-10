@@ -51,43 +51,30 @@ async function roomsAction(req, res) {
   }
 }
 // @desc Agregar un jugador a la sala
-// @method POST api/v2/rooms
+// @method POST /api/v2/rooms/addPlayer
 // @access public
-const agregarJugador = asyncHandler(async (id, username) => {
+const agregarJugador = asyncHandler(async (req, res) => {
+  const { id, username } = req.body;
   const room = await Room.findById(id);
   const sala = await Room.addPlayerRoom(room, username);
+  const salas = await Room.findAll();
+  res.json(salas);
 });
 
-async function quitarJugador(id, username) {
+const quitarJugador = asyncHandler(async (req, res) => {
+  const { id, username } = req.body;
+
   const room = await Room.findById(id);
   const sala = await Room.removePlayerRoom(room, username);
-}
+
+  const salas = await Room.findAll();
+  res.json(salas);
+});
 // @desc cargar la vista de rooms
 // @route GET /rooms
 // @access public
 async function renderRooms(req, res) {
   res.render("rooms");
-}
-
-async function createRoomState() {
-  // get state
-  const state = await Room.findAll();
-  return state;
-}
-
-function roomLoop(state) {
-  if (!state) {
-    return;
-  }
-  // TODO
-  // recibir los jugadores y agregarlos a la sala
-
-  const Midgard = new Sala();
-
-  /* Si los jugadores en sala son 2, iniciar una nueva partida */
-  if (Midgard.players === 2) {
-    return 1;
-  }
 }
 
 module.exports = {
@@ -98,6 +85,4 @@ module.exports = {
   quitarJugador,
   renderRooms,
   roomsAction,
-  createRoomState,
-  roomLoop,
 };

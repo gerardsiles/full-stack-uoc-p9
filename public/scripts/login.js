@@ -1,12 +1,10 @@
 const form = document.getElementById("form");
-const email = document.getElementById("username");
+const email = document.getElementById("email");
 const password = document.getElementById("password");
-
-var socket = io();
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  /* socket.emit("new login", "Trying to login");*/
+  /* socket.emit*/
   checkInputs();
 });
 
@@ -58,7 +56,7 @@ async function sendUser(uEmail, uPassword) {
       } else {
         document.cookie = `username=${data.username}`;
         localStorage.setItem("username", data.username);
-        localStorage.setItem("JWT_TOKEN", data.token);
+        //         localStorage.setItem("JWT_TOKEN", data.token);
         window.location.replace("http://localhost:5000/rooms");
       }
     })

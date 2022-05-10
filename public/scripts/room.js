@@ -1,16 +1,32 @@
-var socket = io("http://localhost:5000");
-var roomSocket = io("/rooms");
+const getRoomsInfoURL = "/api/v2/getRoomsInfo";
+const addPlayerURL = "/api/v2/rooms/addPlayer";
+const removePlayerURL = "/api/v2/rooms/removePlayer";
 
-socket.on("roomState", handleRoomsState);
-socket.on("addPlayer", handleAddPlayer);
-socket.on("removePlayer", handleRemovePlayer);
-
+/* Insertar el nombre de usuario en el DOM */
 const usernameParagraph = document.getElementById("username");
-const username = sessionStorage.getItem("username");
+const username = localStorage.getItem("username");
 usernameParagraph.innerText = `Hola ${username}. Arrastra tu avatar a la sala`;
 /* Guardar el avatar en el webstorage*/
 let newBack = localStorage.getItem("avatar");
 const avatar = localStorage.setItem("avatar", newBack);
+document.getElementById("selectedAvatar").style.backgroundImage = newBack;
+
+/* Al refrescar la pagina, volver el avatar a su posicion anterior */
+if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+  let sessionRoom = sessionStorage.getItem("avatarRoom");
+  console.log("Session room: " + sessionRoom);
+  if (sessionRoom === "sala01") {
+    sala01.appendChild(selectedAvatar);
+  } else if (sessionRoom === "sala02") {
+    sala02.appendChild(selectedAvatar);
+  } else if (sessionRoom === "sala03") {
+    sala03.appendChild(selectedAvatar);
+  } else if (sessionRoom === "sala04") {
+    sala04.appendChild(selectedAvatar);
+  } else {
+    sala00.appendChild(selectedAvatar);
+  }
+}
 
 /* Selección de salas */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
@@ -34,12 +50,13 @@ sala01.addEventListener("dragover", (e) => {
 });
 sala01.addEventListener("drop", (e) => {
   sala01.appendChild(selectedAvatar);
+  sessionStorage.setItem("avatarRoom", "sala01");
   playBtn1.style.display = "block";
-  handleAddPlayer("1", "prueba");
+  handleAddPlayer("1", username);
 });
 
 sala01.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("1", "jugadorX");
+  handleRemovePlayer("1", username);
 });
 
 sala02.addEventListener("dragover", (e) => {
@@ -51,11 +68,13 @@ sala02.addEventListener("dragover", (e) => {
 });
 sala02.addEventListener("drop", (e) => {
   sala02.appendChild(selectedAvatar);
-  handleAddPlayer("2", "prueba");
+  sessionStorage.setItem("avatarRoom", "sala02");
+
+  handleAddPlayer("2", username);
 });
 
 sala02.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("2", "jugadorX");
+  handleRemovePlayer("2", username);
 });
 
 sala03.addEventListener("dragover", (e) => {
@@ -67,11 +86,13 @@ sala03.addEventListener("dragover", (e) => {
 });
 sala03.addEventListener("drop", (e) => {
   sala03.appendChild(selectedAvatar);
-  handleAddPlayer("3", "prueba");
+  sessionStorage.setItem("avatarRoom", "sala03");
+
+  handleAddPlayer("3", username);
 });
 
 sala03.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("3", "jugadorX");
+  handleRemovePlayer("3", username);
 });
 
 sala04.addEventListener("dragover", (e) => {
@@ -83,25 +104,22 @@ sala04.addEventListener("dragover", (e) => {
 });
 sala04.addEventListener("drop", (e) => {
   sala04.appendChild(selectedAvatar);
-  handleAddPlayer("4", "prueba");
+  sessionStorage.setItem("avatarRoom", "sala04");
+
+  handleAddPlayer("4", username);
 });
 
 sala04.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("4", "jugadorX");
+  handleRemovePlayer("4", username);
 });
 
-playBtn1.addEventListener("click", joinGame);
-
-async function joinGame() {
-  socket.emit("joinGame");
-}
 /* Elección de avatar */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
 // add event listener to change the avatar
 function chBackimage(newBack) {
   var elem = document.getElementById("selectedAvatar"); //creamnos una variable que nos almacena el elemento que queremos cambiar, nuestra imagen acutal del avatar.
   elem.style.backgroundImage = newBack; //modificamos el background del elemento almacenado en la linea anterior usando el valor que nos hemos traido con newBack en el click
-  console.log(newBack);
+  localStorage.setItem("avatar", newBack);
   var data = localStorage.getItem("avatar");
   console.log(data);
   localStorage.setItem("avatar", newBack); // guardamos en el webstorage el avatar seleccionado
@@ -113,14 +131,19 @@ function startGame(roomID, player1, player2) {
   console.log("empezando juego");
 }
 
-/* Socket.io */
 /* Al iniciar, cargar la informacion en el DOM */
-async function handleRoomsState(state) {
-  roomsState = state;
-  await showRoomsInfo(state);
+async function initRoomsState() {
+  fetch(getRoomsInfoURL)
+    .then((response) => response.json())
+    .then(async (data) => {
+      await showRoomsData(data);
+    });
+  setTimeout(initRoomsState, 1000);
 }
+initRoomsState();
 
-async function showRoomsInfo(data) {
+/* Insertar la informacion en el dom con los datos del servidor */
+async function showRoomsData(data) {
   document.getElementById("nombre1").textContent = data[0].name;
   document.getElementById(
     "jugadores1"
@@ -148,18 +171,37 @@ async function showRoomsInfo(data) {
 
 async function handleAddPlayer(id, user) {
   let data = {
-    roomId: id,
+    id: id,
     username: user,
   };
-  socket.emit("addPlayer", data);
-  console.log("emit add player");
+  const response = await fetch(addPlayerURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then(async (data) => {
+      await showRoomsData(data);
+    });
 }
 
 async function handleRemovePlayer(id, user) {
   let data = {
-    roomId: id,
+    id: id,
     username: user,
   };
-  socket.emit("removePlayer", data);
-  console.log("emit removePlayer player");
+
+  const response = await fetch(removePlayerURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then(async (data) => {
+      await showRoomsData(data);
+    });
 }

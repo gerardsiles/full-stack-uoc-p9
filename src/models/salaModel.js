@@ -44,15 +44,15 @@ async function addPlayerRoom(room, username) {
       for (var i = 0; i < salas.length; i++) {
         if (salas[i].id == id) {
           salas[i].players = 1;
-          salas[i].player1 = username;
-          resolve(salas[i]);
+          salas[i].playerOne = username;
+          resolve(salas);
         }
       }
     } else {
       for (var i = 0; i < salas.length; i++) {
         if (salas[i].id == id) {
           salas[i].players = 2;
-          salas[i].player2 = username;
+          salas[i].playerTwo = username;
           resolve(salas[i]);
         }
       }

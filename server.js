@@ -2,9 +2,11 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const session = require("express-session");
-var cookieParser = require("cookie-parser");
+
+const cookieParser = require("cookie-parser");
+
 const bodyParser = require("body-parser");
-const connectDB = require('./src/db/connect')
+const connectDB = require("./src/db/connect");
 
 require("dotenv").config();
 
@@ -14,8 +16,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 //Conexion a la BBDD
-connectDB()
-
+connectDB();
 
 //Importamos los routings
 const loginRoutes = require("./src/routes/loginRoutes");
@@ -23,7 +24,9 @@ const registerRoutes = require("./src/routes/registerRoutes");
 const roomsRoutes = require("./src/routes/roomsRoutes");
 
 /* Tratamiento de sesiones */
+app.use(cookieParser());
 const oneDay = 1000 * 60 * 60 * 24;
+app.set("trust proxy", 1);
 app.use(
   session({
     name: "sid",
@@ -33,11 +36,10 @@ app.use(
     cookie: {
       maxAge: oneDay,
       sameSite: true,
-      secure: "production",
+      secure: "true",
     },
   })
 );
-
 app.use(bodyParser.urlencoded({ extended: true }));
 //Optional midddleware funtion to disable all the server request
 /*app.use((req,res,next)=>{
