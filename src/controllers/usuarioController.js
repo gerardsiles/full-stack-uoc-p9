@@ -1,4 +1,5 @@
 const Usuario = require("../models/usuarioModel");
+const User = require("../models/usuarioSchema")
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
@@ -35,8 +36,9 @@ const createUsuario = asyncHandler(async (req, res) => {
   // objeto js con la informacion encontrada en el req
   const { username, email, password } = req.body;
   // validar la informacion recibida
-  const usernameExists = await Usuario.usernameExists(username);
-  const emailExists = await Usuario.emailExists(email);
+  
+  const usernameExists = await User.findOne({ username });
+  const emailExists = await User.findOne({ email });
   // si el usuario ya existe, informamos del error
   if (usernameExists) {
     res.status(400);
@@ -60,7 +62,7 @@ const createUsuario = asyncHandler(async (req, res) => {
   // Crear al usuario
   if (!usernameExists && !emailExists) {
     // escribir la informacion del head
-    const newUser = await Usuario.create(usuario);
+    const newUser = await User.create(usuario);
 
     if (newUser) {
       res.status(201).json({
@@ -85,21 +87,23 @@ async function renderLogin(req, res) {
 // @route POST /login
 // @access Public
 const login = asyncHandler(async (req, res) => {
-  console.log(req.xhr);
   const { email, password } = req.body;
-  const user = await Usuario.findByEmail(email);
+  const user = await User.findOne({ email }).select(' password email username')
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    /* agregar al usuario a la cookie */
-    req.session.username = user.username;
-    console.log(req.session);
-    return res.status(200).send(req.session);
-    //     return res.render("rooms", { username: req.session.username });
+  if(!user){
+    return res.status(400);
+    throw new Error("Informacion de usuario incorrecta")    
   } else {
-    res.status(400);
-    throw new Error("Informacion de usuario incorrecta");
+    const isMatch = await bcrypt.compare(password, user.password)
+    if(!isMatch){
+      res.status(400);
+      throw new Error("Contraseña incorrecta");
+    }else {
+      req.session.username = user.username;
+      console.log(req.session);
+      return res.status(200).send(req.session);
+    }
   }
-  res.render("login");
 });
 
 const logout = asyncHandler(async (req, res) => {
