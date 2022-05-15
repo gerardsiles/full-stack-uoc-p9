@@ -1,17 +1,23 @@
 const salas = require("../data/salas.json");
 const Sala = require("./Sala");
 
+const Midgard = new Sala(1, "Midgard", 0, "", "");
+const Valhalla = new Sala(JSON.stringify(findById(2)));
+const Elfheim = new Sala(findById(3));
+const Asgard = new Sala(findById(4));
+let roomState = { Midgard, Valhalla, Elfheim, Asgard };
+
 // encontrar todas las salas
-function findAll() {
+async function findAll() {
   return new Promise((resolve, reject) => {
     resolve(salas);
   });
 }
 
 // encontrar una sala por su id
-function findById(id) {
+async function findById(id) {
   return new Promise((resolve, reject) => {
-    const sala = salas.find((s) => s.id === id);
+    const sala = salas.find((sala) => sala.id == id);
     resolve(sala);
   });
 }
@@ -19,26 +25,21 @@ function findById(id) {
 // Comprobar cuantos jugadores hay en una sala
 async function jugadoresSala(id) {
   return new Promise((resolve, reject) => {
-    let sala = findById(id);
-    let s = JSON.parse(myJSON);
-    let jugadores = 0;
-    // si hay un jugador1 sumamos jugadores
-    let jugador1 = s.jugador1;
-    if (jugador1) {
-      jugadores++;
+    if (id == 1) {
+      resolve(Midgard.players);
+    } else if (id == 2) {
+      resolve(Valhalla.players);
+    } else if (id == 3) {
+      resolve(Elfheim.players);
+    } else if (id == 4) {
+      resolve(Asgard.players);
     }
-    let jugador2 = s.jugador2;
-    if (jugador2) {
-      jugadores++;
-    }
-    resolve(jugadores);
   });
 }
 
 async function addPlayerRoom(room, username) {
   let r = new Promise((resolve, reject) => {
     let { id, name, players, player1, player2 } = room;
-    let updatedRoom = room;
 
     if (players === 0) {
       for (var i = 0; i < salas.length; i++) {
@@ -56,21 +57,21 @@ async function addPlayerRoom(room, username) {
           resolve(salas[i]);
         }
       }
+      resolve(salas);
     }
-    resolve(salas);
   });
 }
 
 async function removePlayerRoom(room, username) {
   let r = new Promise((resolve, reject) => {
-    let { id, name, players, player1, player2 } = room;
+    let { id, name, players, playerOne, playerTwo } = room;
     let updatedRoom = room;
 
     if (players === 1) {
       for (var i = 0; i < salas.length; i++) {
         if (salas[i].id == id) {
           salas[i].players = 0;
-          salas[i].player1 = "";
+          salas[i].playerOne = "";
           resolve(salas[i]);
         }
       }
@@ -78,8 +79,7 @@ async function removePlayerRoom(room, username) {
       for (var i = 0; i < salas.length; i++) {
         if (salas[i].id == id) {
           salas[i].players = 1;
-          console.log(JSON.stringify(salas[i].player2));
-          salas[i].player2 = "";
+          salas[i].playerTwo = "";
           resolve(salas[i]);
         }
       }

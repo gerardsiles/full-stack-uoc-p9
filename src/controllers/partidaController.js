@@ -51,7 +51,7 @@ const createGameState = () => {
     params.gridsize,
     params.cellsConquered
   );
-  console.log(state);
+  console.log(`GameState: ${state}`);
   return state;
 };
 

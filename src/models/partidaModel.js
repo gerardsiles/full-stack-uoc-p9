@@ -15,7 +15,6 @@ function findAll() {
     resolve(Partida);
   });
 }
-
 // encontrar partida por su id
 function findById(id) {
   return new Promise((resolve, reject) => {

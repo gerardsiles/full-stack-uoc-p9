@@ -2,11 +2,16 @@ const express = require("express");
 const router = express.Router();
 const asyncHandler = require("express-async-handler");
 const { socketConnection } = require("../utils/roomUtils");
+const Sala = require("../models/Sala");
+const { findById } = require("../models/salaModel");
 
 /* Crear un state de partida global para que sea accesible por varios jugadores */
 const state = {};
 /* tabla para encontrar la partida del usuario entre las existentes */
 const clientRooms = {};
+
+const playerOne = {};
+const playerTwo = {};
 
 const {
   getSalas,
@@ -31,60 +36,6 @@ router.get("/rooms", protect, renderRooms);
 
 /* Rutas y socket.io */
 
-router.get("/rooms", (req, res) => {
-  console.log(req.session.username);
-  req.session.isAuth = true;
-  var io = req.app.get("socketio");
-
-  io.on("connection", async (client) => {
-    const state = await createRoomState();
-    client.on("addPlayer", handleAddPlayer);
-    client.on("removePlayer", handleRemovePlayer);
-    client.on("joinGame", handleJoinGame);
-
-    startRoomInterval(client, state);
-  });
-
-  async function handleJoinGame() {
-    let roomName = makeid(5);
-    clientRooms[client.id] = roomName;
-    client.emit("gameCode", roomName);
-
-    state[roomName] = createGameState();
-    client.join(roomName);
-    client.number = state.playerOne;
-    // comprobar si el usuario que pinca es el usuario uno o dos
-    // para luego emitir la room con el jugador
-    //     if(state.playerOne === username)
-    client.emit("init", client.number);
-    clientRooms[client.id] = roomName;
-    client.join(roomName);
-  }
-  async function handleAddPlayer(data) {
-    let roomId = data.roomId;
-    let username = data.username;
-
-    await agregarJugador(roomId, username);
-    console.log(data);
-  }
-
-  async function handleRemovePlayer(data) {
-    let roomId = data.roomId;
-    let username = data.username;
-
-    await quitarJugador(roomId, username);
-  }
-
-  function startRoomInterval(client, state) {
-    const intervalId = setInterval(() => {
-      const gameReady = roomLoop(state);
-
-      client.emit("roomState", state);
-    }, 1000 / 5);
-  }
-  res.render("rooms", { username: "prueba" });
-});
-
 //   .post((req, res) => {});
 // en post crea una partida
 router
@@ -93,7 +44,6 @@ router
 
     io.on("connection", (client) => {
       let state = createGameState();
-
       /* Al recibir del cliente el evento click con el raton */
       client.on("mousedown", handleMouseDown);
 

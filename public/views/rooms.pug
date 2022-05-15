@@ -17,7 +17,7 @@ head
 
 body
     div(class='container text-center')
-        div(class="row mt-4") 
+        div(class="row mt-4")
             h1 Seleccionar sala
             p#username
         div#sala00(class="row mt-4 justify-content-center sala00") 
@@ -25,6 +25,7 @@ body
             div#selectedAvatar(class="avatar m-auto" draggable="true")
         div(class="mt-4")
             button(type="button" class="btn-avatar" data-bs-toggle="modal" data-bs-target="#avatarModal") Cambiar avatar
+            button#btn-logout(class="btn-logout" type="button") Cerrar Session
             div#avatarModal(class="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
                 div(class="modal-dialog modal-dialog-centered modal-xl") 
                     div(class="modal-content")                          
@@ -45,28 +46,28 @@ body
                         div
                             #nombre1
                             #jugadores1
-                button#btn-sala01(class="btn-sala m-auto" type="button") Entrar a la sala         
+
             div(class="col")
                 div(id="sala02" class ="card sala02")
                     div(class="rotulo-sala pb-3 pt-3")
                         div
                             #nombre2
                             #jugadores2
-                button#btn-sala02(class="btn-sala m-auto" type="button") Entrar a la sala       
+
             div(class="col") 
                 div#sala03(class="card sala03") 
                     div(class="rotulo-sala pb-3 pt-3")
                             div
                                 #nombre3
                                 #jugadores3
-                button#btn-sala03(class="btn-sala m-auto" type="button") Entrar a la sala
+
             div(class="col")
                 div#sala04(class="card sala04")
                     div(class="rotulo-sala pb-3 pt-3")
                         div
                             #nombre4
                             #jugadores4
-                button#btn-sala04(class="btn-sala m-auto" type="button") Entrar a la sala
+
     
     //Optional JavaScript; choose one of the two!
 

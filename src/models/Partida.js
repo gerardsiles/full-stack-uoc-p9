@@ -19,4 +19,13 @@ module.exports = class Partida {
     this.gridsize = gridsize;
     this.cellsConquered = cellsConquered;
   }
+
+  conquer(player) {
+    player.cellsConquered += 1;
+  }
+
+  calculateConqueredPercentage(player) {
+    const cellsConquered = player.cellsConquered;
+    return ((cellsConquered * 100) / 36).toFixed(2) + "%";
+  }
 };

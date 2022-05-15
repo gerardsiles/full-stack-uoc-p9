@@ -8,40 +8,50 @@ module.exports = class Sala {
   }
 
   get name() {
-    return this.nombre;
+    return this._nombre;
   }
   get players() {
-    return this.jugadores;
+    return this._players;
   }
   get playerOne() {
-    return this.jugador1;
+    return this._playerOne;
   }
 
   get playerTwo() {
-    return this.jugador2;
+    return this._playerTwo;
   }
   set name(nombre) {
-    this._nombre = nombre;
+    this._name = nombre;
   }
   set players(jugadores) {
-    this._jugadores = jugadores;
+    this._players = jugadores;
   }
   set playerOne(jugador1) {
-    this._jugador1 = jugador1;
+    this._playerOne = jugador1;
   }
 
   set playerTwo(jugador2) {
-    this._jugador2 = jugador2;
+    this._playerTwo = jugador2;
+  }
+
+  addPlayerRoom(player) {
+    if (!this.playerOne) {
+      this.playerOne(player);
+      this.players += 1;
+    } else if (!this.playerTwo) {
+      this.playerTwo(player);
+      this.players += 1;
+    }
   }
 
   static jugadoresSala() {
     let jugadores = 0;
-    if (this.jugador1) {
-      console.log(this.jugador1);
+    if (this.playerOne) {
       jugadores++;
     }
-    if (this.jugador2) {
+    if (this.playerTwo) {
       jugadores++;
     }
+    return jugadores;
   }
 };

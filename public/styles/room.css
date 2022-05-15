@@ -63,6 +63,7 @@ p {
 }
 
 .btn-avatar {
+    display: inline-block;
     border: none;
     border-radius: 5px;
     background-color: #20DF7F;
@@ -70,14 +71,14 @@ p {
     padding: .5rem;
 }
 
-.btn-sala {
-    display: none;
+.btn-logout {
+    display: inline-block;
     border: none;
     border-radius: 5px;
     background-color: #20DF7F;
     color:#ffffff;
     padding: .5rem;
-    margin-top: 10px;
+    margin-left: 5rem;
 }
 
 #btn-sala01 {

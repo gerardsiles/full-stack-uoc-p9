@@ -2,6 +2,17 @@ const getRoomsInfoURL = "/api/v2/getRoomsInfo";
 const addPlayerURL = "/api/v2/rooms/addPlayer";
 const removePlayerURL = "/api/v2/rooms/removePlayer";
 
+// if (!document.cookie.username) {
+//   window.location.replace("http://localhost:5000/login");
+// }
+/* Logout */
+const botonLogout = document.getElementById("btn-logout");
+botonLogout.addEventListener("click", (e) => {
+  // hacer el logout
+  console.info("logout");
+  document.cookie = "username" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+  location.reload();
+});
 /* Insertar el nombre de usuario en el DOM */
 const usernameParagraph = document.getElementById("username");
 const username = localStorage.getItem("username");
@@ -15,7 +26,9 @@ document.getElementById("selectedAvatar").style.backgroundImage = newBack;
 if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
   let sessionRoom = sessionStorage.getItem("avatarRoom");
   console.log("Session room: " + sessionRoom);
-  if (sessionRoom === "sala01") {
+  if (sessionRoom === "sala00") {
+    sala00.appendChild(selectedAvatar);
+  } else if (sessionRoom === "sala01") {
     sala01.appendChild(selectedAvatar);
   } else if (sessionRoom === "sala02") {
     sala02.appendChild(selectedAvatar);
@@ -31,7 +44,6 @@ if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
 /* Selección de salas */
 /* ------------------------------------------------------------------------------------------------------------------------------- */
 /* Globales */
-playBtn1 = document.getElementById("btn-sala01"); // boton para unirse a la sala
 
 sala00.addEventListener("dragover", (e) => {
   //este es el comportamiento por defecto del navegador el cual no queremos que actue
@@ -39,19 +51,16 @@ sala00.addEventListener("dragover", (e) => {
 });
 sala00.addEventListener("drop", (e) => {
   sala00.appendChild(selectedAvatar);
+  sessionStorage.setItem("avatarRoom", "sala00");
 });
 
 sala01.addEventListener("dragover", (e) => {
   e.preventDefault();
   playBtn = document.getElementById("btn-sala01");
-  if (playBtn.style.display === "block") {
-    playBtn.style.display = "none";
-  }
 });
 sala01.addEventListener("drop", (e) => {
   sala01.appendChild(selectedAvatar);
   sessionStorage.setItem("avatarRoom", "sala01");
-  playBtn1.style.display = "block";
   handleAddPlayer("1", username);
 });
 
@@ -62,9 +71,6 @@ sala01.addEventListener("dragstart", (e) => {
 sala02.addEventListener("dragover", (e) => {
   e.preventDefault();
   playBtn = document.getElementById("btn-sala02");
-  if (playBtn.style.display === "block") {
-    playBtn.style.display = "none";
-  }
 });
 sala02.addEventListener("drop", (e) => {
   sala02.appendChild(selectedAvatar);
@@ -79,10 +85,6 @@ sala02.addEventListener("dragstart", (e) => {
 
 sala03.addEventListener("dragover", (e) => {
   e.preventDefault();
-  playBtn = document.getElementById("btn-sala03");
-  if (playBtn.style.display === "block") {
-    playBtn.style.display = "none";
-  }
 });
 sala03.addEventListener("drop", (e) => {
   sala03.appendChild(selectedAvatar);
@@ -97,10 +99,6 @@ sala03.addEventListener("dragstart", (e) => {
 
 sala04.addEventListener("dragover", (e) => {
   e.preventDefault();
-  playBtn = document.getElementById("btn-sala04");
-  if (playBtn.style.display === "block") {
-    playBtn.style.display = "none";
-  }
 });
 sala04.addEventListener("drop", (e) => {
   sala04.appendChild(selectedAvatar);
@@ -123,12 +121,6 @@ function chBackimage(newBack) {
   var data = localStorage.getItem("avatar");
   console.log(data);
   localStorage.setItem("avatar", newBack); // guardamos en el webstorage el avatar seleccionado
-}
-
-function startGame(roomID, player1, player2) {
-  /* Empezar una nueva partida en la sala y jugadores */
-  roomSocket.emit("startGame", { roomID, player1, player2 });
-  console.log("empezando juego");
 }
 
 /* Al iniciar, cargar la informacion en el DOM */
@@ -161,11 +153,23 @@ async function showRoomsData(data) {
     "jugadores4"
   ).textContent = `Numero de jugadores ${data[3].players}`;
 
-  if (data[3].players == 2) {
+  /* Abrir la partida si esta lista */
+  if (data[0].players == 2) {
     window.open("http://localhost:5000/rooms/1");
-    startGame(3, "player1", "player2");
-    removePlayer("3", data[3].player1);
-    removePlayer("3", data[3].player2);
+    sala00.appendChild(selectedAvatar); // Devolver al jugador al inicio
+    handleRemovePlayer("1", username); // Quitarlo de la sala
+  } else if (data[1].players == 2) {
+    window.open("http://localhost:5000/rooms/2");
+    sala00.appendChild(selectedAvatar);
+    handleRemovePlayer("2", username);
+  } else if (data[2].players == 2) {
+    window.open("http://localhost:5000/rooms/3");
+    sala00.appendChild(selectedAvatar);
+    handleRemovePlayer("3", username);
+  } else if (data[3].players == 2) {
+    window.open("http://localhost:5000/rooms/4");
+    sala00.appendChild(selectedAvatar);
+    handleRemovePlayer("4", username);
   }
 }
 

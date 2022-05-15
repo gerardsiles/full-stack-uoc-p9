@@ -1,5 +1,10 @@
 const api_url = "https://localhost:5000/api/room/1";
-const username = JSON.parse(localStorage.getItem("username"));
+const username = localStorage.getItem("username");
+
+/* Set avatar seleccionado */
+let newBack = localStorage.getItem("avatar");
+document.getElementById("Jugador-01").style.backgroundImage = newBack;
+
 /* Socket.io */
 const socket = io("http://localhost:5000");
 socket.on("init", handleInit);
@@ -55,7 +60,6 @@ function drawSquare(context, xOffset, yOffset, squareSize, color) {
 }
 function paintGame(state) {
   /* Actualizar la informacion del jugador */
-  const jugador1 = document.getElementById("jugadorActual").innerHTML;
   document.getElementById("jugador_local").innerHTML = state.playerOne.username;
   document.getElementById("col_jugador_local").innerHTML =
     state.playerOne.color;
@@ -80,7 +84,6 @@ function paintGame(state) {
 
 function handleInit(state) {
   playerNumber = number;
-  const jugador1 = document.getElementById("jugadorActual").innerHTML;
   document.getElementById("jugador_local").innerHTML = state.playerOne.username;
   document.getElementById("col_jugador_local").innerHTML = playerOne.color;
   document.getElementById("col_jugador_local").style.color = playerOne.color;
