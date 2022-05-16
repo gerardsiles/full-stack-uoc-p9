@@ -17,8 +17,23 @@ router.route("/api/user/")
             }
         }
     )
-    .post(
+    .post(async (req, res, next) => {
+        try{
+          let {username, email, password} = req.body
+      
+          const user = new User({username, email, password})
+            
+            await user.save()
+            if (user.id){
+              res.status(200).send({"msg" : "Usuario creado con exito"})
 
+            }
+          
+        }catch(err){
+          console.error(err.message)
+          res.status(500).send({"error" : "Server Error"})
+        }
+      }
     );
 
 
