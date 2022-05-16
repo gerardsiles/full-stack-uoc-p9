@@ -37,4 +37,24 @@ router.route("/api/user/")
     );
 
 
+    router.route("/api/user/:userId")
+        .get( async(req, res, next)=> {
+            try{
+                const id = req.params.userId
+                const user = await User.findOne({_id : id})
+                if(user){
+                    res.json(user)
+                }else{
+                    res.status(404).send({"error" : "Usuario no encontrado"})
+                }
+            }catch(err){
+                console.error(err.message)
+                res.status(500).send({"error" : "Server Error"})
+            }
+        }
+    );
+
+
+
+
 module.exports = router;
