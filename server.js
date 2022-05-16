@@ -22,6 +22,7 @@ connectDB();
 const loginRoutes = require("./src/routes/loginRoutes");
 const registerRoutes = require("./src/routes/registerRoutes");
 const roomsRoutes = require("./src/routes/roomsRoutes");
+const apiUserRoutes = require("./src/routes/apiUser");
 
 /* Tratamiento de sesiones */
 app.use(cookieParser());
@@ -56,6 +57,7 @@ app.set("socketio", io);
 app.use(loginRoutes);
 app.use(registerRoutes);
 app.use(roomsRoutes);
+app.use(apiUserRoutes);
 
 server.listen(5000, () => {
   console.log("App listening.");
