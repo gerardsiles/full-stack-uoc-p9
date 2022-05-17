@@ -133,6 +133,7 @@ function handleGameOver(data) {
   if (!gameActive) {
     return;
   }
+  console.log(data.winner);
   data = JSON.parse(data);
 
   if (data.winner === playerNumber) {
