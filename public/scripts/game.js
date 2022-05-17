@@ -105,7 +105,6 @@ function handleInit(number) {
 }
 
 function handleGameState(gameState) {
-  console.log(JSON.stringify(gameState));
   if (!gameActive) {
     return;
   }
