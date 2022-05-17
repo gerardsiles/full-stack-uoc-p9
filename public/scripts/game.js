@@ -71,22 +71,16 @@ function drawSquare(context, xOffset, yOffset, squareSize, color) {
 function paintGame(state) {
   /* Actualizar la informacion del jugador */
   document.getElementById("jugador_local").innerHTML = state.playerOne.username;
-  document.getElementById("col_jugador_local").innerHTML =
-    state.playerOne.color;
-  document.getElementById("col_jugador_local").style.color =
-    state.playerOne.color;
-  document.getElementById("Jugador-01").style.borderColor =
-    state.playerOne.color;
-  document.getElementById("punt_jugador_local").innerHTML =
-    ((state.playerOne.cellsConquered * 100) / 36).toFixed(2) + "%";
+  document.getElementById("col_jugador_local").innerHTML = state.playerOne.color;
+  document.getElementById("col_jugador_local").style.color = state.playerOne.color;
+  document.getElementById("Jugador-01").style.borderColor = state.playerOne.color;
+  document.getElementById("punt_jugador_local").innerHTML = ((state.playerOne.cellsConquered * 100) / 36).toFixed(2) + "%";
 
-  document.getElementById("nombre-jugador-2").innerHTML =
-    state.playerTwo.username;
+  document.getElementById("nombre-jugador-2").innerHTML = state.playerTwo.username;
   document.getElementById("col_jugador2").innerHTML = state.playerTwo.color;
-  document.getElementById("Jugador-02").style.borderColor =
-    state.playerTwo.color;
-  document.getElementById("punt_jugador2").innerHTML =
-    ((state.playerTwo.cellsConquered * 100) / 36).toFixed(2) + "%";
+  document.getElementById("col_jugador2").style.color = state.playerTwo.color;
+  document.getElementById("Jugador-02").style.borderColor = state.playerTwo.color;
+  document.getElementById("punt_jugador2").innerHTML = ((state.playerTwo.cellsConquered * 100) / 36).toFixed(2) + "%";
 
   /* Actualizar la informacion del juego */
 
