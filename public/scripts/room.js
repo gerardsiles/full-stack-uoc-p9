@@ -1,6 +1,10 @@
 const getRoomsInfoURL = "/api/v2/getRoomsInfo";
 const addPlayerURL = "/api/v2/rooms/addPlayer";
 const removePlayerURL = "/api/v2/rooms/removePlayer";
+const playBtn1 = document.getElementById("btn-sala01");
+const playBtn2 = document.getElementById("btn-sala02");
+const playBtn3 = document.getElementById("btn-sala03");
+const playBtn4 = document.getElementById("btn-sala04");
 
 // if (!document.cookie.username) {
 //   window.location.replace("http://localhost:5000/login");
@@ -13,6 +17,21 @@ botonLogout.addEventListener("click", (e) => {
   document.cookie = "username" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   location.reload();
 });
+
+/* Event listeners para los botones */
+playBtn1.addEventListener("click", (e) => {
+  window.open("http://localhost:5000/rooms/1");
+});
+playBtn2.addEventListener("click", (e) => {
+  window.open("http://localhost:5000/rooms/2");
+});
+playBtn3.addEventListener("click", (e) => {
+  window.open("http://localhost:5000/rooms/3");
+});
+playBtn4.addEventListener("click", (e) => {
+  window.open("http://localhost:5000/rooms/4");
+});
+
 /* Insertar el nombre de usuario en el DOM */
 const usernameParagraph = document.getElementById("username");
 const username = localStorage.getItem("username");
@@ -60,6 +79,8 @@ sala01.addEventListener("dragover", (e) => {
 });
 sala01.addEventListener("drop", (e) => {
   sala01.appendChild(selectedAvatar);
+  playBtn = document.getElementById("btn-sala01");
+  playBtn.style.display = "block";
   sessionStorage.setItem("avatarRoom", "sala01");
   handleAddPlayer("1", username);
 });
@@ -152,24 +173,28 @@ async function showRoomsData(data) {
   document.getElementById(
     "jugadores4"
   ).textContent = `Numero de jugadores ${data[3].players}`;
-
+  console.log(JSON.stringify(data));
   /* Abrir la partida si esta lista */
   if (data[0].players == 2) {
-    window.open("http://localhost:5000/rooms/1");
-    sala00.appendChild(selectedAvatar); // Devolver al jugador al inicio
-    handleRemovePlayer("1", username); // Quitarlo de la sala
+    /* mostrar el boton solo si el jugador se encuentra en esa sala */
+    if (data[0].playerOne == username || data[0].playerTwo == username) {
+      playBtn1.style.display = "block";
+      sessionStorage.setItem("gameID", data[0].gameID);
+    }
   } else if (data[1].players == 2) {
-    window.open("http://localhost:5000/rooms/2");
-    sala00.appendChild(selectedAvatar);
-    handleRemovePlayer("2", username);
+    playBtn2.style.display = "block";
+    sessionStorage.setItem("gameID", data[0].gameID);
   } else if (data[2].players == 2) {
-    window.open("http://localhost:5000/rooms/3");
-    sala00.appendChild(selectedAvatar);
-    handleRemovePlayer("3", username);
+    playBtn3.style.display = "block";
+    sessionStorage.setItem("gameID", data[0].gameID);
   } else if (data[3].players == 2) {
-    window.open("http://localhost:5000/rooms/4");
-    sala00.appendChild(selectedAvatar);
-    handleRemovePlayer("4", username);
+    playBtn4.style.display = "block";
+    sessionStorage.setItem("gameID", data[0].gameID);
+  } else {
+    playBtn1.style.display = "none";
+    playBtn2.style.display = "none";
+    playBtn3.style.display = "none";
+    playBtn4.style.display = "none";
   }
 }
 

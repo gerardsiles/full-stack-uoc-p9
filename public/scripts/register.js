@@ -4,29 +4,6 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 
-function setErrorFor(input, message) {
-  //Seleccionar la clase padre del elemento, .form-control
-  const formControl = input.parentElement;
-  const small = formControl.querySelector("small");
-
-  $("formControl").ready;
-  // agregar el mensage de error
-  small.innerText = message;
-
-  // agregar la clase de error
-  formControl.className = "form-control btn-danger";
-}
-
-function setSuccessFor(input, message) {
-  const formControl = input.parentElement;
-  const small = formControl.querySelector("small");
-
-  // agregar el mensage de exito
-  small.innerText = message;
-
-  formControl.className = "form-control btn-success";
-}
-
 function isEmailValid(email) {
   // encontrado en stack overflow
   //https://stackoverflow.com/questions/46155/whats-the-best-way-to-validate-an-email-address-in-javascript
@@ -35,10 +12,12 @@ function isEmailValid(email) {
   );
 }
 
-form.addEventListener("submit", registerUser);
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  checkInputs();
+});
 
-async function registerUser(event) {
-  event.preventDefault();
+function checkInputs() {
   const usernameValue = username.value.trim();
   const emailValue = email.value.trim();
   const passwordValue = password.value.trim();
@@ -87,7 +66,6 @@ async function registerUser(event) {
 }
 
 async function sendInformation(username, email, password) {
-  //
   var json = {
     username: username,
     email: email,
@@ -95,27 +73,48 @@ async function sendInformation(username, email, password) {
   };
 
   const response = await fetch("http://localhost:5000/register", {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(json),
   })
-    .then(
-      await function (res) {
-        console.log(res.data);
-        if (res.status === 201) {
-          localStorage.setItem("JWT_TOKEN", response.data.token);
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success === false) {
+        if (data.error === "usernameExists") {
+          setErrorFor(username, "Este nombre de usuario ya existe");
+        } else if (data.error === "emailExists") {
+          setErrorFor(email, data.error);
+        } else {
+          //         localStorage.setItem("JWT_TOKEN", response.data.token);
           window.location.replace("http://localhost:5000/login");
         }
       }
-    )
+    })
     .catch((err) => {
-      if (err.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-      }
+      console.info(err);
     });
+}
 
-  const prueba = await response;
+function setErrorFor(input, message) {
+  //Seleccionar la clase padre del elemento, .form-control
+  const formControl = input.parentElement;
+  const small = formControl.querySelector("small");
+
+  // agregar el mensage de error
+  small.innerText = message;
+
+  // agregar la clase de error
+  formControl.className = "form-control btn-danger";
+}
+
+function setSuccessFor(input, message) {
+  const formControl = input.parentElement;
+  const small = formControl.querySelector("small");
+
+  // agregar el mensage de exito
+  small.innerText = message;
+
+  formControl.className = "form-control btn-success";
 }

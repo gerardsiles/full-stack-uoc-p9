@@ -4,7 +4,6 @@ const password = document.getElementById("password");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  /* socket.emit*/
   checkInputs();
 });
 
@@ -55,6 +54,7 @@ async function sendUser(uEmail, uPassword) {
         setErrorFor(password, "Revisa la informacion");
       } else {
         document.cookie = `username=${data.username}`;
+        localStorage.setItem("_id", data._id);
         localStorage.setItem("username", data.username);
         //         localStorage.setItem("JWT_TOKEN", data.token);
         window.location.replace("http://localhost:5000/rooms");

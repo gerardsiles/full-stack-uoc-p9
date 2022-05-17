@@ -4,27 +4,31 @@
     "name": "Midgard",
     "players": 0,
     "playerOne" : "",
-    "playerTwo": ""
+    "playerTwo": "",
+    "gameID": ""
   },
   {
     "id": "2",
     "name": "Valhalla",
     "players": 0,
     "playerOne" : "",
-    "playerTwo": ""
+    "playerTwo": "",
+    "gameID": ""
   },
   {
     "id": "3",
     "name": "Elfheim",
     "players": 0,
     "playerOne" : "",
-    "playerTwo": ""
+    "playerTwo": "",
+    "gameID": ""
   },
   {
     "id": "4",
     "name": "Asgard",
     "players": 0,
     "playerOne" : "",
-    "playerTwo": ""
+    "playerTwo": "",
+    "gameID": ""
   }
 ]

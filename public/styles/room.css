@@ -81,6 +81,16 @@ p {
     margin-left: 5rem;
 }
 
+.btn-sala {
+    display: none;
+    border: none;
+    border-radius: 5px;
+    background-color: #20DF7F;
+    color:#ffffff;
+    padding: .5rem;
+    margin-top: 10px;
+}
+
 #btn-sala01 {
     visibility: visible;
 }
@@ -120,6 +130,8 @@ p {
 .sala00 {
     min-height: 150px;
 }
+
+
 
 .sala01 {
     background-image: url("../images/sala-01.png");
