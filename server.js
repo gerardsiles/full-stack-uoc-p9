@@ -24,6 +24,7 @@ const registerRoutes = require("./src/routes/registerRoutes");
 const roomsRoutes = require("./src/routes/roomsRoutes");
 const apiUserRoutes = require("./src/routes/apiUser");
 const apiSalaRoutes = require("./src/routes/apiSalas");
+const apiPartidaRoutes = require("./src/routes/apiPartida");
 
 /* Tratamiento de sesiones */
 app.use(cookieParser());
@@ -60,6 +61,7 @@ app.use(registerRoutes);
 app.use(roomsRoutes);
 app.use(apiUserRoutes);
 app.use(apiSalaRoutes);
+app.use(apiPartidaRoutes);
 
 server.listen(5000, () => {
   console.log("App listening.");
