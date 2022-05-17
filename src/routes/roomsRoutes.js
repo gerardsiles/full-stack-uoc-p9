@@ -14,6 +14,7 @@ const clientRooms = {};
 
 const playerOne = {};
 const playerTwo = {};
+let playerNumber;
 
 const {
   getSalas,
@@ -54,8 +55,11 @@ router
       function handleJoinGame(gameId, username, _id) {
         const room = io.sockets.adapter.rooms[gameId]; // conseguir informacion de la room
         let roomExist;
+        console.log(clientRooms);
+        console.log(roomExist);
         Object.entries(clientRooms).forEach(([key, value]) => {
           if (value === gameId) {
+            console.log(`encontrado game: ${gameId}`);
             roomExist = true;
           }
         });
@@ -69,7 +73,8 @@ router
           state[gameId] = initGame(username, _id);
 
           client.join(gameId);
-          client.number = 1;
+          playerNumber++;
+          client.number = Math.floor(playerNumber % 2);
           client.emit("init", 1);
           console.log(clientRooms);
 
@@ -92,14 +97,17 @@ router
           //             client.emit("tooManyPlayers");
           //             return;
           //           } else {
+          roomExist = false;
           clientRooms[client.id] = gameId;
           client.join(gameId);
-          client.number = 2;
+          playerNumber++;
+          client.number = Math.floor(playerNumber % 2);
           /* Agregar al jugador a la pardita */
           state[gameId].joinPlayerTwo(username, _id);
           console.log(client.number);
           client.emit("init", 2);
           startGameInterval(gameId);
+          console.log(roomExist);
           //           }
         }
       }

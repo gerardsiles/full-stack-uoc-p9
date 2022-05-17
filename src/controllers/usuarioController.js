@@ -33,6 +33,7 @@ async function getUsuarioByEmail(req, res, email) {
 // @route POST /register
 // @access public
 const createUsuario = asyncHandler(async (req, res) => {
+  console.info("se inicia el registro");
   // objeto js con la informacion encontrada en el req
   const { username, email, password } = req.body;
   // validar la informacion recibida
@@ -53,6 +54,8 @@ const createUsuario = asyncHandler(async (req, res) => {
       msg: "Este email ya existe",
     });
   } else {
+    console.info("comprobaciones hechas");
+
     // hash contrasena
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -69,11 +72,14 @@ const createUsuario = asyncHandler(async (req, res) => {
       const newUser = await User.create(usuario);
 
       if (newUser) {
+        console.info("se envia la informacion de usuario");
         res.status(201).json({
           username: newUser.username,
           email: newUser.email,
         });
       } else {
+        console.info("error en la creacion de usuario");
+
         res.status(401).json({
           success: false,
           msg: "informacion incorrecta",

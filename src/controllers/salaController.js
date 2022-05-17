@@ -63,12 +63,14 @@ const agregarJugador = asyncHandler(async (req, res) => {
 
 const quitarJugador = asyncHandler(async (req, res) => {
   const { id, username } = req.body;
+  console.info(id);
+  if (id !== "0") {
+    const room = await Room.findById(id);
+    const sala = await Room.removePlayerRoom(room, username);
 
-  const room = await Room.findById(id);
-  const sala = await Room.removePlayerRoom(room, username);
-
-  const salas = await Room.findAll();
-  res.json(salas);
+    const salas = await Room.findAll();
+    res.json(salas);
+  }
 });
 // @desc cargar la vista de rooms
 // @route GET /rooms

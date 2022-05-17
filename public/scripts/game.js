@@ -1,6 +1,8 @@
 const api_url = "https://localhost:5000/api/room/1";
 const username = localStorage.getItem("username");
-const gameId = sessionStorage.getItem("gameId");
+var gameIdPath = window.location.pathname.split("/");
+const gameId = sessionStorage.getItem(`gameID${gameIdPath[2]}`);
+console.log(gameId);
 const _id = localStorage.getItem("_id");
 
 window.addEventListener("load", (event) => {
@@ -71,16 +73,23 @@ function drawSquare(context, xOffset, yOffset, squareSize, color) {
 function paintGame(state) {
   /* Actualizar la informacion del jugador */
   document.getElementById("jugador_local").innerHTML = state.playerOne.username;
-  document.getElementById("col_jugador_local").innerHTML = state.playerOne.color;
-  document.getElementById("col_jugador_local").style.color = state.playerOne.color;
-  document.getElementById("Jugador-01").style.borderColor = state.playerOne.color;
-  document.getElementById("punt_jugador_local").innerHTML = ((state.playerOne.cellsConquered * 100) / 36).toFixed(2) + "%";
+  document.getElementById("col_jugador_local").innerHTML =
+    state.playerOne.color;
+  document.getElementById("col_jugador_local").style.color =
+    state.playerOne.color;
+  document.getElementById("Jugador-01").style.borderColor =
+    state.playerOne.color;
+  document.getElementById("punt_jugador_local").innerHTML =
+    ((state.playerOne.cellsConquered * 100) / 36).toFixed(2) + "%";
 
-  document.getElementById("nombre-jugador-2").innerHTML = state.playerTwo.username;
+  document.getElementById("nombre-jugador-2").innerHTML =
+    state.playerTwo.username;
   document.getElementById("col_jugador2").innerHTML = state.playerTwo.color;
   document.getElementById("col_jugador2").style.color = state.playerTwo.color;
-  document.getElementById("Jugador-02").style.borderColor = state.playerTwo.color;
-  document.getElementById("punt_jugador2").innerHTML = ((state.playerTwo.cellsConquered * 100) / 36).toFixed(2) + "%";
+  document.getElementById("Jugador-02").style.borderColor =
+    state.playerTwo.color;
+  document.getElementById("punt_jugador2").innerHTML =
+    ((state.playerTwo.cellsConquered * 100) / 36).toFixed(2) + "%";
 
   /* Actualizar la informacion del juego */
 
@@ -117,7 +126,7 @@ function handleGameState(gameState) {
 }
 
 function joinGame() {
-  const gameCode = sessionStorage.getItem("gameID");
+  const gameCode = gameId;
   socket.emit("joinGame", gameCode, username, _id);
   init();
 }
@@ -126,7 +135,6 @@ function handleGameOver(data) {
   if (!gameActive) {
     return;
   }
-  console.log(data.winner);
   data = JSON.parse(data);
 
   if (data.winner === playerNumber) {
@@ -137,7 +145,6 @@ function handleGameOver(data) {
     alert("pierdes...");
   }
   gameActive = false;
-  alert("ok");
   window.close();
 }
 

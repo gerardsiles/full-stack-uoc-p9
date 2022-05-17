@@ -81,15 +81,16 @@ async function sendInformation(username, email, password) {
   })
     .then((response) => response.json())
     .then((data) => {
+      console.info(data);
       if (data.success === false) {
         if (data.error === "usernameExists") {
-          setErrorFor(username, "Este nombre de usuario ya existe");
+          setErrorFor(username, JSON.stringify(data.msg));
         } else if (data.error === "emailExists") {
           setErrorFor(email, data.error);
-        } else {
-          //         localStorage.setItem("JWT_TOKEN", response.data.token);
-          window.location.replace("http://localhost:5000/login");
         }
+      } else {
+        //         localStorage.setItem("JWT_TOKEN", response.data.token);
+        window.location.replace("http://localhost:5000/login");
       }
     })
     .catch((err) => {
@@ -100,6 +101,7 @@ async function sendInformation(username, email, password) {
 function setErrorFor(input, message) {
   //Seleccionar la clase padre del elemento, .form-control
   const formControl = input.parentElement;
+  console.log(formControl);
   const small = formControl.querySelector("small");
 
   // agregar el mensage de error

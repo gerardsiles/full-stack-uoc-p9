@@ -6,6 +6,9 @@ const playBtn2 = document.getElementById("btn-sala02");
 const playBtn3 = document.getElementById("btn-sala03");
 const playBtn4 = document.getElementById("btn-sala04");
 
+let roomFrom;
+let roomTo;
+
 // if (!document.cookie.username) {
 //   window.location.replace("http://localhost:5000/login");
 // }
@@ -44,7 +47,6 @@ document.getElementById("selectedAvatar").style.backgroundImage = newBack;
 /* Al refrescar la pagina, volver el avatar a su posicion anterior */
 if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
   let sessionRoom = sessionStorage.getItem("avatarRoom");
-  console.log("Session room: " + sessionRoom);
   if (sessionRoom === "sala00") {
     sala00.appendChild(selectedAvatar);
   } else if (sessionRoom === "sala01") {
@@ -72,12 +74,18 @@ sala00.addEventListener("drop", (e) => {
   sala00.appendChild(selectedAvatar);
   sessionStorage.setItem("avatarRoom", "sala00");
 });
+sala00.addEventListener("dragstart", (e) => {
+  roomFrom = "0";
+});
 
 sala01.addEventListener("dragover", (e) => {
   e.preventDefault();
   playBtn = document.getElementById("btn-sala01");
 });
 sala01.addEventListener("drop", (e) => {
+  console.log(roomFrom);
+  handleRemovePlayer(roomFrom, username); //quitar jugador de la sala origen el
+
   sala01.appendChild(selectedAvatar);
   playBtn = document.getElementById("btn-sala01");
   playBtn.style.display = "block";
@@ -86,7 +94,7 @@ sala01.addEventListener("drop", (e) => {
 });
 
 sala01.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("1", username);
+  roomFrom = "1";
 });
 
 sala02.addEventListener("dragover", (e) => {
@@ -94,6 +102,7 @@ sala02.addEventListener("dragover", (e) => {
   playBtn = document.getElementById("btn-sala02");
 });
 sala02.addEventListener("drop", (e) => {
+  handleRemovePlayer(roomFrom, username); //quitar jugador de la sala origen el
   sala02.appendChild(selectedAvatar);
   sessionStorage.setItem("avatarRoom", "sala02");
 
@@ -101,13 +110,16 @@ sala02.addEventListener("drop", (e) => {
 });
 
 sala02.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("2", username);
+  roomFrom = "2";
+
+  //   handleRemovePlayer("2", username);
 });
 
 sala03.addEventListener("dragover", (e) => {
   e.preventDefault();
 });
 sala03.addEventListener("drop", (e) => {
+  handleRemovePlayer(roomFrom, username); //quitar jugador de la sala origen el
   sala03.appendChild(selectedAvatar);
   sessionStorage.setItem("avatarRoom", "sala03");
 
@@ -115,13 +127,16 @@ sala03.addEventListener("drop", (e) => {
 });
 
 sala03.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("3", username);
+  roomFrom = "3";
+
+  //   handleRemovePlayer("3", username);
 });
 
 sala04.addEventListener("dragover", (e) => {
   e.preventDefault();
 });
 sala04.addEventListener("drop", (e) => {
+  handleRemovePlayer(roomFrom, username); //quitar jugador de la sala origen el
   sala04.appendChild(selectedAvatar);
   sessionStorage.setItem("avatarRoom", "sala04");
 
@@ -129,7 +144,9 @@ sala04.addEventListener("drop", (e) => {
 });
 
 sala04.addEventListener("dragstart", (e) => {
-  handleRemovePlayer("4", username);
+  roomFrom = "4";
+
+  //   handleRemovePlayer("4", username);
 });
 
 /* Elección de avatar */
@@ -140,7 +157,6 @@ function chBackimage(newBack) {
   elem.style.backgroundImage = newBack; //modificamos el background del elemento almacenado en la linea anterior usando el valor que nos hemos traido con newBack en el click
   localStorage.setItem("avatar", newBack);
   var data = localStorage.getItem("avatar");
-  console.log(data);
   localStorage.setItem("avatar", newBack); // guardamos en el webstorage el avatar seleccionado
 }
 
@@ -173,23 +189,28 @@ async function showRoomsData(data) {
   document.getElementById(
     "jugadores4"
   ).textContent = `Numero de jugadores ${data[3].players}`;
-  console.log(JSON.stringify(data));
   /* Abrir la partida si esta lista */
   if (data[0].players == 2) {
     /* mostrar el boton solo si el jugador se encuentra en esa sala */
     if (data[0].playerOne == username || data[0].playerTwo == username) {
       playBtn1.style.display = "block";
-      sessionStorage.setItem("gameID", data[0].gameID);
+      sessionStorage.setItem("gameID1", data[0].gameID);
     }
   } else if (data[1].players == 2) {
-    playBtn2.style.display = "block";
-    sessionStorage.setItem("gameID", data[0].gameID);
+    if (data[1].playerOne == username || data[1].playerTwo == username) {
+      playBtn2.style.display = "block";
+      sessionStorage.setItem("gameID2", data[1].gameID);
+    }
   } else if (data[2].players == 2) {
-    playBtn3.style.display = "block";
-    sessionStorage.setItem("gameID", data[0].gameID);
+    if (data[2].playerOne == username || data[2].playerTwo == username) {
+      playBtn3.style.display = "block";
+      sessionStorage.setItem("gameID3", data[2].gameID);
+    }
   } else if (data[3].players == 2) {
-    playBtn4.style.display = "block";
-    sessionStorage.setItem("gameID", data[0].gameID);
+    if (data[3].playerOne == username || data[3].playerTwo == username) {
+      playBtn4.style.display = "block";
+      sessionStorage.setItem("gameID4", data[3].gameID);
+    }
   } else {
     playBtn1.style.display = "none";
     playBtn2.style.display = "none";

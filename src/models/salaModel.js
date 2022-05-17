@@ -44,6 +44,7 @@ async function addPlayerRoom(room, username) {
           salas[i].players = 1;
           salas[i].playerOne = username;
           console.log(JSON.stringify(salas));
+
           resolve(salas);
         }
       }
@@ -53,9 +54,14 @@ async function addPlayerRoom(room, username) {
           salas[i].players = 2;
           salas[i].playerTwo = username;
           salas[i].gameID = makeid();
+          console.log(JSON.stringify(salas));
+
           resolve(salas);
         }
       }
+
+      console.log(JSON.stringify(salas));
+
       resolve(salas);
     }
   });
@@ -71,6 +77,8 @@ async function removePlayerRoom(room, username) {
         if (salas[i].id == id) {
           salas[i].players = 0;
           salas[i].playerOne = "";
+          console.log(JSON.stringify(salas));
+
           resolve(salas[i]);
         }
       }
@@ -79,10 +87,14 @@ async function removePlayerRoom(room, username) {
         if (salas[i].id == id) {
           salas[i].players = 1;
           salas[i].playerTwo = "";
+          salas[i].gameID = "";
+          console.log(JSON.stringify(salas));
           resolve(salas[i]);
         }
       }
     }
+    console.log(JSON.stringify(salas));
+
     resolve(salas);
   });
 }
