@@ -48,8 +48,7 @@ body
                 div
                     h2#col_jugador_local Color
                     br
-                div.mt-4
-                    button(type="button" class="btn-salir" data-bs-toggle="modal" data-bs-target="#salirModal" style="visibility: visible") Abandonar la sala
+
 
             //TABLERO con Canvas
             div.col
@@ -63,8 +62,8 @@ body
                 br
                 div
                     h3 Nombre Jugador 02:
-                div#nombre-jugador-2
-                    h2(style="color: #20df7f;")
+                div
+                    h2#nombre-jugador-2(style="color: #20df7f;")
                 br
                 div
                     h3 Cuadrados conquistados:
@@ -74,25 +73,14 @@ body
                 div
                     h3 Color asignado:
                 div
-                    h2#col_jugador2
+                    h2#col_jugador2 Color
                     br
-                div.mt-4
-                    button(type="button" class="btn-salir" data-bs-toggle="modal" data-bs-target="#salirModal" style="visibility: hidden") Abandonar la sala
 
 
-            //Modal mensaje confirmación abandono de la sala
-            div#salirModal(class="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
-                div(class="modal-dialog modal-dialog-centered modal-xl")
-                    div.modal-content
-                        div.modal-header
-                            button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
-                            div.modal-body
-                                h1.modal-h1 ¿Quieres abandonar la sala?
-                                p.modal-p Si abandonas ahora la sala tu progreso se guardara durante 60min.
-                                div.mt-4                               
-                                    button(type="button" class="btn-salir") salir
+
+
             div
-                p#jugadorActual(class="display:none" style="visibility: hidden") Pepe 
+                p#jugadorActual(class="display:none" style="visibility: hidden") Pepe
 
 footer(class="text-center text-white fixed-bottom" style="background-color: #000000;")
     div(class="text-center p-2") © 2022 Copyright:
