@@ -28,4 +28,9 @@ module.exports = class Partida {
     const cellsConquered = player.cellsConquered;
     return ((cellsConquered * 100) / 36).toFixed(2) + "%";
   }
+
+  joinPlayerTwo(username, _id) {
+    this.playerTwo.id = _id;
+    this.playerTwo.username = username;
+  }
 };

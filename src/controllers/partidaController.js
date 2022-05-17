@@ -33,15 +33,17 @@ async function getPartida(req, res, id) {
 }
 
 /* Inicio de funciones para socket.io */
-const initGame = () => {
-  const state = createGameState();
+const initGame = (username, _id) => {
+  const state = createGameState(username, _id);
   /* agregar jugadores a la partida */
   return state;
 };
 
-const createGameState = () => {
+const createGameState = (username, _id) => {
   /* Crear una nueva partida con su estado */
   const params = returnGameState();
+  params.playerOne.username = username;
+  params.playerOne.id = _id;
   const state = new Partida(
     params.matchId,
     params.roomId,
@@ -51,7 +53,6 @@ const createGameState = () => {
     params.gridsize,
     params.cellsConquered
   );
-  console.log(`GameState: ${state}`);
   return state;
 };
 
@@ -77,7 +78,7 @@ const gameLoop = (state) => {
 };
 
 /* Al recibir el click del usuario, actualizamos la celda */
-const updateState = (keyCodeX, keyCodeY, state) => {
+const updateState = (keyCodeX, keyCodeY, state, playerX) => {
   const squareSize = 110;
 
   for (let i = 0; i < 6; i++) {
@@ -146,6 +147,8 @@ function handleNewGame(client) {
   /* Agregamos el id del socket a la partida */
   clientRooms[client.id] = roomName;
 }
+
+function handleJoinGame() {}
 module.exports = {
   getPartidas,
   getPartida,
@@ -154,4 +157,5 @@ module.exports = {
   gameLoop,
   updateState,
   handleNewGame,
+  handleJoinGame,
 };

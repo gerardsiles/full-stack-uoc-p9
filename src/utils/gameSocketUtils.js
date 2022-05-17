@@ -22,3 +22,6 @@ exports.sendMessage = (roomId, key, message) =>
   io.to(roomId).emit(key, message);
 
 exports.getRooms = () => io.sockets.adapter.rooms;
+
+//https://stackoverflow.com/questions/54818909/access-socketio-from-another-file
+/* https://stackoverflow.com/questions/18856190/use-socket-io-inside-a-express-routes-file */

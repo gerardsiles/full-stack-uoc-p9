@@ -6,6 +6,7 @@ const Valhalla = new Sala(JSON.stringify(findById(2)));
 const Elfheim = new Sala(findById(3));
 const Asgard = new Sala(findById(4));
 let roomState = { Midgard, Valhalla, Elfheim, Asgard };
+const { makeid } = require("../utils/gameUtils");
 
 // encontrar todas las salas
 async function findAll() {
@@ -22,17 +23,13 @@ async function findById(id) {
   });
 }
 
-// Comprobar cuantos jugadores hay en una sala
+// Comprobar cuantos jugadores hay en una sala con POO
 async function jugadoresSala(id) {
   return new Promise((resolve, reject) => {
-    if (id == 1) {
-      resolve(Midgard.players);
-    } else if (id == 2) {
-      resolve(Valhalla.players);
-    } else if (id == 3) {
-      resolve(Elfheim.players);
-    } else if (id == 4) {
-      resolve(Asgard.players);
+    for (sala in roomState) {
+      if (sala.id == id) {
+        resolve(sala.players);
+      }
     }
   });
 }
@@ -46,15 +43,17 @@ async function addPlayerRoom(room, username) {
         if (salas[i].id == id) {
           salas[i].players = 1;
           salas[i].playerOne = username;
+          console.log(JSON.stringify(salas));
           resolve(salas);
         }
       }
-    } else {
+    } else if (players <= 2) {
       for (var i = 0; i < salas.length; i++) {
         if (salas[i].id == id) {
           salas[i].players = 2;
           salas[i].playerTwo = username;
-          resolve(salas[i]);
+          salas[i].gameID = makeid();
+          resolve(salas);
         }
       }
       resolve(salas);

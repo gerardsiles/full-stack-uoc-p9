@@ -40,9 +40,9 @@ async function agregarJugador(username, idSala) {
   let sala = findById(idPartida);
 
   if (!partida.jugador1) {
-    partida.jugador1 = jugador;
+    partida.playerOne = jugador;
   } else {
-    partida.jugador2 = jugador;
+    partida.playerTwo = jugador;
   }
 }
 // crear una nueva partida
@@ -134,14 +134,16 @@ function returnGameState() {
   };
 
   /* generar un color aleatorio y asignarselo al jugador */
-  const userColor = createRandomColor(gameState);
-  gameState.playerOne.color = userColor;
+  const userOneColor = createRandomColor();
+  gameState.playerOne.color = userOneColor;
+  const userTwoColor = createRandomColor();
+  gameState.playerTwo.color = userTwoColor;
 
   return gameState;
 }
 
 /* Funcion para generar un color aleatorio para el jugador */
-const createRandomColor = (state) => {
+const createRandomColor = () => {
   var letters = "0123456789ABCDEF";
   var randomColor = "#";
   for (var i = 0; i < 6; i++) {

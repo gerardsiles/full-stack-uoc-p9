@@ -14,7 +14,7 @@ const socketio = require("socket.io");
 const http = require("http");
 const server = http.createServer(app);
 const io = socketio(server);
-
+// app.set("socket.io", io);
 //Conexion a la BBDD
 connectDB();
 
