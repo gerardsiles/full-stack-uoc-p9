@@ -23,13 +23,13 @@ playBtn1.addEventListener("click", (e) => {
   window.open("http://localhost:5000/rooms/1");
 });
 playBtn2.addEventListener("click", (e) => {
-  window.open("http://localhost:5000/rooms/1");
+  window.open("http://localhost:5000/rooms/2");
 });
 playBtn3.addEventListener("click", (e) => {
-  window.open("http://localhost:5000/rooms/1");
+  window.open("http://localhost:5000/rooms/3");
 });
 playBtn4.addEventListener("click", (e) => {
-  window.open("http://localhost:5000/rooms/1");
+  window.open("http://localhost:5000/rooms/4");
 });
 
 /* Insertar el nombre de usuario en el DOM */

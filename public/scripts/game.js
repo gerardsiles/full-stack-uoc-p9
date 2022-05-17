@@ -143,6 +143,8 @@ function handleGameOver(data) {
     alert("pierdes...");
   }
   gameActive = false;
+  alert("ok");
+  window.close();
 }
 
 function handleGameWin() {
