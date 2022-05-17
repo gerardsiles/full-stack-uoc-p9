@@ -99,7 +99,6 @@ function handleInit(number) {
 }
 
 function handleGameState(gameState) {
-  console.log(JSON.stringify(gameState));
   if (!gameActive) {
     return;
   }
@@ -138,6 +137,8 @@ function handleGameOver(data) {
     alert("pierdes...");
   }
   gameActive = false;
+  alert("ok");
+  window.close();
 }
 
 function handleGameWin() {
