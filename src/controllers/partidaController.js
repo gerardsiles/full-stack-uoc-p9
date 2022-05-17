@@ -66,10 +66,13 @@ const gameLoop = (state) => {
   /* comprobar si hay un ganador */
   if (state.cellsConquered === 36) {
     if (playerOne.cellsConquered > playerTwo.cellsConquered) {
+      console.log("Gana jugador 1");
       return 1; // jugador 1 gana
     } else if (playerOne.cellsConquered < playerTwo.cellsConquered) {
+      console.log("Gana jugador 2");
       return 2; // jugador 2 gana
     } else if (playerOne.cellsConquered === playerTwo.cellsConquered) {
+      console.log("Empate");
       return 3; // empate
     }
   }
@@ -78,7 +81,7 @@ const gameLoop = (state) => {
 };
 
 /* Al recibir el click del usuario, actualizamos la celda */
-const updateState = (keyCodeX, keyCodeY, state, playerX) => {
+const updateState = (keyCodeX, keyCodeY, state, playerIndex) => {
   const squareSize = 110;
 
   for (let i = 0; i < 6; i++) {
@@ -93,22 +96,44 @@ const updateState = (keyCodeX, keyCodeY, state, playerX) => {
         keyCodeY < currentNode.y + squareSize
       ) {
         /* Si la celda no ha sido conquistada */
-        if (currentNode.color === "transparent") {
-          // si es el primer cuadrado
-          if (state.playerOne.cellsConquered === 0) {
-            /* Si la celda no ha sido conquistada todavia actualizamos valores*/
+        if (playerIndex === 1) {
+          if (currentNode.color === "transparent") {
+            // si es el primer cuadrado
+            if (state.playerOne.cellsConquered === 0) {
+              /* Si la celda no ha sido conquistada todavia actualizamos valores*/
 
-            currentNode.color = state.playerOne.color;
-            state.playerOne.cellsConquered++;
-            state.cellsConquered++;
-
-            /* Si quedan celdas por conquistar */
-          } else if (state.cellsConquered != 36) {
-            /* comprobar si los nodos colindantes han sido conquistados por el jugador */
-            if (legalMove(state, i, j)) {
               currentNode.color = state.playerOne.color;
               state.playerOne.cellsConquered++;
               state.cellsConquered++;
+
+              /* Si quedan celdas por conquistar */
+            } else if (state.cellsConquered != 36) {
+              /* comprobar si los nodos colindantes han sido conquistados por el jugador */
+              if (legalMove(state, i, j, playerIndex)) {
+                currentNode.color = state.playerOne.color;
+                state.playerOne.cellsConquered++;
+                state.cellsConquered++;
+              }
+            }
+          }
+        } else {
+          if (currentNode.color === "transparent") {
+            // si es el primer cuadrado
+            if (state.playerTwo.cellsConquered === 0) {
+              /* Si la celda no ha sido conquistada todavia actualizamos valores*/
+
+              currentNode.color = state.playerTwo.color;
+              state.playerTwo.cellsConquered++;
+              state.cellsConquered++;
+
+              /* Si quedan celdas por conquistar */
+            } else if (state.cellsConquered != 36) {
+              /* comprobar si los nodos colindantes han sido conquistados por el jugador */
+              if (legalMove(state, i, j, playerIndex)) {
+                currentNode.color = state.playerTwo.color;
+                state.playerTwo.cellsConquered++;
+                state.cellsConquered++;
+              }
             }
           }
         }
@@ -119,7 +144,7 @@ const updateState = (keyCodeX, keyCodeY, state, playerX) => {
 };
 
 /* Comprobar los nodos adyacentes por celdas conquistadas del jugador */
-const legalMove = (state, i, j) => {
+const legalMove = (state, i, j, playerIndex) => {
   for (let k = -1; k <= 1; k++) {
     for (let l = -1; l <= 1; l++) {
       /* Delimitamos los nodos fuera de la matriz */
@@ -133,8 +158,14 @@ const legalMove = (state, i, j) => {
         continue;
       }
       /* comprobar si hay un nodo conquistado por el jugador */
-      if (state.gameboard[i + k][j + l].color == state.playerOne.color) {
-        return true;
+      if (playerIndex === 1) {
+        if (state.gameboard[i + k][j + l].color == state.playerOne.color) {
+          return true;
+        }
+      } else {
+        if (state.gameboard[i + k][j + l].color == state.playerTwo.color) {
+          return true;
+        }
       }
     }
   }

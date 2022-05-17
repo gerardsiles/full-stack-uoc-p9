@@ -114,6 +114,7 @@ router
           keyCodeY = parseInt(keyCode.y);
           /* conseguir que jugador es el que ha hecho el click */
           let player = keyCode.player;
+          console.log(player);
 
           console.info(`Player index is ${player}`);
           updateState(keyCodeX, keyCodeY, state[roomName], player);
@@ -131,6 +132,7 @@ router
         if (!winner) {
           emitGameState(roomName, state[roomName]);
         } else {
+          console.info(`socket: gana el jugador${winner}`);
           emitGameOver(roomName, winner);
           state[roomName] = null;
           clearInterval(intervalId);
@@ -142,7 +144,8 @@ router
     }
 
     function emitGameOver(roomName, winner) {
-      io.sockets.in(roomName).emit("GameOver", JSON.stringify({ winner }));
+      console.info("Emitiendo fin de partida, ganador: " + winner);
+      io.sockets.in(roomName).emit("gameOver", JSON.stringify({ winner }));
     }
     res.render(`room${req.params.roomNumber}`);
   })
